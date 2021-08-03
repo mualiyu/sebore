@@ -74,7 +74,10 @@ class HomeController extends Controller
             'role' => $request['role'],
         ]);
 
-        $user->update([
+        // $user->update([
+        //     'organization_id' => Auth::user()->organization_id,
+        // ]);
+        User::where('id', '=', $user->id)->update([
             'organization_id' => Auth::user()->organization_id,
         ]);
 
