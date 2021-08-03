@@ -125,11 +125,6 @@ class CustomerController extends Controller
             'lga' => $request['lga'],
         ]);
 
-
-        // Customer::where('id', '=', $customer->id)->update([
-        //     'agent_id' => $request['agent'],
-        // ]);
-
         return back()->with(['success' => 'Customer is Updated Successfully']);
 
         // dd($request->all());
