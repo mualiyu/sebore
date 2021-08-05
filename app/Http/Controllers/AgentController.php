@@ -50,7 +50,7 @@ class AgentController extends Controller
             'phone' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:agents'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'lga' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
