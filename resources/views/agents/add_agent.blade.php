@@ -41,50 +41,74 @@
                                   <form class="form-material" method="POST" action="{{route('create_agent')}}">
 					@csrf
                                       <div class="form-group form-default">
-                                          <input type="text" name="name" class="form-control" required="">
+                                          <input type="text" name="name" class="form-control" value="{{old('name')}}" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Name</label>
+					  @error('name')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
                                       <div class="form-group form-default">
-                                          <input type="email" name="email" class="form-control" required="">
+                                          <input type="email" name="email" value="{{old('email')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Email (exa@gmail.com)</label>
+					  @error('email')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="form-group form-default">
-					  <input type="text" name="username" class="form-control" required="">
+					  <input type="text" name="username" value="{{old('username')}}" class="form-control" required="">
 					  <span class="form-bar"></span>
 					  <label class="float-label">UserName</label>
+					  @error('username')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 				      </div>
 				      <div class="form-group form-default">
-                                          <input type="number" name="phone" class="form-control" required="">
+                                          <input type="number" name="phone" value="{{old('phone')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Phone</label>
+					  @error('phone')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="form-group form-default">
-                                          <input type="text" name="address" class="form-control" required="">
+                                          <input type="text" name="address" value="{{old('address')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Address</label>
+					  @error('address')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="row">
 					<div class="col-sm-4">
 						      <div class="form-group form-default">
-							  <input type="text" name="lga" class="form-control" required>
+							  <input type="text" name="lga" class="form-control" value="{{old('lga')}}" required>
 							  <span class="form-bar"></span>
 							  <label class="float-label">LGA:</label>
+							  @error('lga')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 						      </div>
 					</div>
 					<div class="col-sm-4">
 					    <div class="form-group form-default">
-					  	<input type="text" name="state" class="form-control" required>
+					  	<input type="text" name="state" class="form-control" value="{{old('state')}}" required>
 					  	<span class="form-bar"></span>
 					  	<label class="float-label">State:</label>
+						  @error('state')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 					    </div>
 					</div>
 					<div class="col-sm-4">
 					    <div class="form-group form-default">
-					  	<input type="text" name="country" class="form-control" required>
+					  	<input type="text" name="country" value="{{old('country')}}" class="form-control" required>
 					  	<span class="form-bar"></span>
 					  	<label class="float-label">Country:</label>
+						  @error('country')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 					    </div>
 					</div>
 				      </div>
@@ -92,9 +116,12 @@
 				       <div class="row">
 					<div class="col-sm-6">
 						      <div class="form-group form-default">
-							  <input type="text" name="gps" class="form-control" required>
+							  <input type="text" name="gps" class="form-control" value="{{old('gps')}}" required>
 							  <span class="form-bar"></span>
 							  <label class="float-label">Location <small>(Gps)</small></label>
+							  @error('gps')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 						      </div>
 					</div>
 					<div class="col-sm-6">
@@ -107,6 +134,9 @@
 						</select>
 						<span class="form-bar"></span>
 						<label class="float-label">Role</label>
+						@error('role')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 					    </div>
 					</div>
 				      </div>
@@ -117,6 +147,9 @@
 							  <input type="password" name="password" class="form-control" required>
 							  <span class="form-bar"></span>
 							  <label class="float-label">Password</label>
+							  @error('password')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 						      </div>
 					</div>
 					<div class="col-sm-6">

@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">{{$agent->name}} Customers's</h5>
+                    <h5 class="m-b-10">Device's</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Customers</a>
+                    <li class="breadcrumb-item"><a href="#">Devices</a>
                     </li>
                 </ul>
             </div>
@@ -31,12 +31,10 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-                <a href="{{route('show_agents')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
-		<a href="{{route('show_add_customer', ['id'=> $agent->id])}}" style="right:0;" class="btn btn-primary">Add New Customer</a>
-        <br>
+		<a href="{{route('show_add_device')}}" style="right:0;" class="btn btn-secondary">Add New Devices</a>
                     <div class="card">
                         <div class="card-header">
-                            <h5>Customer</h5>
+                            <h5>Devices</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -54,39 +52,22 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Email</th>
-					    <th>Phone</th>
-					    <th>Address</th>
-					    <th>LGA</th>
-					    <th>Sate</th>
+                                            <th>Type</th>
+					    <th>Location</th>
 					    <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($customers); ?>
-				        @foreach ($customers as $c)
+					    <?php $i = count($devices); ?>
+				        @foreach ($devices as $d)
 					<tr>
 						<th scope="row">{{$i}}</th>
-						<td>{{$c->name}}</td>
-						<td>{{$c->email}}</td>
-						<td>{{$c->phone}}</td>
-						<td>{{$c->address}}</td>
-						<td>{{$c->lga}}</td>
-						<td>{{$c->state}}</td>
+						<td>{{$d->name}}</td>
+						<td>{{$d->type}}</td>
+						<td>{{$d->location}}</td>
 						<td>
-                            <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_customer',['id'=>$c->id])}}">
-                                <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
-                                @csrf 
-                                <a  onclick="
-                                    if(confirm('Are you sure You want to Delete this Customer -( {{$c->name}} )? ')){
-                                        document.getElementById('delete-form[{{$i}}]').submit();
-                                    }
-                                        event.preventDefault();"
-                                    class="btn btn-warning" 
-                                    style="color: black">
-                                    Delete
-                                </a>
-                            </form>
+						  <a href="{{route('show_single_device', ['id'=>$d->id])}}" class="btn btn-success">Open</a>
+						  <a href="{{route('show_items', $d->id)}}" class="btn btn-primary">View Items</a>
 						</td>
 						<?php $i--?>
 					</tr>

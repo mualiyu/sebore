@@ -63,7 +63,8 @@ class HomeController extends Controller
             'role' => ['required', 'string']
         ]);
         if ($validator->fails()) {
-            return back()->with('error', 'User not Created try again');
+            // dd($validator);
+            return back()->withErrors($validator)->withInput();
         }
 
         $user = User::create([
@@ -74,16 +75,11 @@ class HomeController extends Controller
             'role' => $request['role'],
         ]);
 
-        // $user->update([
-        //     'organization_id' => Auth::user()->organization_id,
-        // ]);
         User::where('id', '=', $user->id)->update([
             'organization_id' => Auth::user()->organization_id,
         ]);
 
         return redirect('/users')->with(['success' => 'New User is Created']);
-
-        // dd($request->all());
     }
 
     public function update_user(Request $request)
@@ -105,13 +101,7 @@ class HomeController extends Controller
             'role' => $request['role'],
         ]);
 
-        // $user->update([
-        //     'organization_id' => Auth::user()->organization_id,
-        // ]);
-
         return redirect()->route('profile')->with(['success' => 'Profile is Updated']);
-
-        // dd($request->all());
     }
 
     public function update_organization(Request $request, $id)
@@ -133,13 +123,7 @@ class HomeController extends Controller
             'address' => $request['address'],
         ]);
 
-        // $user->update([
-        //     'organization_id' => Auth::user()->organization_id,
-        // ]);
-
         return redirect()->route('profile')->with(['success' => 'Organization is Updated']);
-
-        // dd($request->all());
     }
 
     public function update_org_pic(Request $request, $id)
@@ -171,7 +155,7 @@ class HomeController extends Controller
             "logo" => $imageNameToStore,
         ];
         Organization::where('id', '=', $id)->update($arrayToStore);
-        // DB::table("users")->where("id", "=", $id)->update($arrayToStore);
+
 
         return redirect()->route("profile")->with(['success' => "Organization Logo is Uploaded and Updated."]);
     }

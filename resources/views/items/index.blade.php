@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">{{$agent->name}} Customers's</h5>
+                    <h5 class="m-b-10">{{$device->name}} Items's</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Customers</a>
+                    <li class="breadcrumb-item"><a href="#">Items</a>
                     </li>
                 </ul>
             </div>
@@ -31,12 +31,12 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-                <a href="{{route('show_agents')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
-		<a href="{{route('show_add_customer', ['id'=> $agent->id])}}" style="right:0;" class="btn btn-primary">Add New Customer</a>
+                <a href="{{route('show_devices')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
+		<a href="{{route('show_add_item', ['id'=> $device->id])}}" style="right:0;" class="btn btn-primary">Add New Item</a>
         <br>
                     <div class="card">
                         <div class="card-header">
-                            <h5>Customer</h5>
+                            <h5>Item</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -54,32 +54,35 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Email</th>
-					    <th>Phone</th>
-					    <th>Address</th>
-					    <th>LGA</th>
-					    <th>Sate</th>
-					    <th>Action</th>
+                                            <th>Category</th>
+					    <th>Measure</th>
+					    <th>Unit</th>
+					    <th>Code</th>
+					    <th>With Quantity?</th>
+					    <th>With Payer Name?</th>
+					    <th>Code</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($customers); ?>
-				        @foreach ($customers as $c)
+					    <?php $i_i = count($items); ?>
+				        @foreach ($items as $i)
+					<?php  $cat = \App\Models\Category::find($i->category_id); ?>
 					<tr>
-						<th scope="row">{{$i}}</th>
-						<td>{{$c->name}}</td>
-						<td>{{$c->email}}</td>
-						<td>{{$c->phone}}</td>
-						<td>{{$c->address}}</td>
-						<td>{{$c->lga}}</td>
-						<td>{{$c->state}}</td>
+						<th scope="row">{{$i_i}}</th>
+						<td>{{$i->name}}</td>
+						<td>{{$cat->name}}</td>
+						<td>{{$i->measure/100}}</td>
+						<td>{{$i->unit}}</td>
+						<td>{{$i->code}}</td>
+						<td>{{$i->with_q ? 'Yes':'No'}}</td>
+						<td>{{$i->with_p ? 'Yes':'No'}}</td>
 						<td>
-                            <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_customer',['id'=>$c->id])}}">
-                                <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
+                            <form method="POST" id="delete-form[{{$i_i}}]" action="{{route('delete_item',['id'=>$i->id])}}">
+                                <a href="{{route('show_edit_item', ['d_id'=>$device->id, 'i_id'=>$i->id])}}" class="btn btn-primary">Edit</a>
                                 @csrf 
                                 <a  onclick="
-                                    if(confirm('Are you sure You want to Delete this Customer -( {{$c->name}} )? ')){
-                                        document.getElementById('delete-form[{{$i}}]').submit();
+                                    if(confirm('Are you sure You want to Delete this Item -( {{$i->name}}, {{$i->id}} )? ')){
+                                        document.getElementById('delete-form[{{$i_i}}]').submit();
                                     }
                                         event.preventDefault();"
                                     class="btn btn-warning" 
@@ -88,7 +91,7 @@
                                 </a>
                             </form>
 						</td>
-						<?php $i--?>
+						<?php $i_i--?>
 					</tr>
 					@endforeach
                                     </tbody>

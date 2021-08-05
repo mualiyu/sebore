@@ -43,6 +43,23 @@ Route::post('/create_agent', [App\Http\Controllers\AgentController::class, 'crea
 Route::post('/update_agent/{id}', [App\Http\Controllers\AgentController::class, 'update_agent'])->name('update_agent');
 
 
+//devices
+Route::get('/devices', [App\Http\Controllers\DeviceController::class, 'show_devices'])->name('show_devices');
+Route::get('/device/{id}', [App\Http\Controllers\DeviceController::class, 'show_single_device'])->name('show_single_device');
+Route::get('/create_device', [App\Http\Controllers\DeviceController::class, 'show_add_device'])->name('show_add_device');
+Route::post('/create_device', [App\Http\Controllers\DeviceController::class, 'create_device'])->name('create_device');
+Route::post('/update_device/{id}', [App\Http\Controllers\DeviceController::class, 'update_device'])->name('update_device');
+
+
+//items
+Route::get('/device/{id}/items', [App\Http\Controllers\ItemController::class, 'show_items'])->name('show_items');
+Route::get('/create_item/{id}', [App\Http\Controllers\ItemController::class, 'show_add_item'])->name('show_add_item');
+Route::get('/device/{d_id}/item/{i_id}/edit', [App\Http\Controllers\ItemController::class, 'show_edit_item'])->name('show_edit_item');
+Route::post('/create_item', [App\Http\Controllers\ItemController::class, 'create_item'])->name('create_item');
+Route::post('/update_item/{id}', [App\Http\Controllers\ItemController::class, 'update_item'])->name('update_item');
+Route::post('/delete_item/{id}', [App\Http\Controllers\ItemController::class, 'delete_item'])->name('delete_item');
+Route::post('/create_category', [App\Http\Controllers\ItemController::class, 'create_category'])->name('create_category');
+
 //customers
 Route::get('/customers/{id}', [App\Http\Controllers\CustomerController::class, 'show_customers'])->name('show_customers');
 Route::get('/create_customer/{id}', [App\Http\Controllers\CustomerController::class, 'show_add_customer'])->name('show_add_customer');

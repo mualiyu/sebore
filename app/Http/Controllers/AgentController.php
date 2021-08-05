@@ -59,7 +59,7 @@ class AgentController extends Controller
             'role' => ['required', 'string'],
         ]);
         if ($validator->fails()) {
-            return back()->with('error', 'Agent not Created. Try again!');
+            return back()->withErrors($validator)->withInput();
         }
         // dd($request->all());
 

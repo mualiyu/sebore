@@ -28,6 +28,8 @@
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/jquery.mCustomScrollbar.css')}}">
+
+    @yield('style')
 </head>
 
 <body>
@@ -224,6 +226,14 @@ if ($organization[0]->logo) {
                                 <a href="{{route('show_agents')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Agents</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a href="{{route('show_devices')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Devices</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

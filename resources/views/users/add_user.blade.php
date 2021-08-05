@@ -31,6 +31,7 @@
         <div class="page-wrapper">
             <div class="page-body">
 		    @include('layouts.flash')
+
                 <div class="row">
                     <div class="col-sm-12">
 			    <div class="card">
@@ -42,19 +43,28 @@
                                   <form class="form-material" method="POST" action="{{route('create_user')}}">
 					@csrf
                                       <div class="form-group form-default">
-                                          <input type="text" name="name" class="form-control" required="">
+                                          <input type="text" name="name" value="{{old('name')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Name</label>
+                                          @error('name')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
                                       <div class="form-group form-default">
-                                          <input type="email" name="email" class="form-control" required="">
+                                          <input type="email" name="email" value="{{old('email')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Email (exa@gmail.com)</label>
+                                          @error('email')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="form-group form-default">
-                                          <input type="number" name="phone" class="form-control" required="">
+                                          <input type="number" name="phone" value="{{old('phone')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Phone</label>
+                                          @error('phone')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="row">
 					<div class="col-sm-6">
@@ -62,6 +72,9 @@
 							  <input type="password" name="password" class="form-control" required>
 							  <span class="form-bar"></span>
 							  <label class="float-label">Password</label>
+                              @error('password')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 						      </div>
 					</div>
 					<div class="col-sm-6">
@@ -74,13 +87,16 @@
 				      </div>
 
                                       <div class="form-group form-default">
-                                          <select type="text" name="role" class="form-control" required="" maxlength="6">
+                                          <select type="text" name="role" class="form-control" value="{{old('role')}}" required="" maxlength="6">
 						  <option value="admin">Admin</option>
 						  <option value="supervisor">Suppervisor</option>
 						  <option value="user">User</option>
 					  </select>
                                           <span class="form-bar"></span>
                                           <label class="float-label">Role</label>
+                                          @error('role')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 
                                       <div class="form-group form-default">

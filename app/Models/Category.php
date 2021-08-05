@@ -7,22 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Device extends Model
+class Category extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'type',
-        'location',
-        'device_id',
-        'user',
+        'org_id',
     ];
 
-
-    public function user(): BelongsTo
+    public function organization(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Organization::class);
     }
 
     public function items(): HasMany
