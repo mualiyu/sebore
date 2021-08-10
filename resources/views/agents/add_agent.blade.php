@@ -163,7 +163,7 @@
 
 
                                       <div class="form-group form-default">
-                                          <input type="submit" class="btn btn-primary" value="Register" id="">
+                                          <input type="submit" class="btn btn-primary" value="Register Agent" id="">
                                       </div>
                                   </form>
                               </div>

@@ -56,43 +56,104 @@
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
-				<div class="row">
-				<div class="card shadow " style="width: 100%;">
-                                    <div class="card-header ">
-                                        <p class="text-primary m-0 font-weight-bold">User Settings</p>
+
+                <div class="row">
+                         <div class="card shadow " style="width: 100%;">
+                            <div class="card-header ">
+                                <p class="text-primary m-0 font-weight-bold">{{Auth::user()->organization()->get()[0]->name}} > {{$user->name}} </p>
+                            </div>
+                         </div>
+                </div>
+                <div class="row" id="e" style="display: none;">
+                    <div class="card shadow " style="width: 100%;">
+
+                        <div class="card-body">
+                            <div class="row">
+                                          <div class="col-sm-12">
+                                            <a class="btn btn-primary" onclick="edit()" style="color: white;">close</a>
+                                          </div>
+                                        </div><br><br>
+                            <form  method="POST" action="{{route('update_single_user', ['id'=> $user->id])}}">
+            @csrf
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group"><label for="username"><strong>Name</strong></label><input class="form-control" type="text" placeholder="Name" value="{{$user->name}}" name="name"></div>
                                     </div>
-                                    <div class="card-body">
-                                        <form  method="POST" action="{{route('update_single_user', ['id'=> $user->id])}}">
-						@csrf
-                                            <div class="form-row">
-                                                <div class="col">
-                                                    <div class="form-group"><label for="username"><strong>Name</strong></label><input class="form-control" type="text" placeholder="Name" value="{{$user->name}}" name="name"></div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" value="{{$user->email}}" type="email" placeholder="user@example.com" name="email"></div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>Phone</strong></label><input class="form-control" value="{{$user->phone}}" type="number" placeholder="phone" name="phone"></div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Role</strong></label>
-							{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
-							<select name="role" id="" class="form-control">
-								<option value="{{$user->role ?? ''}}">{{$user->role ?? ''}}</option>
-								<option value="admin">Admin</option>
-								<option value="suppervisor">Suppervisor</option>
-								<option value="user">User</option>
-							</select>
-						</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
-                                        </form>
+                                    <div class="col">
+                                        <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" value="{{$user->email}}" type="email" placeholder="user@example.com" name="email"></div>
                                     </div>
                                 </div>
-				</div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group"><label for="first_name"><strong>Phone</strong></label><input class="form-control" value="{{$user->phone}}" type="number" placeholder="phone" name="phone"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group"><label for="last_name"><strong>Role</strong></label>
+                {{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
+                <select name="role" id="" class="form-control">
+                    <option value="{{$user->role ?? ''}}">{{$user->role ?? ''}}</option>
+                    <option value="admin">Admin</option>
+                    <option value="suppervisor">Suppervisor</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="p">
+                         <div class="card shadow" style="width:100%;">
+                          <div class="card-body">
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <a class="btn btn-primary" onclick="edit()" style="color: white;">Edit</a>
+                                </div>
+                              </div>
+                              <br>
+                              <br>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">User Name</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$user->name}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Email</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$user->email}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Phone</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$user->phone ?? 'Null'}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Role</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$user->role}}
+                              </div>
+                            </div>
+                            <hr>
+                          </div>
+                        </div>
+                </div>
 			</div>
 			<div class="col-md-2"></div>
 		</div>
@@ -102,3 +163,21 @@
     </div>
 </div>
 @endsection
+
+@section('script')
+    <script>
+        let e = document.getElementById('e');
+        let p = document.getElementById('p');
+        function edit() {
+        // console.log(e);
+            if (e.style.display == "none") {
+                e.style.display = "block";
+                p.style.display = 'none';
+            }else{
+                e.style.display = "none";
+                p.style.display = 'block';
+            }
+        }
+    </script>
+@endsection
+

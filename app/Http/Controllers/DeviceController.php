@@ -43,7 +43,7 @@ class DeviceController extends Controller
             'type' => ['required', 'string'],
         ]);
         if ($validator->fails()) {
-            return back()->with('error', 'Device not Created. Try again!');
+            return back()->withErrors($validator)->withInput();
         }
         // dd($request->all());
 

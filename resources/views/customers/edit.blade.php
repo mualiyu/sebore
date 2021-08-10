@@ -35,7 +35,7 @@
                     <div class="col-sm-12">
 			    <div class="card">
                               <div class="card-header">
-                                  <h5>Create Customers</h5>
+                                  <h5>edit Customer</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
@@ -96,7 +96,7 @@
 				      
 
                                       <div class="form-group form-default">
-                                          <input type="submit" class="btn btn-primary" value="Register" id="">
+                                          <input type="submit" class="btn btn-primary" value="Edit" id="">
                                       </div>
                                   </form>
                               </div>

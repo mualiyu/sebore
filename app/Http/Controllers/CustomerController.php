@@ -36,6 +36,12 @@ class CustomerController extends Controller
         return view('customers.add_customer', compact('agent'));
     }
 
+    public function show_add_direct_customer()
+    {
+        $agent = null;
+        return view('customers.add_customer', compact('agent'));
+    }
+
     public function create_customer(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -50,7 +56,7 @@ class CustomerController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return back()->with('error', 'Customer not Created. Try again!');
+            return back()->withErrors($validator)->withInput();
         }
         // dd($request->all());
 

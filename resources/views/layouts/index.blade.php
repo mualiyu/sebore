@@ -15,7 +15,7 @@
     <meta name="keywords" content="flat ui, admin Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
     <meta name="author" content="codedthemes" />
     <!-- Favicon icon -->
-    <link rel="icon" href="{{asset('assets/images/favicon.ico')}}" type="image/x-icon">
+    <link rel="icon" href="{{asset('assets/images/logo.png')}}" type="image/x-icon">
     <!-- Google font-->     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap/css/bootstrap.min.css')}}">
@@ -105,7 +105,7 @@ if ($organization[0]->logo) {
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header">
+        <nav class="navbar header-navbar pcoded-header" style="background: rgba(90,30,30,0.7);">
             <div class="navbar-wrapper">
                 <div class="navbar-logo">
                     <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="#!">
@@ -136,6 +136,15 @@ if ($organization[0]->logo) {
                         <li>
                             <div class="sidebar_toggle"><a href="javascript:void(0)"><i class="ti-menu"></i></a></div>
                         </li>
+                         <li class="header-search">
+                            <div class="main-search morphsearch-search">
+                                <div class="input-group">
+                                    <span class="input-group-addon search-close"><i class="ti-close"></i></span>
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-addon search-btn"><i class="ti-search"></i></span>
+                                </div>
+                            </div>
+                         </li>
                         <li>
                             <a href="#!" onclick="javascript:toggleFullScreen()" class="waves-effect waves-light">
                                 <i class="ti-fullscreen"></i>
@@ -206,7 +215,7 @@ if ($organization[0]->logo) {
                             </div>
                         </div>
 
-                        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Layout</div>
+                        <div class="pcoded-navigation-label" data-i18n="nav.category.navigation"></div>
                         <ul class="pcoded-item pcoded-left-item">
                             <li class="">
                                 <a href="{{route('home')}}" class="waves-effect waves-dark">
@@ -224,7 +233,7 @@ if ($organization[0]->logo) {
                             </li>
                             <li class="">
                                 <a href="{{route('show_agents')}}" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>D</b></span>
+                                    <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Agents</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
@@ -232,7 +241,7 @@ if ($organization[0]->logo) {
 
                             <li class="">
                                 <a href="{{route('show_devices')}}" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>D</b></span>
+                                    <span class="pcoded-micon"><i class="fas fa-table" aria-hidden="true"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Devices</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
@@ -247,41 +256,26 @@ if ($organization[0]->logo) {
 			    
                         </ul>
                     
-                        {{-- <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Chart &amp; Maps</div>
+                        {{-- <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Chart &amp; Maps</div> --}}
                         <ul class="pcoded-item pcoded-left-item">
                             
-                            <li class="pcoded-hasmenu">
-                                <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i></span>
-                                    <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">Pages</span>
+                            <li class="">
+                                <a href="{{route('show_add_direct_customer')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Create Customers's</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
-                                <ul class="pcoded-submenu">
-                                    <li class=" ">
-                                        <a href="auth-normal-sign-in.html" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Login</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li class=" ">
-                                        <a href="auth-sign-up.html" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Register</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li class=" ">
-                                        <a href="sample-page.html" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Sample Page</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                </ul>
+                            </li>
+
+                            <li class="">
+                                <a href="{{route('show_add_direct_item')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Create Item's</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
                             </li>
                     
-                        </ul> --}}
+                        </ul>
                     
                         
                     </div>

@@ -14,7 +14,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Add Item to {{$device->name}}</h5>
+                    <h5 class="m-b-10">Add Item to {{$device != null ? ' - '. $device->name : ''}}</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -39,7 +39,7 @@
             <div class="page-body">
 		    @include('layouts.flash')
 		    {{-- <a href="#" style="right:0;" class="btn btn-primary">Add New Category</a> --}}
-		    <button type="button" class="btn btn-primary" onclick="document.getElementById('modal').style.display = 'block';"><i class="">+</i> Add New Category</button>
+		    {{-- <button type="button" class="btn btn-primary" onclick="document.getElementById('modal').style.display = 'block';"><i class="">+</i> Add New Category</button> --}}
         <br>
                 <div class="row">
                     <div class="col-sm-12">
@@ -51,40 +51,65 @@
                               <div class="card-block">
                                   <form class="form-material" method="POST" action="{{route('create_item')}}">
 					@csrf
-					<input type="hidden" name="device" value="{{$device->id}}">
+					{{-- <input type="hidden" name="device" value="{{$device->id}}"> --}}
                                       <div class="form-group form-default">
-                                          <input type="text" name="name" class="form-control" required="">
+                                          <input type="text" name="name" value="{{old('name')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Name</label>
+                                          @error('name')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
                                       <div class="form-group form-default">
-                                          <input type="number" name="measure" class="form-control" required="">
+                                          <input type="number" name="measure" value="{{old('measure')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Measure</label>
+                                          @error('measure')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="form-group form-default">
-                                          <input type="text" name="unit" class="form-control" required="">
+                                          <input type="text" name="unit" value="{{old('unit')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Unit <span style="font-size: 10px;">Ex (NGN, Kg, Meters, USD)</span></label>
-                                      </div>
+                                        @error('unit')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
+                                        </div>
 				      <div class="form-group form-default">
-                                          <input type="text" name="code" class="form-control" required="">
+                                          <input type="text" name="code" value="{{old('code')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">code</label>
+                                          @error('code')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="row">
-					<div class="col-sm-4">
-						      <div class="form-group form-default">
-							  <select name="with_q" class="form-control" required>
-								  <option value="0" disabled>select</option>
+					<div class="col-sm-6">
+                        <div class="form-group form-default">
+                            <select name="with_q" class="form-control" required>
+                                <option value="0" disabled>select</option>
 								<option value="1">Yes</option>
 								<option value="0">No</option>
-							</select>
+							</select>             
+              {{-- 
+                <input class="form-check-input" type="radio" name="with_q" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Yes
+                </label>
+                <br>
+                <input class="form-check-input" type="radio" name="with_q" id="flexRadioDefault2" >
+                <label class="form-check-label" for="flexRadioDefault2">
+                  No
+                </label> --}}
 							  <span class="form-bar"></span>
-							  <label class="float-label">With Quantity?</label>
+                <label class="float-label">With Quantity?</label>
+                              @error('with_q')
+                                <Span style="color: red;">{{$message}}</Span>
+                              @enderror
 						      </div>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-6">
 						<div class="form-group form-default">
 						  <select name="with_p" class="form-control" required>
 							  <option value="0" disabled>select</option>
@@ -93,10 +118,15 @@
 						  </select>
 						  <span class="form-bar"></span>
 						  <label class="float-label">With Payer Name?</label>
+                          @error('with_p')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
 						</div>
 					</div>
+                      </div>
+                      <div class="row">
 					<?php $categories = \App\Models\Category::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
-					<div class="col-sm-4">
+					<div class="col-sm-6">
 						<div class="form-group form-default">
 						  <select name="category" class="form-control" required>
 							 <option value="0" disabled>select</option>
@@ -106,6 +136,33 @@
 						  </select>
 						  <span class="form-bar"></span>
 						  <label class="float-label">Category</label>
+                          @error('category')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
+						</div>
+					</div>
+                    <div class="col-sm-2">
+						<div class="form-group form-default">
+						  <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal').style.display = 'block';"><i class="">+</i> Add New Category</button>
+						</div>
+					</div>
+
+          <div class="col-sm-4">
+            <?php $devices = \App\Models\Device::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
+						<div class="form-group form-default">
+						  <select name="device" class="form-control" required>
+                @if ($device != null)
+                <option value="{{$device->id}}">{{$device->name}}</option>
+                @endif
+							 @foreach ($devices as $d)    
+							 <option value="{{$d->id}}">{{$d->name}}</option>
+							 @endforeach
+						  </select>
+						  <span class="form-bar"></span>
+						  <label class="float-label">Device</label>
+                          @error('device')
+                                <Span style="color: red;">{{$message}}</Span>
+                          @enderror
 						</div>
 					</div>
 				      </div>

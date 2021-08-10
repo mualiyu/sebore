@@ -34,12 +34,22 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<div class="row">
+                <div class="row">
+                         <div class="card shadow " style="width: 100%;">
+                            <div class="card-header ">
+                                <p class="text-primary m-0 font-weight-bold">{{Auth::user()->organization()->get()[0]->name}} > {{Auth::user()->name}} > {{$device->name}}</p>
+                            </div>
+                         </div>
+                </div>
+				<div class="row" id="e" style="display: none;">
 				<div class="card shadow " style="width: 100%;">
-                                    <div class="card-header ">
-                                        <p class="text-primary m-0 font-weight-bold">Device Settings</p>
-                                    </div>
                                     <div class="card-body">
+                                        <div class="row">
+                                          <div class="col-sm-12">
+                                            <a class="btn btn-primary" onclick="edit()" style="color: white;">close</a>
+                                          </div>
+                                        </div><br><br>
+
                                         <form  method="POST" action="{{route('update_device', ['id'=>$device->id])}}">
 						@csrf
                                             <div class="form-row">
@@ -64,6 +74,119 @@
                                     </div>
                                 </div>
 				</div>
+                <div class="row" id="p">
+                         <div class="card shadow" style="width:100%;">
+                          <div class="card-body">
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <a class="btn btn-primary" onclick="edit()" style="color: white;">Edit</a>
+                                </div>
+                              </div>
+                              <br>
+                              <br>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Device Name</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$device->name}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Location</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$device->location}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Type</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$device->type}}
+                              </div>
+                            </div>
+                            <hr>
+                          </div>
+                        </div>
+                </div>
+
+
+                <div class="row">
+
+                    <?php $items = \App\Models\Item::where('device_id', '=', $device->id)->get(); ?>
+                    <div class="card" style="width: 100%;">
+                        <div class="card-header">
+                            <h5>Item's</h5>
+                            <div class="card-header-right">
+                                <ul class="list-unstyled card-option">
+                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                    <li><i class="fa fa-trash close-card"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-block table-border-style">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Category</th>
+					    <th>Measure</th>
+					    <th>Unit</th>
+					    <th>Code</th>
+					    <th>With Quantity?</th>
+					    <th>With Payer Name?</th>
+					    <th>Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+					    <?php $i_i = count($items); ?>
+				        @foreach ($items as $i)
+					<?php  $cat = \App\Models\Category::find($i->category_id); ?>
+					<tr>
+						<th scope="row">{{$i_i}}</th>
+						<td>{{$i->name}}</td>
+						<td>{{$cat->name}}</td>
+						<td>{{$i->measure/100}}</td>
+						<td>{{$i->unit}}</td>
+						<td>{{$i->code}}</td>
+						<td>{{$i->with_q ? 'Yes':'No'}}</td>
+						<td>{{$i->with_p ? 'Yes':'No'}}</td>
+						<td>
+                            <form method="POST" id="delete-form[{{$i_i}}]" action="{{route('delete_item',['id'=>$i->id])}}">
+                                <a href="{{route('show_edit_item', ['d_id'=>$device->id, 'i_id'=>$i->id])}}" class="btn btn-primary">Edit</a>
+                                @csrf 
+                                <a  onclick="
+                                    if(confirm('Are you sure You want to Delete this Item -( {{$i->name}}, {{$i->id}} )? ')){
+                                        document.getElementById('delete-form[{{$i_i}}]').submit();
+                                    }
+                                        event.preventDefault();"
+                                    class="btn btn-warning" 
+                                    style="color: black">
+                                    Delete
+                                </a>
+                            </form>
+						</td>
+						<?php $i_i--?>
+					</tr>
+					@endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
 			</div>
 		</div>
 
@@ -71,4 +194,21 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script>
+        let e = document.getElementById('e');
+        let p = document.getElementById('p');
+        function edit() {
+        // console.log(e);
+            if (e.style.display == "none") {
+                e.style.display = "block";
+                p.style.display = 'none';
+            }else{
+                e.style.display = "none";
+                p.style.display = 'block';
+            }
+        }
+    </script>
 @endsection

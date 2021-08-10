@@ -34,26 +34,35 @@
                     <div class="col-sm-12">
 			    <div class="card">
                               <div class="card-header">
-                                  <h5>Create Agents</h5>
+                                  <h5>Create Device</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
                                   <form class="form-material" method="POST" action="{{route('create_device')}}">
 					@csrf
                                       <div class="form-group form-default">
-                                          <input type="text" name="name" class="form-control" required="">
+                                          <input type="text" name="name" value="{{old('name')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Name</label>
+                                          @error('name')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="form-group form-default">
-                                          <input type="text" name="location" class="form-control" required="">
+                                          <input type="text" name="location" value="{{old('location')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Location</label>
+                                          @error('location')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 				      <div class="form-group form-default">
-                                          <input type="text" name="type" class="form-control" required="">
+                                          <input type="text" name="type" value="{{old('type')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Type</label>
+                                          @error('type')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                       </div>
 
                                       <div class="form-group form-default">

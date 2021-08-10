@@ -36,20 +36,26 @@ class ItemController extends Controller
         return view('items.add_item', compact('device'));
     }
 
+    public function show_add_direct_item()
+    {
+        $device = null;
+        return view('items.add_item', compact('device'));
+    }
+
     public function create_item(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'measure' => ['required', 'int', 'max:255'],
+            'measure' => ['required', 'int'],
             'unit' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:255'],
             'with_q' => ['required', 'int', 'max:255'],
-            'with_p' => ['required', 'iny', 'max:255'],
+            'with_p' => ['required', 'int', 'max:255'],
             'category' => ['required', 'string', 'max:255'],
         ]);
 
-        if (!$validator) {
-            return back()->with('error', 'Item not Created. Try again!');
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
         }
         // dd($request->all());
 

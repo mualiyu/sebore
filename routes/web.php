@@ -54,6 +54,7 @@ Route::post('/update_device/{id}', [App\Http\Controllers\DeviceController::class
 //items
 Route::get('/device/{id}/items', [App\Http\Controllers\ItemController::class, 'show_items'])->name('show_items');
 Route::get('/create_item/{id}', [App\Http\Controllers\ItemController::class, 'show_add_item'])->name('show_add_item');
+Route::get('/create_item', [App\Http\Controllers\ItemController::class, 'show_add_direct_item'])->name('show_add_direct_item');
 Route::get('/device/{d_id}/item/{i_id}/edit', [App\Http\Controllers\ItemController::class, 'show_edit_item'])->name('show_edit_item');
 Route::post('/create_item', [App\Http\Controllers\ItemController::class, 'create_item'])->name('create_item');
 Route::post('/update_item/{id}', [App\Http\Controllers\ItemController::class, 'update_item'])->name('update_item');
@@ -63,7 +64,13 @@ Route::post('/create_category', [App\Http\Controllers\ItemController::class, 'cr
 //customers
 Route::get('/customers/{id}', [App\Http\Controllers\CustomerController::class, 'show_customers'])->name('show_customers');
 Route::get('/create_customer/{id}', [App\Http\Controllers\CustomerController::class, 'show_add_customer'])->name('show_add_customer');
+Route::get('/create_customer', [App\Http\Controllers\CustomerController::class, 'show_add_direct_customer'])->name('show_add_direct_customer');
 Route::get('/customer/{a_id}/edit/{c_id}', [App\Http\Controllers\CustomerController::class, 'show_edit_customer'])->name('show_edit_customer');
 Route::post('/create_customer', [App\Http\Controllers\CustomerController::class, 'create_customer'])->name('create_customer');
 Route::post('/update_customer/{id}', [App\Http\Controllers\CustomerController::class, 'update_customer'])->name('update_customer');
 Route::post('/delete_customer/{id}', [App\Http\Controllers\CustomerController::class, 'delete_customer'])->name('delete_customer');
+
+
+
+//api test route 
+Route::get('/test/api', [App\Http\Controllers\testController::class, 'index'])->name('index');

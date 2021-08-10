@@ -34,12 +34,23 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<div class="row">
+
+                <div class="row">
+                         <div class="card shadow " style="width: 100%;">
+                            <div class="card-header ">
+                                <p class="text-primary m-0 font-weight-bold">{{Auth::user()->organization()->get()[0]->name}} > {{Auth::user()->name}} > {{$agent->name}}</p>
+                            </div>
+                         </div>
+                </div>
+
+                <div class="row" id="e" style="display: none;">
 				<div class="card shadow " style="width: 100%;">
-                                    <div class="card-header ">
-                                        <p class="text-primary m-0 font-weight-bold">Agent Settings</p>
-                                    </div>
-                                    <div class="card-body">
+                    <div class="card-body">
+                                        <div class="row">
+                                          <div class="col-sm-12">
+                                            <a class="btn btn-primary" onclick="edit()" style="color: white;">close</a>
+                                          </div>
+                                        </div><br><br>
                                         <form  method="POST" action="{{route('update_agent', ['id'=>$agent->id])}}">
 						@csrf
                                             <div class="form-row">
@@ -95,9 +106,168 @@
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
                                         </form>
-                                    </div>
-                                </div>
+                                    </div>                    
+                </div>
 				</div>
+
+
+                <div class="row" id="p">
+                         <div class="card shadow" style="width:100%;">
+                          <div class="card-body">
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <a class="btn btn-primary" onclick="edit()" style="color: white;">Edit</a>
+                                </div>
+                              </div>
+                              <br>
+                              <br>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Full Name</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->name}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Email</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->email}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Username</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->username}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Address</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->address}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Local Goverment Area</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->lga}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">State</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->state}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Country</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->country}}
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Role</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$agent->role}}
+                              </div>
+                            </div>
+                            <hr>
+
+                          </div>
+                        </div>
+                </div>
+
+                <div class="row" >
+                    <?php $customers = \App\Models\Customer::where('agent_id', '=', $agent->id)->get(); ?>
+                    <div class="card" style="width: 100%;">
+                        <div class="card-header">
+                            <h5>Customer's</h5>
+                            <div class="card-header-right">
+                                <ul class="list-unstyled card-option">
+                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                    <li><i class="fa fa-window-maximize full-card"></i></li>
+                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                    <li><i class="fa fa-trash close-card"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-block table-border-style">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+					    <th>Phone</th>
+					    <th>Address</th>
+					    <th>LGA</th>
+					    <th>Sate</th>
+					    <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+					    <?php $i = count($customers); ?>
+				        @foreach ($customers as $c)
+					<tr>
+						<th scope="row">{{$i}}</th>
+						<td>{{$c->name}}</td>
+						<td>{{$c->email}}</td>
+						<td>{{$c->phone}}</td>
+						<td>{{$c->address}}</td>
+						<td>{{$c->lga}}</td>
+						<td>{{$c->state}}</td>
+						<td>
+                            <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_customer',['id'=>$c->id])}}">
+                                <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
+                                @csrf 
+                                <a  onclick="
+                                    if(confirm('Are you sure You want to Delete this Customer -( {{$c->name}} )? ')){
+                                        document.getElementById('delete-form[{{$i}}]').submit();
+                                    }
+                                        event.preventDefault();"
+                                    class="btn btn-warning" 
+                                    style="color: black">
+                                    Delete
+                                </a>
+                            </form>
+						</td>
+						<?php $i--?>
+					</tr>
+					@endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
 			</div>
 		</div>
 
@@ -105,4 +275,21 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script>
+        let e = document.getElementById('e');
+        let p = document.getElementById('p');
+        function edit() {
+        // console.log(e);
+            if (e.style.display == "none") {
+                e.style.display = "block";
+                p.style.display = 'none';
+            }else{
+                e.style.display = "none";
+                p.style.display = 'block';
+            }
+        }
+    </script>
 @endsection
