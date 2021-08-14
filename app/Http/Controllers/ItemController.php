@@ -125,7 +125,7 @@ class ItemController extends Controller
         Item::where('id', '=', $item->id)->update([
             'category_id' => $request['category'],
             'device_id' => $request['device'],
-            // 'uuid' => $res->data->id,
+            'uuid' => $res->data->id,
             'org_id' => Auth::user()->organization_id,
         ]);
 
