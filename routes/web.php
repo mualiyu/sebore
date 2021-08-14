@@ -52,6 +52,7 @@ Route::post('/update_device/{id}', [App\Http\Controllers\DeviceController::class
 
 
 //items
+Route::get('/items', [App\Http\Controllers\ItemController::class, 'show_all_items'])->name('show_all_items');
 Route::get('/device/{id}/items', [App\Http\Controllers\ItemController::class, 'show_items'])->name('show_items');
 Route::get('/create_item/{id}', [App\Http\Controllers\ItemController::class, 'show_add_item'])->name('show_add_item');
 Route::get('/create_item', [App\Http\Controllers\ItemController::class, 'show_add_direct_item'])->name('show_add_direct_item');
@@ -62,7 +63,8 @@ Route::post('/delete_item/{id}', [App\Http\Controllers\ItemController::class, 'd
 Route::post('/create_category', [App\Http\Controllers\ItemController::class, 'create_category'])->name('create_category');
 
 //customers
-Route::get('/customers/{id}', [App\Http\Controllers\CustomerController::class, 'show_customers'])->name('show_customers');
+Route::get('/agent/{id}/customers', [App\Http\Controllers\CustomerController::class, 'show_customers'])->name('show_customers');
+Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'show_all_customers'])->name('show_all_customers');
 Route::get('/create_customer/{id}', [App\Http\Controllers\CustomerController::class, 'show_add_customer'])->name('show_add_customer');
 Route::get('/create_customer', [App\Http\Controllers\CustomerController::class, 'show_add_direct_customer'])->name('show_add_direct_customer');
 Route::get('/customer/{a_id}/edit/{c_id}', [App\Http\Controllers\CustomerController::class, 'show_edit_customer'])->name('show_edit_customer');

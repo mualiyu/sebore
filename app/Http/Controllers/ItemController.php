@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Device;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
@@ -28,6 +30,14 @@ class ItemController extends Controller
         // dd($customers);
 
         return view('items.index', compact('items', 'device'));
+    }
+
+    public function show_all_items()
+    {
+        $items = Item::where('org_id', '=', Auth::user()->organization_id)->orderBy('created_at', 'desc')->get();
+        // dd($customers);
+
+        return view('items.all', compact('items'));
     }
 
     public function show_add_item($id)
@@ -59,6 +69,49 @@ class ItemController extends Controller
         }
         // dd($request->all());
 
+        $device = Device::find($request['device']);
+        $category = Category::find($request['category']);
+
+        //Api
+        $with_q = $request['with_q'] ? 'true' : 'false';
+        $with_p = $request['with_p'] ? 'true' : 'false';
+
+        $hash = hash(
+            'sha512',
+            $request['code'] .
+                $device->uuid .
+                $category->name .
+                $request['name'] .
+                $request['measure'] .
+                $request['unit'] .
+                $with_q .
+                $with_p
+        );
+
+
+        $url = 'https://api.ajisaqsolutions.com/api/item/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash .  '&code=' .
+            $request['code'] . '&deviceId=' .
+            $device->uuid . '&category=' .
+            $category->name . '&name=' .
+            $request['name'] . '&measure=' .
+            $request['measure'] . '&unit=' .
+            $request['unit'] . '&withQuantity=' .
+            $with_q . '&withFromTo=' .
+            $with_p;
+
+
+        $response = Http::post($url);
+        $res = json_decode($response);
+
+        if ($res->status != "Ok") {
+            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        }
+        //End api
+
+
         $item = Item::create([
             'name' => $request['name'],
             'measure' => $request['measure'] * 100,
@@ -72,6 +125,8 @@ class ItemController extends Controller
         Item::where('id', '=', $item->id)->update([
             'category_id' => $request['category'],
             'device_id' => $request['device'],
+            // 'uuid' => $res->data->id,
+            'org_id' => Auth::user()->organization_id,
         ]);
 
         return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is Created to system']);

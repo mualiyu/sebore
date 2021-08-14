@@ -30,7 +30,7 @@
             <div class="page-body">
 		    @include('layouts.flash')
 
-		    <a href="{{url('customers/'.$agent->id)}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
+		    <a onclick="window.history.back()" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
                 <div class="row">
                     <div class="col-sm-12">
 			    <div class="card">

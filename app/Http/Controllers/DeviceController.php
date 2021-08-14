@@ -6,6 +6,7 @@ use App\Models\Device;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class DeviceController extends Controller
@@ -41,11 +42,51 @@ class DeviceController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'location' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string'],
+            'lga' => ['required', 'string'],
+            'state' => ['required', 'string'],
+            'community' => ['required', 'string'],
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
         // dd($request->all());
+
+        //Api
+        $did = ' ';
+        $hash = hash(
+            'sha512',
+            $org->uuid .
+                $request['name'] .
+                $did .
+                $request['location'] .
+                $request['lga'] .
+                $request['state'] .
+                $request['community']
+        );
+
+        $url = 'https://api.ajisaqsolutions.com/api/device/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash .  '&organizationId=' .
+            $org->uuid . '&name=' .
+            $request['name'] .  '&deviceId=' .
+            $did . '&location=' .
+            $request['location'] . '&lga=' .
+            $request['lga'] . '&state=' .
+            $request['state'] . '&community=' .
+            $request['community'];
+
+
+        $response = Http::post($url);
+        $res = json_decode($response);
+
+        // dd($res);
+
+        if ($res->status != "Ok") {
+            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        }
+        //End api
+
 
         $device = Device::create([
             'name' => $request['name'],
@@ -56,6 +97,10 @@ class DeviceController extends Controller
         Device::where('id', '=', $device->id)->update([
             'user_id' => Auth::user()->id,
             'org_id' => Auth::user()->organization_id,
+            'uuid' => $res->data->id,
+            'lga' => $request['lga'],
+            'state' => $request['state'],
+            'community' => $request['community'],
         ]);
 
         return redirect('/devices')->with(['success' => $device->name . ' is Created to system']);

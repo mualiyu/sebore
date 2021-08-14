@@ -241,7 +241,7 @@ if ($organization[0]->logo) {
 
                             <li class="">
                                 <a href="{{route('show_devices')}}" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="fas fa-table" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-micon"><i class="ti-mobile" aria-hidden="true"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Devices</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
@@ -260,17 +260,17 @@ if ($organization[0]->logo) {
                         <ul class="pcoded-item pcoded-left-item">
                             
                             <li class="">
-                                <a href="{{route('show_add_direct_customer')}}" class="waves-effect waves-dark">
+                                <a href="{{route('show_all_customers')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Create Customers's</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Customers's</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
 
                             <li class="">
-                                <a href="{{route('show_add_direct_item')}}" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Create Item's</span>
+                                <a href="{{route('show_all_items')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Item's</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

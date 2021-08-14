@@ -47,7 +47,8 @@ class testController extends Controller
         $response = Http::post($url);
 
         if ($response) {
-            return $response;
+            $arr = json_decode($response);
+            dd($arr);
         }
 
         return "error";

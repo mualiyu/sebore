@@ -51,7 +51,7 @@
 				      <div class="form-group form-default">
                                           <input type="text" name="location" value="{{old('location')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
-                                          <label class="float-label">Location</label>
+                                          <label class="float-label">Location (gps)</label>
                                           @error('location')
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
@@ -64,6 +64,39 @@
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
                                       </div>
+
+                                      <div class="row">
+					<div class="col-sm-4">
+						      <div class="form-group form-default">
+							  <input type="text" name="lga" value="{{old('lga')}}" class="form-control" required>
+							  <span class="form-bar"></span>
+							  <label class="float-label">LGA:</label>
+                              @error('lga')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
+						      </div>
+					</div>
+					<div class="col-sm-4">
+					    <div class="form-group form-default">
+					  	<input type="text" name="state" value="{{old('state')}}" class="form-control" required>
+					  	<span class="form-bar"></span>
+					  	<label class="float-label">State:</label>
+                          @error('state')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
+					    </div>
+					</div>
+					<div class="col-sm-4">
+					    <div class="form-group form-default">
+					  	<input type="text" name="community" value="{{old('community')}}" class="form-control" required>
+					  	<span class="form-bar"></span>
+					  	<label class="float-label">Community:</label>
+                          @error('community')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
+					    </div>
+					</div>
+				      </div>
 
                                       <div class="form-group form-default">
                                           <input type="submit" class="btn btn-primary" value="Register Device" id="">

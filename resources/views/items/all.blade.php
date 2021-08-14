@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Agent's</h5>
+                    <h5 class="m-b-10">Items's</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Agent</a>
+                    <li class="breadcrumb-item"><a href="#">Items</a>
                     </li>
                 </ul>
             </div>
@@ -31,10 +31,12 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-		<a href="{{route('show_add_agent')}}" style="right:0;" class="btn btn-secondary">Add New Agent</a>
+                {{-- <a href="{{route('show_devices')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp; --}}
+		<a href="{{route('show_add_direct_item')}}" style="right:0;" class="btn btn-primary">Add New Item</a>
+        <br>
                     <div class="card">
                         <div class="card-header">
-                            <h5>Agents</h5>
+                            <h5>Item</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -51,27 +53,47 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>UserName</th>
-                                            <th>Email</th>
-					    <th>Phone</th>
-					    <th>Role</th>
-					    <th>Action</th>
+                                            <th>Name</th>
+                                            <th>Category</th>
+					    <th>Belongs To</th>
+					    <th>Measure</th>
+					    <th>Unit</th>
+					    <th>Code</th>
+					    <th>With Quantity?</th>
+					    <th>With Payer Name?</th>
+					    <th>Code</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($agents); ?>
-				        @foreach ($agents as $a)
+					    <?php $i_i = count($items); ?>
+				        @foreach ($items as $i)
+					<?php  $cat = \App\Models\Category::find($i->category_id); ?>
 					<tr>
-						<th scope="row">{{$i}}</th>
-						<td>{{$a->name}}</td>
-						<td>{{$a->email}}</td>
-						<td>{{$a->phone}}</td>
-						<td>{{$a->role}}</td>
+						<th scope="row">{{$i_i}}</th>
+						<td>{{$i->name}}</td>
+						<td>{{$cat->name}}</td>
+						<td>{{$i->device->name}}</td>
+						<td>{{$i->measure/100}}</td>
+						<td>{{$i->unit}}</td>
+						<td>{{$i->code}}</td>
+						<td>{{$i->with_q ? 'Yes':'No'}}</td>
+						<td>{{$i->with_p ? 'Yes':'No'}}</td>
 						<td>
-						  <a href="{{route('show_single_agent', ['id'=>$a->id])}}" class="btn btn-success">Open</a>
-						  <a href="{{url('/agent/'.$a->id.'/customers')}}" class="btn btn-primary">View Customers</a>
+                            <form method="POST" id="delete-form[{{$i_i}}]" action="{{route('delete_item',['id'=>$i->id])}}">
+                                <a href="{{route('show_edit_item', ['d_id'=>$i->device->id, 'i_id'=>$i->id])}}" class="btn btn-primary">Edit</a>
+                                @csrf 
+                                <a  onclick="
+                                    if(confirm('Are you sure You want to Delete this Item -( {{$i->name}}, {{$i->id}} )? ')){
+                                        document.getElementById('delete-form[{{$i_i}}]').submit();
+                                    }
+                                        event.preventDefault();"
+                                    class="btn btn-warning" 
+                                    style="color: black">
+                                    Delete
+                                </a>
+                            </form>
 						</td>
-						<?php $i--?>
+						<?php $i_i--?>
 					</tr>
 					@endforeach
                                     </tbody>

@@ -8,7 +8,10 @@ use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -54,7 +57,7 @@ class RegisterController extends Controller
 
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'g_name' => ['required', 'string', 'max:255'],
@@ -72,13 +75,43 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        $name = $data['g_name'];
+        $description = $data['g_description'];
+        $logo = url('/storage/pic/default.jpg');
+        $phone = $data['g_phone'];
+        $hash = hash('sha512', $name . $description . $logo . $phone);
+
+        $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash . '&name=' .
+            $name . '&description=' .
+            $description . '&logoUrl=' .
+            $logo . '&phone=' . $phone;
+
+        $response = Http::post($url);
+
+        $res = json_decode($response);
+
+        // dd($res->status);
+
+        if ($res->status != 'Ok') {
+            return [0];
+            // back()->with("error", "Sorry! Our system is having issues at this Time. but out Support Team are on it. ");
+        }
+
         $organization = Organization::create([
+            // 'id' => $res->data->id,
             'name' => $data['g_name'],
             'description' => $data['g_description'],
             'address' => $data['g_address'],
             'phone' => $data['g_phone'],
         ]);
-        // dd($organization);
+
+        Organization::where('id', '=', $organization->id)->update([
+            'uuid' => $res->data->id,
+        ]);
 
         $user = User::create([
             'name' => $data['name'],
@@ -88,13 +121,11 @@ class RegisterController extends Controller
             'role' => 'admin',
         ]);
 
-        // $user->update([
-        //     'organization_id' => $organization->id,
-        // ]);
         User::where('id', '=', $user->id)->update([
             'organization_id' => $organization->id,
         ]);
 
+        // dd($user);
         return $user;
     }
 }

@@ -15,6 +15,10 @@ return [
 
     'name' => 'Ajisaq Ticketing System - ATS',
 
+    'apiUser' => '6c00b253-0b01-4630-b7a0-187438021083',
+
+    'apiKey' => '6c00b253-0b01-4630-b7a0-187438021083',
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

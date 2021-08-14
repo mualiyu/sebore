@@ -32,6 +32,83 @@
         <div class="page-wrapper">
             <div class="page-body">
                 <div class="row">
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c" style="color: rgb(90,30,30);">30200</h4>
+                                        <h6 class="text-muted m-b-0">No of Users</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-user f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="background: rgb(90,30,30);">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% Open</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c" style="color: rgb(99,57,57);">30200</h4>
+                                        <h6 class="text-muted m-b-0">No of Users</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-user f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="background: rgb(99,57,57);">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% Open</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c" style="color: rgb(136,94,94);">30200</h4>
+                                        <h6 class="text-muted m-b-0">No of Users</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-user f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="background: rgb(136,94,94);">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% Open</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">

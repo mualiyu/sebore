@@ -6,6 +6,7 @@ use App\Models\Agent;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
@@ -28,6 +29,14 @@ class CustomerController extends Controller
         // dd($customers);
 
         return view('customers.index', compact('customers', 'agent'));
+    }
+
+    public function show_all_customers()
+    {
+        $customers = Customer::where('org_id', '=', Auth::user()->organization_id)->orderBy('created_at', 'desc')->get();
+        // dd($customers);
+
+        return view('customers.all', compact('customers'));
     }
 
     public function show_add_customer($id)
@@ -59,6 +68,34 @@ class CustomerController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         // dd($request->all());
+        $agent = Agent::find($request['agent']);
+
+        //Api
+        $hash = hash(
+            'sha512',
+            $request['name'] .
+                $agent->uuid .
+                $request['phone'] .
+                $request['phone']
+        );
+
+        $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash .  '&name=' .
+            $request['name'] . '&agentId=' .
+            $agent->uuid . '&phone=' .
+            $request['phone'] . '&code=' .
+            $request['phone'];
+
+
+        $response = Http::post($url);
+        $res = json_decode($response);
+
+        if ($res->status != "Ok") {
+            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        }
+        //End api
 
         $customer = Customer::create([
             'name' => $request['name'],
@@ -74,6 +111,8 @@ class CustomerController extends Controller
 
         Customer::where('id', '=', $customer->id)->update([
             'agent_id' => $request['agent'],
+            'org_id' => Auth::user()->organization_id,
+            'uuid' => $res->data->id,
         ]);
 
         return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is Created to system']);

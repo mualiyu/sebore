@@ -7,6 +7,7 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class AgentController extends Controller
@@ -61,7 +62,38 @@ class AgentController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        // dd($request->all());
+        // dd($org->uuid);
+
+        //Api
+        $hash = hash(
+            'sha512',
+            $org->uuid .
+                $request['name'] .
+                $request['email'] .
+                $request['password'] .
+                $request['phone'] .
+                $request['role']
+        );
+        $url = 'https://api.ajisaqsolutions.com/api/agent/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash . '&organizationId=' .
+            $org->uuid . '&name=' .
+            $request['name'] . '&email=' .
+            $request['email'] . '&password=' .
+            $request['password'] . '&phone=' .
+            $request['phone'] . '&type=' .
+            $request['role'];
+
+
+        $response = Http::post($url);
+        $res = json_decode($response);
+
+        // dd($res);
+        if ($res->status != "Ok") {
+            return back()->with(['error' => 'Sorry, An error was encountered, Please try again later.'])->withInput();
+        }
+        //End Api
 
         $agent = Agent::create([
             'name' => $request['name'],
@@ -80,6 +112,7 @@ class AgentController extends Controller
         Agent::where('id', '=', $agent->id)->update([
             'user_id' => Auth::user()->id,
             'org_id' => Auth::user()->organization_id,
+            'uuid' => $res->data->id,
         ]);
 
         return redirect('/agents')->with(['success' => $agent->name . ' is Created to system']);
