@@ -32,12 +32,14 @@
         <div class="page-wrapper">
             <div class="page-body">
                 <div class="row">
+
                     <div class="col-xl-4 col-md-6">
+                        <?php $users = \App\Models\User::where('organization_id', '=', Auth::user()->organization_id)->get(); ?>
                         <div class="card">
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(90,30,30);">30200</h4>
+                                        <h4 class="text-c" style="color: rgb(90,30,30);">{{count($users)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Users</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -58,15 +60,16 @@
                         </div>
                     </div>
                     <div class="col-xl-4 col-md-6">
+                        <?php $agents = \App\Models\Agent::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
                         <div class="card">
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(99,57,57);">30200</h4>
-                                        <h6 class="text-muted m-b-0">No of Users</h6>
+                                        <h4 class="text-c" style="color: rgb(99,57,57);">{{count($agents)}}</h4>
+                                        <h6 class="text-muted m-b-0">No of Agents</h6>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <i class="fa fa-user f-28"></i>
+                                        <i class="fa fa-users f-28"></i>
                                     </div>
                                 </div>
                             </div>
@@ -83,15 +86,95 @@
                         </div>
                     </div>
                     <div class="col-xl-4 col-md-6">
+                        <?php $devices = \App\Models\Device::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
                         <div class="card">
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(136,94,94);">30200</h4>
-                                        <h6 class="text-muted m-b-0">No of Users</h6>
+                                        <h4 class="text-c" style="color: rgb(136,94,94);">{{count($devices)}}</h4>
+                                        <h6 class="text-muted m-b-0">No of Device</h6>
                                     </div>
                                     <div class="col-4 text-right">
-                                        <i class="fa fa-user f-28"></i>
+                                        <i class="ti-mobile f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="background: rgb(136,94,94);">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% Open</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <?php $categories = \App\Models\Category::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c" style="color: rgb(90,30,30);">{{count($categories)}}</h4>
+                                        <h6 class="text-muted m-b-0">No of Categories</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-table f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="background: rgb(90,30,30);">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% Open</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6">
+                        <?php $customers = \App\Models\Customer::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c" style="color: rgb(99,57,57);">{{count($customers)}}</h4>
+                                        <h6 class="text-muted m-b-0">No of Customers</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="fa fa-users f-28"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="background: rgb(99,57,57);">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <p class="text-white m-b-0">% Open</p>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <i class="fa fa-line-chart text-white f-16"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6">
+                        <?php $items = \App\Models\Item::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h4 class="text-c" style="color: rgb(136,94,94);">{{count($items)}}</h4>
+                                        <h6 class="text-muted m-b-0">No of Items</h6>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <i class="ti-layout-grid2-alt f-28"></i>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +192,7 @@
                     </div>
 
 
-                    <div class="col-sm-12">
+                    {{-- <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
                                 <h5>Hello card</h5>
@@ -131,7 +214,7 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
