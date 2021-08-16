@@ -67,10 +67,10 @@ class ItemController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        // dd($request->all());
 
         $device = Device::find($request['device']);
         $category = Category::find($request['category']);
+        // dd($device->uuid);
 
         //Api
         $with_q = $request['with_q'] ? 'true' : 'false';

@@ -276,6 +276,17 @@ if ($organization[0]->logo) {
                             </li>
                     
                         </ul>
+                        <ul class="pcoded-item pcoded-left-item">
+                            
+                            <li class="">
+                                <a href="{{route('show_payment')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Pay Customers</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+
+                        </ul>
                     
                         
                     </div>

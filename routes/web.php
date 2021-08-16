@@ -73,6 +73,13 @@ Route::post('/update_customer/{id}', [App\Http\Controllers\CustomerController::c
 Route::post('/delete_customer/{id}', [App\Http\Controllers\CustomerController::class, 'delete_customer'])->name('delete_customer');
 
 
+//Payments route 
+Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('show_payment');
+Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'get_t_list'])->name('generate_pay');
+Route::post('/pay/single/transaction', [App\Http\Controllers\PaymentController::class, 'pay_single_t'])->name('pay_single_t');
+Route::post('/pay/all/transaction', [App\Http\Controllers\PaymentController::class, 'pay_all_tran_p_c'])->name('pay_all_tran_p_c');
+Route::get('/customer_name_search_p', [App\Http\Controllers\PaymentController::class, 'customer_search'])->name('customer_p');
 
 //api test route 
 Route::get('/test/api', [App\Http\Controllers\testController::class, 'index'])->name('index');
+Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
