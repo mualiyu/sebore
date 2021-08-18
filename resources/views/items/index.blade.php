@@ -60,7 +60,7 @@
 					    <th>Code</th>
 					    <th>With Quantity?</th>
 					    <th>With Payer Name?</th>
-					    <th>Code</th>
+					    <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>

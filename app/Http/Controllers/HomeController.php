@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organization;
+use App\Models\PaymentGateway;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,8 +38,9 @@ class HomeController extends Controller
     {
         $organization = Organization::find(Auth::user()->organization_id);
         $user = Auth::user();
+        $p_gateway = PaymentGateway::where('org_id', '=', $organization->id)->get();
 
-        return view('profile.profile', compact('organization', 'user'));
+        return view('profile.profile', compact('organization', 'user', 'p_gateway'));
     }
 
     public function show_users()

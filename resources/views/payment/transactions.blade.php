@@ -88,10 +88,11 @@
                             <form method="POST" id="pay-form[{{$i}}]" action="{{route('pay_single_t')}}">
                                 @csrf 
                                 <input type="hidden" name="customerNum" value="{{$res->data->customer->phone}}">
+                                <input type="hidden" name="customerId" value="{{$res->data->customer->id}}">
                                 <input type="hidden" name="i_name" value="{{$res->data->item->name}}">
                                 <input type="hidden" name="amount" value="{{$t->amount}}">
                             </form>
-							<a  onclick="
+							              <a  onclick="
                            	 if(confirm('Are you sure You want to Pay only for - ({{ $res->data->item->name }}) ? ')){
                            	     document.getElementById('pay-form[{{$i}}]').submit();
                            	 }
@@ -154,6 +155,7 @@
                                       @csrf 
                                       <input type="hidden" name="c_number" value="{{$customer->phone}}">
                                       <input type="hidden" name="c_name" value="{{$customer->name}}">
+                                       <input type="hidden" name="c_customerId" value="{{$res->data->customer->id}}">
                                       <input type="hidden" name="t_amount" value="{{$t_amount}}">
                                   </form>
                                 	<a  onclick="

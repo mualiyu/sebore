@@ -17,6 +17,44 @@
         showUploadImage(src,target);
       }
 </script>
+ <script type="text/javascript">
+$(document).ready(function () {
+             
+        $('#submit_g').on('click',function() {
+            var query = $('#gateway_form').serialize(); 
+            // console.log(query);
+            $.ajax({
+               
+                url:"{{ route('add_update_gateway_details') }}",
+          
+                type:"GET",
+               
+                data:query,
+               
+                success:function (data) {
+                  
+                      if (data['error']) {
+                          $('#error_p').css('display', 'block');
+                          $('#error_c').html(data['error']);
+                      }else{
+                          $('input[name="otp_gateway"]').val(data['info']['gateway']);
+                          $('input[name="otp_client_id"]').val(data['info']['client_id']);
+                        //   $('input[name="otp_name"]').val(data['info']['name']);
+                          $('input[name="otp_eyowo_c_id"]').val(data['val_info']['id']);
+                          $('input[name="otp_eyowo_c_mobile"]').val(data['val_info']['mobile']);
+
+                          $('#success_p').css('display', 'block');
+                          $('#success_c').html(data['success']);
+                          $('#modal_otp').css('display', 'block');
+                      }
+		    // console.log(data['info']['name']);
+                }
+            })
+            // end of ajax call
+        });
+
+});
+</script>
 @endsection
 
 @section('content')
@@ -44,12 +82,15 @@
 </div>
 <!-- Page-header end -->
 
-
 <div class="pcoded-inner-content">
     <div class="main-body">
         <div class="page-wrapper">
             <div class="page-body">
 		     @include('layouts.flash')
+             <div class="alert alert-danger alert-block" id="error_p" style="display: none;"> 
+                <button type="button" class="close" onclick="document.getElementById('error_p').style.display = 'none';">×</button>
+                <strong id="error_c"></strong>
+            </div>
 
 		     <?php $oragnization = App\Models\Organization::find(Auth::user()->organization_id); ?>
 		<div class="row">
@@ -63,20 +104,20 @@
 					}
 					?>
                          	   <div class="card-body text-center shadow"><img id="addimage" class="rounded-circle mb-5 mt-6" src="{{asset('storage/pic/'.$pic)}}" width="160" height="160">
-					<form action="{{route('update_org_pic', ['id'=>$organization->id])}}" method="POST" enctype="multipart/form-data">
-						<div class="row">
-							@csrf
-							<div class="col-md-8">
-								{{-- <input type="file" class="form-control" name="file"> --}}
-								 <input class="form-control" type="file" id="addIsrc" onclick="imageQ('addIsrc','addimage');" name="image" value="default_category.png">
-							</div>
-							<div class="col-md-4">
-								<button style="width: 100%;" class="btn btn-primary btn-sm" type="submit">Change Logo</button>
-							</div>
-						</div>
-					</form>
+					                <form action="{{route('update_org_pic', ['id'=>$organization->id])}}" method="POST" enctype="multipart/form-data">
+					                	<div class="row">
+					                		@csrf
+					                		<div class="col-md-8">
+					                			{{-- <input type="file" class="form-control" name="file"> --}}
+					                			 <input class="form-control" type="file" id="addIsrc" onclick="imageQ('addIsrc','addimage');" name="image" value="default_category.png">
+					                		</div>
+					                		<div class="col-md-4">
+					                			<button style="width: 100%;" class="btn btn-primary btn-sm" type="submit">Change Logo</button>
+					                		</div>
+					                	</div>
+					                </form>
                          	   </div>
-                        	</div>
+                </div>
 			</div>
 			<div class="col-md-8">
 				<div class="row">
@@ -86,7 +127,7 @@
                                     </div>
                                     <div class="card-body">
                                         <form  method="POST" action="{{route('update_user')}}">
-						@csrf
+						                    @csrf
                                             <div class="form-row">
                                                 <div class="col">
                                                     <div class="form-group"><label for="username"><strong>Name</strong></label><input class="form-control" type="text" placeholder="Name" value="{{Auth::user()->name}}" name="name"></div>
@@ -115,37 +156,127 @@
                                         </form>
                                     </div>
                                 </div>
-				</div>
-				<div class="row">
+				</div>  
+			</div>
+		</div>
+        <div class="row">
+            <div class="col-md-4">
 				<div class="card shadow" style="width: 100%;">
                                     <div class="card-header">
-                                        <p class="text-primary m-0 font-weight-bold">Organization Settings</p>
+                                        <p class="text-primary m-0 font-weight-bold">Payment Gateway Settings</p>
                                     </div>
                                     <div class="card-body">
-                                        <form method="POST" action="{{route('update_organization', ['id'=>$oragnization->id])}}">
-						@csrf
-                                            <div class="form-group"><label for="address"><strong>Name</strong></label><input class="form-control" value="{{$oragnization->name}}" type="text" placeholder="john" name="name"></div>
-
-					    <div class="form-group"><label for="city"><strong>Description</strong></label><textarea class="form-control" value="{{$oragnization->description}}" name="description">{{$oragnization->description}}</textarea></div>
-					    
-					    <div class="form-row">
-                                                <div class="col">
-                                                    <div class="form-group"><label for="city"><strong>Phone</strong></label><input class="form-control" type="number" value="{{$oragnization->phone}}" placeholder="Phone" name="phone"></div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="form-group"><label for="country"><strong>Address</strong></label><input class="form-control" type="text" value="{{$oragnization->address}}" placeholder="Sunset Blvd, 38" name="address"></div>
-                                                </div>
+                                        @foreach ($p_gateway as $p_g)
+                                        <?php $mobile_money = \App\Models\MobileMoney::find($p_g->gateway_code); ?>
+                                        @endforeach
+                                        <?php $mobile_moneys = \App\Models\MobileMoney::all(); ?>
+                                        <form method="POST" id="gateway_form" action="{{route('add_update_gateway_details')}}">
+                                             
+						                    @csrf
+                                            <div class="form-group"><label for="gateway"><strong>Select Gateway</strong></label>
+                                                <select class="form-control" <?php foreach ($p_gateway as $p_g) {if($p_g->id > 0){ echo'disabled';}} ?> name="gateway" id="gateway">
+                                                    @foreach ($p_gateway as $p_g)
+                                                    <option value="{{$mobile_money->id}}">{{$mobile_money->name}}</option>
+                                                    @endforeach
+                                                    {{-- @if ($p_gateway[0]->id > 0)
+                                                    @endif --}}
+                                                    @foreach ($mobile_moneys as $m)
+                                                        <option value="{{$m->id}}">{{$m->name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                            <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
+                                            @foreach ($p_gateway as $p_g)
+                                                <div class="form-group"><label for="name"><strong>Token</strong></label>
+                                                    <input class="form-control disabled" value="{{$p_g->token}}" disabled type="text" name="token">
+                                                </div>
+                                            @endforeach
+
+					                        <div class="form-group">
+                                                <label for="city"><strong>Wallet Id <small>(Eg. phone)</small></strong></label>
+                                                <input class="form-control" value="{{$p_gateway[0]->client_id ?? ''}}" name="client_id">
+                                            </div>
+                                            @foreach ($p_gateway as $p_g)
+                                            <div class="form-group"><button class="btn btn-primary btn-sm" type="button" id="submit_e_g" >Edit&nbsp;Gateway</button></div>
+                                            @endforeach
+
+                                            <div class="form-group"><button <?php foreach ($p_gateway as $p_g) {if($p_g->id > 0){ echo'style="display:none;"';}} ?> class="btn btn-primary btn-sm" type="button" id="submit_g" >Save&nbsp;Gateway</button></div>
+                                            
                                         </form>
                                     </div>
                                 </div>
-				</div>
-			</div>
-		</div>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="card shadow" style="width: 100%;">
+                                <div class="card-header">
+                                    <p class="text-primary m-0 font-weight-bold">Organization Settings</p>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST" action="{{route('update_organization', ['id'=>$oragnization->id])}}">
+                                        @csrf
+                                        <div class="form-group"><label for="address"><strong>Name</strong></label><input class="form-control" value="{{$oragnization->name}}" type="text" placeholder="john" name="name"></div>
+
+                                        <div class="form-group"><label for="city"><strong>Description</strong></label><textarea class="form-control" value="{{$oragnization->description}}" name="description">{{$oragnization->description}}</textarea></div>
+                    
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label for="city"><strong>Phone</strong></label><input class="form-control" type="number" value="{{$oragnization->phone}}" placeholder="Phone" name="phone"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group"><label for="country"><strong>Address</strong></label><input class="form-control" type="text" value="{{$oragnization->address}}" placeholder="Sunset Blvd, 38" name="address"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
+                                    </form>
+                                </div>
+                            </div>
+            </div>
+            </div>
+        </div>
 
             </div>
         </div>
     </div>
+
+    {{-- modal for OTP --}}
+    <div class="modal lx" style="display: none;" id="modal_otp" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Verify OTP</h5>
+            <button type="button" class="close" onclick="document.getElementById('modal_otp').style.display = 'none';" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-success alert-block" id="success_p" style="display: none;"> 
+                <button type="button" class="close" onclick="document.getElementById('error_p').style.display = 'none';">×</button>
+                <strong id="success_c"></strong>
+            </div>
+            <form action="{{route('verify_otp_eyowo')}}" method="POST">
+                @csrf
+                <input type="hidden" name="otp_gateway" value="">
+				<input type="hidden" name="otp_client_id" value="">
+				<input type="hidden" name="otp_eyowo_c_id" value="">
+				<input type="hidden" name="otp_eyowo_c_mobile" value="">
+
+                <div class="form-group">
+                    <label class="mb-1" for="amount">Enter OTP</label>
+                    <input name="otp_code" required class="form-control py-4" id="otp_code" type="number" step="any" aria-describedby="nameHelp" placeholder="Enter OTP" />
+                </div>
+                <div class="form-group">
+                    <input name="submit" class="btn btn-primary" id="submit" type="submit" aria-describedby="nameHelp" value="Confirm OTP" />
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
 </div>
 @endsection
+

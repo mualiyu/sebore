@@ -83,3 +83,10 @@ Route::get('/customer_name_search_p', [App\Http\Controllers\PaymentController::c
 //api test route 
 Route::get('/test/api', [App\Http\Controllers\testController::class, 'index'])->name('index');
 Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
+
+
+
+//gateway details
+Route::get('/profile/gateway/opt/eyowo', [App\Http\Controllers\PaymentGatewayController::class, 'add_update_gateway_details'])->name('add_update_gateway_details');
+// Route::get('/gateway/otp/{info}/{val_info}/eyowo', [App\Http\Controllers\PaymentGatewayController::class, 'show_otp_eyowo'])->name('show_otp_eyowo');
+Route::post('/otp_e', [App\Http\Controllers\PaymentGatewayController::class, 'verify_otp_eyowo'])->name('verify_otp_eyowo');

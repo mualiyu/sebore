@@ -15,9 +15,9 @@ return [
 
     'name' => 'Ajisaq Ticketing System - ATS',
 
-    'apiUser' => '6c00b253-0b01-4630-b7a0-187438021083',
+    'apiUser' => env('ATS_API_USER'),
 
-    'apiKey' => '6c00b253-0b01-4630-b7a0-187438021083',
+    'apiKey' => env('ATS_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------
@@ -126,6 +126,9 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+
+    'eyowo_app_key' => env('EYOWO_APP_KEY'),
+
 
     /*
     |--------------------------------------------------------------------------
