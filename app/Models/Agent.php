@@ -31,6 +31,11 @@ class Agent extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(AgentRole::class, 'agent_role_id');
+    }
+
     //hasmany agents
     public function customers(): HasMany
     {

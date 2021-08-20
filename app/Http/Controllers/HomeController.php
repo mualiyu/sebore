@@ -74,7 +74,7 @@ class HomeController extends Controller
             'email' => $request['email'],
             'phone' => $request['phone'],
             'password' => Hash::make($request['password']),
-            'role' => $request['role'],
+            'admin_role_id' => $request['role'],
         ]);
 
         User::where('id', '=', $user->id)->update([
@@ -100,7 +100,7 @@ class HomeController extends Controller
             'name' => $request['name'],
             'email' => $request['email'],
             'phone' => $request['phone'],
-            'role' => $request['role'],
+            'admin_role_id' => $request['role'],
         ]);
 
         return redirect()->route('profile')->with(['success' => 'Profile is Updated']);
@@ -204,7 +204,7 @@ class HomeController extends Controller
             'name' => $request['name'],
             'email' => $request['email'],
             'phone' => $request['phone'],
-            'role' => $request['role'],
+            'admin_role_role' => $request['role'],
         ]);
 
         if ($user) {

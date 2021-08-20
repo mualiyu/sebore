@@ -91,10 +91,13 @@
                                         <div class="form-group"><label for="last_name"><strong>Role</strong></label>
                 {{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
                 <select name="role" id="" class="form-control">
-                    <option value="{{$user->role ?? ''}}">{{$user->role ?? ''}}</option>
-                    <option value="admin">Admin</option>
-                    <option value="suppervisor">Suppervisor</option>
-                    <option value="user">User</option>
+                    <option value="{{$user->role->id ?? ''}}">{{$user->role->name ?? ''}}</option>
+                    <?php $roles = \App\Models\AdminRole::all(); ?>
+                    @foreach ($roles as $r)
+                    <option value="{{$r->id}}">{{$r->name}}</option>
+                    @endforeach
+                    {{-- <option value="suppervisor">Suppervisor</option>
+                    <option value="user">User</option> --}}
                 </select>
             </div>
                                     </div>
@@ -123,7 +126,7 @@
                                 {{$user->name}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Email</h6>
@@ -132,7 +135,7 @@
                                 {{$user->email}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Phone</h6>
@@ -141,16 +144,16 @@
                                 {{$user->phone ?? 'Null'}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Role</h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                {{$user->role}}
+                                {{$user->role->name}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                           </div>
                         </div>
                 </div>

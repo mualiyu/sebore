@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminRole;
 use App\Models\Organization;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
@@ -113,12 +114,14 @@ class RegisterController extends Controller
             'uuid' => $res->data->id,
         ]);
 
+        $role = AdminRole::where('name', 'admin')->get();
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
-            'role' => 'admin',
+            'admin_role_id' => $role[0]->id,
         ]);
 
         User::where('id', '=', $user->id)->update([

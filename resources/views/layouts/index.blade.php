@@ -321,6 +321,47 @@ if ($organization[0]->logo) {
 <script type="text/javascript" src="{{asset('assets/js/script.js')}}"></script>
 @yield('script')
 
+<script>
+$(document).ready(function() {
+        
+    var html_code = '';
+    var html_code_lga = '';
+
+    $.getJSON('/assets/json/NigeriaState.json', function(data){
+
+   html_code += '<option value="">Select</option>';
+
+   html_code_lga += '<option value="">Select</option>'; 
+
+   $.each(data, function(key, value){
+       
+    html_code += '<option value="'+key+'" id= "'+value.id+'">'+value.name+'</option>';  
+    
+    $('#state-select').on('change', function() {
+        var id = this.value;
+          if (key == id) {   
+              $.each(value.locals, function(k, v) { 
+                  html_code_lga += '<option value="'+v.name+'" id= "'+v.id+'">'+v.name+'</option>';
+                });
+                $('#lga-select').html(html_code_lga);
+
+                html_code_lga = "";
+          }
+    });
+
+    });
+    
+
+    $('#state-select').html(html_code);
+
+    
+//    console.log(data);
+
+  });
+
+})
+</script>
+
 </body>
 
 </html>

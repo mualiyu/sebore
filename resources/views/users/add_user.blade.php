@@ -88,10 +88,14 @@
 
                                       <div class="form-group form-default">
                                           <select type="text" name="role" class="form-control" value="{{old('role')}}" required="" maxlength="6">
-						  <option value="admin">Admin</option>
-						  <option value="supervisor">Suppervisor</option>
-						  <option value="user">User</option>
-					  </select>
+                                            <?php $roles = \App\Models\AdminRole::all(); ?>
+                                            @foreach ($roles as $r)
+                                            <option value="{{$r->id}}">{{$r->name}}</option>
+                                            @endforeach
+                                            {{-- <option value="admin">Admin</option>
+                                            <option value="supervisor">Suppervisor</option>
+                                            <option value="user">User</option> --}}
+                                        </select>
                                           <span class="form-bar"></span>
                                           <label class="float-label">Role</label>
                                           @error('role')

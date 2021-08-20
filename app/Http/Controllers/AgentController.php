@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\AgentRole;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,7 +64,7 @@ class AgentController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         // dd($org->uuid);
-
+        $role = AgentRole::find($request['role']);
         //Api
         $hash = hash(
             'sha512',
@@ -72,7 +73,7 @@ class AgentController extends Controller
                 $request['email'] .
                 $request['password'] .
                 $request['phone'] .
-                $request['role']
+                $role->name
         );
         $url = 'https://api.ajisaqsolutions.com/api/agent/add?apiUser=' .
             config('app.apiUser') . '&apiKey=' .
@@ -83,7 +84,7 @@ class AgentController extends Controller
             $request['email'] . '&password=' .
             $request['password'] . '&phone=' .
             $request['phone'] . '&type=' .
-            $request['role'];
+            $role->name;
 
 
         $response = Http::post($url);
@@ -100,7 +101,7 @@ class AgentController extends Controller
             'email' => $request['email'],
             'phone' => $request['phone'],
             'password' => Hash::make($request['password']),
-            'role' => $request['role'],
+            'agent_role_id' => $request['role'],
             'username' => $request['username'],
             'gps' => $request['gps'],
             'state' => $request['state'],
@@ -143,7 +144,7 @@ class AgentController extends Controller
             'name' => $request['name'],
             'email' => $request['email'],
             'phone' => $request['phone'],
-            'role' => $request['role'],
+            'agent_role_id' => $request['role'],
             'username' => $request['username'],
             'gps' => $request['gps'],
             'state' => $request['state'],
@@ -152,9 +153,6 @@ class AgentController extends Controller
             'lga' => $request['lga'],
         ]);
 
-        // Agent::where('id', '=', $agent->id)->update([
-        //     'user_id' => Auth::user()->id,
-        // ]);
 
         return redirect()->route('show_single_agent', ['id' => $id])->with(['success' => $request['name'] . ' is Updated']);
 

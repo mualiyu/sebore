@@ -66,7 +66,7 @@
 						<td>{{$a->name}}</td>
 						<td>{{$a->email}}</td>
 						<td>{{$a->phone}}</td>
-						<td>{{$a->role}}</td>
+						<td>{{$a->role->name}}</td>
 						<td>
 						  <a href="{{route('show_single_agent', ['id'=>$a->id])}}" class="btn btn-success">Open</a>
 						  <a href="{{url('/agent/'.$a->id.'/customers')}}" class="btn btn-primary">View Customers</a>

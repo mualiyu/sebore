@@ -95,11 +95,15 @@
                                                     <div class="form-group"><label for="last_name"><strong>Role</strong></label>
 							{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
 							<select name="role" id="" class="form-control">
-								<option value="{{$agent->role ?? ''}}">{{$agent->role ?? ''}}</option>
-								<option value="agent">Agent</option>
+								<option value="{{$agent->role->name ?? ''}}">{{$agent->role->name ?? ''}}</option>
+                <?php $roles = \App\Models\AgentRole::all(); ?>
+                    @foreach ($roles as $r)
+                    <option value="{{$r->id}}">{{$r->name}}</option>
+                    @endforeach
+								{{-- <option value="agent">Agent</option>
 							    <option value="mareter">Marketer</option>
 							    <option value="transporter">Transpoter</option>
-							    <option value="aggregator">Aggregator</option>
+							    <option value="aggregator">Aggregator</option> --}}
 							</select>
 						</div>
                                                 </div>
@@ -129,7 +133,7 @@
                                 {{$agent->name}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Email</h6>
@@ -138,7 +142,7 @@
                                 {{$agent->email}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Username</h6>
@@ -147,7 +151,7 @@
                                 {{$agent->username}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Address</h6>
@@ -156,7 +160,7 @@
                                 {{$agent->address}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Local Goverment Area</h6>
@@ -165,7 +169,7 @@
                                 {{$agent->lga}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">State</h6>
@@ -174,7 +178,7 @@
                                 {{$agent->state}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Country</h6>
@@ -183,16 +187,16 @@
                                 {{$agent->country}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Role</h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                {{$agent->role}}
+                                {{$agent->role->name}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
 
                           </div>
                         </div>

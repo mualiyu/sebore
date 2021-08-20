@@ -36,13 +36,22 @@ class PaymentController extends Controller
 
         if ($request->ajax()) {
 
-            $data = Customer::where('org_id', '=', Auth::user()->organization->id)
-                ->Where('name', 'LIKE', $request->customer . '%')
-                ->orWhere('phone', 'LIKE', $request->customer . '%')
-                ->orWhere('email', 'LIKE', $request->customer . '%')
-                ->get();
+            $search = $request->customer;
 
-            // $data = Customer::search($request->customer)->get();
+            $customers = Customer::where('org_id', Auth::user()->organization_id);
+
+            if (is_string($search) && strlen($search) > 0) {
+                // Search in users project
+                $customers = $customers->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('phone', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%')
+                        ->orWhere('address', 'LIKE', '%' . $search . '%');
+                });
+            }
+
+            $data = $customers->get();
+
 
             $output = '';
 

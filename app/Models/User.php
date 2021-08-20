@@ -52,6 +52,12 @@ class User extends Authenticatable
         return $this->belongsTo(Organization::class);
     }
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(AdminRole::class, 'admin_role_id');
+    }
+
+
     //hasmany agents
     public function agents(): HasMany
     {

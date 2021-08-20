@@ -144,10 +144,14 @@ $(document).ready(function () {
                                                     <div class="form-group"><label for="last_name"><strong>Role</strong></label>
 							{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
 							<select name="role" id="" class="form-control">
-								<option value="{{Auth::user()->role ?? ''}}">{{Auth::user()->role ?? ''}}</option>
-								<option value="admin">Admin</option>
+								<option value="{{Auth::user()->role->name ?? ''}}">{{Auth::user()->role->name ?? ''}}</option>
+                                <?php $roles = \App\Models\AdminRole::all(); ?>
+                                @foreach ($roles as $r)
+                                <option value="{{$r->id}}">{{$r->name}}</option>
+                                @endforeach
+								{{-- <option value="admin">Admin</option>
 								<option value="suppervisor">Suppervisor</option>
-								<option value="user">User</option>
+								<option value="user">User</option> --}}
 							</select>
 						</div>
                                                 </div>

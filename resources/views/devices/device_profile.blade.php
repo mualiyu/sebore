@@ -92,7 +92,7 @@
                                 {{$device->name}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Location</h6>
@@ -101,7 +101,7 @@
                                 {{$device->location}}
                               </div>
                             </div>
-                            <hr>
+                            {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Type</h6>

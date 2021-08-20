@@ -67,7 +67,7 @@
 						<td>{{$u->name}}</td>
 						<td>{{$u->email}}</td>
 						<td>{{$u->phone}}</td>
-						<td>{{$u->role}}</td>
+						<td>{{$u->role->name}}</td>
                         <td>
                             {{-- <a href="" class="btn btn-warning">Delete</a>
                             <a href="" class="btn btn-primary">Edit</a> --}}
