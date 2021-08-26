@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
 class testController extends Controller
 {
@@ -149,16 +151,57 @@ class testController extends Controller
         //     'amount' => '100',
         // ]);
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json ',
-            'X-App-Key' => 'pk_live_e0dbe1bec398b4681df1f89c1b8e3176',
-            'X-App-Wallet-Access-Token' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTk4ZTcwOTg5YzY2MjJlNjMwZjhmOCIsIm1vYmlsZSI6IjIzNDgxNjcyMzY2MjkiLCJpYXQiOjE2MjkwNjUxOTAsImV4cCI6MTYyOTE1MTU5MH0.XxjRLNveKR4zF42hoeqz4RWIKBNFh6KD9QiIF1CYyB8',
-        ])->post('https://api.console.eyowo.com/v1/users/transfers/phone', [
-            'mobile' => '2348127455859',
-            'amount' => '100',
-        ]);
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json ',
+        //     'X-App-Key' => 'pk_live_e0dbe1bec398b4681df1f89c1b8e3176',
+        //     'X-App-Wallet-Access-Token' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTk4ZTcwOTg5YzY2MjJlNjMwZjhmOCIsIm1vYmlsZSI6IjIzNDgxNjcyMzY2MjkiLCJpYXQiOjE2MjkwNjUxOTAsImV4cCI6MTYyOTE1MTU5MH0.XxjRLNveKR4zF42hoeqz4RWIKBNFh6KD9QiIF1CYyB8',
+        // ])->post('https://api.console.eyowo.com/v1/users/transfers/phone', [
+        //     'mobile' => '2348127455859',
+        //     'amount' => '100',
+        // ]);
+        // $res = json_decode($response);
+        // dd($res);
+
+        // $id = '2011';
+        // $apiUsername = 'muktar';
+        // $role = 'USER';
+        // $userKey = '20111755';
+        // $hash = hash('sha512', $userKey . $apiUsername . $role);
+
+        // $url = 'https://api.ajisaqsolutions.com/api/apiUser/add?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash . '&id=' .
+        //     $id . '&apiUsername=' .
+        //     $apiUsername . '&role=' .
+        //     $role . '&userKey=' . $userKey;
+
+        // $response = Http::post($url);
+
+        // $res = json_decode($response);
+
+        // return $response;
+
+
+        $id = '7';
+        $name = "g name";
+        $description = 'g_description';
+        $logo = url('/storage/pic/default.jpg');
+        $phone = '09167843245';
+        $hash = hash('sha512', $name . $description . $logo . $phone);
+
+        $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=2&apiKey=1234' . '&hash=' .
+            $hash . '&id=' .
+            $id . '&name=' .
+            $name . '&description=' .
+            $description . '&logoUrl=' .
+            $logo . '&phone=' . $phone;
+
+        $response = Http::post($url);
+
         $res = json_decode($response);
-        dd($res);
+
+        return  $response;
     }
 
     public function insert()

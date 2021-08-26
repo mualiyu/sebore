@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Device's</h5>
+                    <h5 class="m-b-10">Devices</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -31,7 +31,7 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-		<a href="{{route('show_add_device')}}" style="right:0;" class="btn btn-secondary">Add New Devices</a>
+		<a href="{{route('show_add_device')}}" style="right:0;" class="btn btn-primary">Add New Devices</a>
                     <div class="card">
                         <div class="card-header">
                             <h5>Devices</h5>

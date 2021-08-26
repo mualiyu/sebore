@@ -108,15 +108,17 @@ class PaymentController extends Controller
 
         $hash = hash(
             'sha512',
-            $customer->uuid .
+            $customer->id .
                 $from .
                 $to
         );
 
+        // return $hash . '  -----------  ' . $from . " " . $to . $customer->id;
+
         $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
             '&apiKey=' . config('app.apiKey') .
             '&hash=' . $hash .
-            '&customerId=' . $customer->uuid .
+            '&customerId=' . $customer->id .
             '&from=' . $from .
             '&to=' . $to;
         // dd($url);
@@ -136,7 +138,7 @@ class PaymentController extends Controller
                     return back()->with('error', 'No Transaction for this Customer.');
                 }
             } else {
-                return back()->with('error', 'Service Error, Try again');
+                return back()->with('error', 'Service Error, Try again later!');
             }
         }
         return back();

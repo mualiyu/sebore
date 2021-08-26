@@ -72,6 +72,26 @@ class ItemController extends Controller
         $category = Category::find($request['category']);
         // dd($device->uuid);
 
+
+
+        $item = Item::create([
+            'name' => $request['name'],
+            'measure' => $request['measure'] * 100,
+            'unit' => $request['unit'],
+            'code' => $request['code'],
+            'with_q' => $request['with_q'],
+            'with_p' => $request['with_p'],
+        ]);
+
+        Item::where('id', '=', $item->id)->update([
+            'category_id' => $request['category'],
+            'device_id' => $request['device'],
+            // 'uuid' => $res->data->id,
+            'org_id' => Auth::user()->organization_id,
+        ]);
+
+
+
         //Api
         $with_q = $request['with_q'] ? 'true' : 'false';
         $with_p = $request['with_p'] ? 'true' : 'false';
@@ -79,7 +99,7 @@ class ItemController extends Controller
         $hash = hash(
             'sha512',
             $request['code'] .
-                $device->uuid .
+                $device->id .
                 $category->name .
                 $request['name'] .
                 $request['measure'] .
@@ -93,8 +113,9 @@ class ItemController extends Controller
             config('app.apiUser') . '&apiKey=' .
             config('app.apiKey') . '&hash=' .
             $hash .  '&code=' .
-            $request['code'] . '&deviceId=' .
-            $device->uuid . '&category=' .
+            $request['code'] . '&id=' .
+            $item->id . '&deviceId=' .
+            $device->id . '&category=' .
             $category->name . '&name=' .
             $request['name'] . '&measure=' .
             $request['measure'] . '&unit=' .
@@ -106,30 +127,15 @@ class ItemController extends Controller
         $response = Http::post($url);
         $res = json_decode($response);
 
+        // return $response;
+
         if ($res->status != "Ok") {
+            $item->delete();
             return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
         }
         //End api
 
-
-        $item = Item::create([
-            'name' => $request['name'],
-            'measure' => $request['measure'] * 100,
-            'unit' => $request['unit'],
-            'code' => $request['code'],
-            'with_q' => $request['with_q'],
-            'with_p' => $request['with_p'],
-        ]);
-
-
-        Item::where('id', '=', $item->id)->update([
-            'category_id' => $request['category'],
-            'device_id' => $request['device'],
-            'uuid' => $res->data->id,
-            'org_id' => Auth::user()->organization_id,
-        ]);
-
-        return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is Created to system']);
+        return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is added to system as Item']);
 
         // dd($request->all());
     }

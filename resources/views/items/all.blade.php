@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Items's</h5>
+                    <h5 class="m-b-10">Items</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -88,7 +88,7 @@
                                     }
                                         event.preventDefault();"
                                     class="btn btn-warning" 
-                                    style="color: black">
+                                    style="color: black; background:red;">
                                     Delete
                                 </a>
                             </form>

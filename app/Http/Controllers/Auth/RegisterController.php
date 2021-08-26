@@ -77,30 +77,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        $name = $data['g_name'];
-        $description = $data['g_description'];
-        $logo = url('/storage/pic/default.jpg');
-        $phone = $data['g_phone'];
-        $hash = hash('sha512', $name . $description . $logo . $phone);
-
-        $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash . '&name=' .
-            $name . '&description=' .
-            $description . '&logoUrl=' .
-            $logo . '&phone=' . $phone;
-
-        $response = Http::post($url);
-
-        $res = json_decode($response);
-
-        // dd($res->status);
-
-        if ($res->status != 'Ok') {
-            return [0];
-            // back()->with("error", "Sorry! Our system is having issues at this Time. but out Support Team are on it. ");
-        }
+        $role = AdminRole::where('name', 'admin')->get();
 
         $organization = Organization::create([
             // 'id' => $res->data->id,
@@ -110,25 +87,49 @@ class RegisterController extends Controller
             'phone' => $data['g_phone'],
         ]);
 
-        Organization::where('id', '=', $organization->id)->update([
-            'uuid' => $res->data->id,
-        ]);
-
-        $role = AdminRole::where('name', 'admin')->get();
-
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
-            'admin_role_id' => $role[0]->id,
         ]);
 
         User::where('id', '=', $user->id)->update([
             'organization_id' => $organization->id,
+            'admin_role_id' => $role[0]->id,
         ]);
 
-        // dd($user);
+
+        // Organization::where('id', '=', $organization->id)->update([
+        //     // 'uuid' => $res->data->id,
+        // ]);
+
+        $name = $data['g_name'];
+        $description = $data['g_description'];
+        $logo = url('/storage/pic/default.jpg');
+        $phone = $data['g_phone'];
+        $hash = hash('sha512', $name . $description . $logo . $phone);
+
+        $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash . '&id=' .
+            $user->id . '&name=' .
+            $name . '&description=' .
+            $description . '&logoUrl=' .
+            $logo . '&phone=' . $phone;
+
+        $response = Http::post($url);
+
+        $res = json_decode($response);
+
+        // dd($res);
+
+        if ($res->status != 'Ok') {
+            return [0];
+            // back()->with("error", "Sorry! Our system is having issues at this Time. but out Support Team are on it. ");
+        }
+
         return $user;
     }
 }

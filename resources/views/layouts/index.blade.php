@@ -105,7 +105,7 @@ if ($organization[0]->logo) {
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" style="background: rgba(90,30,30,0.7);">
+        <nav class="navbar header-navbar pcoded-header" style="background: rgb(90,30,30);">
             <div class="navbar-wrapper">
                 <div class="navbar-logo">
                     <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="#!">
@@ -191,7 +191,7 @@ if ($organization[0]->logo) {
                     <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
                     <div class="pcoded-inner-navbar main-menu">
                         <div class="">
-                            <div class="main-menu-header">
+                            {{-- <div class="main-menu-header">
                                 <img class="img-80 img-radius" src="{{asset('storage/pic/'.$pic)}}" alt="User-Profile-Image">
                                 <div class="user-details">
                                     <span id="more-details">{{Auth::user()->name}}<i class="fa fa-caret-down"></i></span>
@@ -212,7 +212,7 @@ if ($organization[0]->logo) {
                                         </form>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="pcoded-navigation-label" data-i18n="nav.category.navigation"></div>
@@ -262,7 +262,7 @@ if ($organization[0]->logo) {
                             <li class="">
                                 <a href="{{route('show_all_customers')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Customers's</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Customers</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
@@ -270,7 +270,7 @@ if ($organization[0]->logo) {
                             <li class="">
                                 <a href="{{route('show_all_items')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-layout-grid2-alt" aria-hidden="true"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Item's</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Items</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
@@ -281,7 +281,7 @@ if ($organization[0]->logo) {
                             <li class="">
                                 <a href="{{route('show_payment')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Pay Customers</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Payment</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Agent's</h5>
+                    <h5 class="m-b-10">Agents</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -31,7 +31,7 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-		<a href="{{route('show_add_agent')}}" style="right:0;" class="btn btn-secondary">Add New Agent</a>
+		<a href="{{route('show_add_agent')}}" style="right:0;" class="btn btn-primary">Add New Agent</a>
                     <div class="card">
                         <div class="card-header">
                             <h5>Agents</h5>

@@ -86,7 +86,7 @@
                                     }
                                         event.preventDefault();"
                                     class="btn btn-warning" 
-                                    style="color: black">
+                                    style="color: black; background:red;">
                                     Delete
                                 </a>
                             </form>

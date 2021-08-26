@@ -51,41 +51,6 @@ class DeviceController extends Controller
         }
         // dd($request->all());
 
-        //Api
-        $did = ' ';
-        $hash = hash(
-            'sha512',
-            $org->uuid .
-                $request['name'] .
-                $did .
-                $request['location'] .
-                $request['lga'] .
-                $request['state'] .
-                $request['community']
-        );
-
-        $url = 'https://api.ajisaqsolutions.com/api/device/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash .  '&organizationId=' .
-            $org->uuid . '&name=' .
-            $request['name'] .  '&deviceId=' .
-            $did . '&location=' .
-            $request['location'] . '&lga=' .
-            $request['lga'] . '&state=' .
-            $request['state'] . '&community=' .
-            $request['community'];
-
-
-        $response = Http::post($url);
-        $res = json_decode($response);
-
-        // dd($res);
-
-        if ($res->status != "Ok") {
-            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
-        }
-        //End api
 
 
         $device = Device::create([
@@ -97,15 +62,53 @@ class DeviceController extends Controller
         Device::where('id', '=', $device->id)->update([
             'user_id' => Auth::user()->id,
             'org_id' => Auth::user()->organization_id,
-            'uuid' => $res->data->id,
+            'device_id' => $device->id,
             'lga' => $request['lga'],
             'state' => $request['state'],
             'community' => $request['community'],
         ]);
 
-        return redirect('/devices')->with(['success' => $device->name . ' is Created to system']);
+        //Api
 
-        // dd($request->all());
+        $hash = hash(
+            'sha512',
+            $org->id .
+                $request['name'] .
+                $device->id .
+                $request['location'] .
+                $request['lga'] .
+                $request['state'] .
+                $request['community']
+        );
+
+        $url = 'https://api.ajisaqsolutions.com/api/device/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash .  '&id=' .
+            $device->id .  '&organizationId=' .
+            $org->id . '&name=' .
+            $request['name'] .  '&deviceId=' .
+            $device->id . '&location=' .
+            $request['location'] . '&lga=' .
+            $request['lga'] . '&state=' .
+            $request['state'] . '&community=' .
+            $request['community'];
+
+
+        $response = Http::post($url);
+        $res = json_decode($response);
+
+        // return $response;
+        // dd($res);
+
+        if ($res->status != "Ok") {
+            $device->delete();
+            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        }
+        //End api
+
+        return redirect('/devices')->with(['success' => $device->name . ' is Created to system']);
+        //
     }
 
 

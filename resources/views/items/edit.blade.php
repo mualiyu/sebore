@@ -39,7 +39,7 @@
             <div class="page-body">
 		    @include('layouts.flash')
 		    {{-- <a href="#" style="right:0;" class="btn btn-primary">Add New Category</a> --}}
-		    <a href="{{url('device/'.$device->id.'/items')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
+		    <a href="{{url('device/'.$device->id.'/items')}}" style="right:0;" class="btn btn-primary">Back</a>&nbsp;&nbsp;&nbsp;
 		    <button type="button" class="btn btn-primary" onclick="document.getElementById('modal').style.display = 'block';"><i class="">+</i> Add New Category</button>
         <br>
                 <div class="row">

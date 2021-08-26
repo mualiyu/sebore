@@ -143,7 +143,7 @@
 					</div>
                     <div class="col-sm-2">
 						<div class="form-group form-default">
-						  <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal').style.display = 'block';"><i class="">+</i> Add New Category</button>
+						  <button type="button" class="btn btn-primary" onclick="document.getElementById('modal').style.display = 'block';"><i class="">+</i> Add New Category</button>
 						</div>
 					</div>
 

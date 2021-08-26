@@ -11304,7 +11304,7 @@ table tbody .border-bottom-info td {
 }
 
 body[themebg-pattern="theme1"] {
-    background-color: rgba(90, 30, 30, 0.7);
+    background-color: rgb(90, 30, 30);
 }
 body[themebg-pattern="theme2"] {
     background-color: #b71c1c;
@@ -13110,7 +13110,7 @@ body[themebg-pattern="theme6"] {
     position: static;
 }
 .pcoded .pcoded-header[header-theme="theme1"] {
-    background: rgba(90, 30, 30, 0.7);
+    background: rgb(90, 30, 30);
 }
 .pcoded .pcoded-header[header-theme="theme1"] .input-group-addon,
 .pcoded .pcoded-header[header-theme="theme1"] a {
@@ -13153,7 +13153,7 @@ body[themebg-pattern="theme6"] {
 }
 .pcoded[fream-type="theme1"] .page-header:before,
 .pcoded[fream-type="theme1"] .main-menu .main-menu-header:before {
-    background: rgba(90, 30, 30, 0.7);
+    background: rgba(109, 41, 41, 0.7);
 }
 .pcoded[fream-type="theme2"] .page-header:before,
 .pcoded[fream-type="theme2"] .main-menu .main-menu-header:before {

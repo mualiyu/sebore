@@ -59,7 +59,7 @@ class HomeController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'string']
@@ -74,11 +74,11 @@ class HomeController extends Controller
             'email' => $request['email'],
             'phone' => $request['phone'],
             'password' => Hash::make($request['password']),
-            'admin_role_id' => $request['role'],
         ]);
 
         User::where('id', '=', $user->id)->update([
             'organization_id' => Auth::user()->organization_id,
+            'admin_role_id' => $request['role'],
         ]);
 
         return redirect('/users')->with(['success' => 'New User is Created']);

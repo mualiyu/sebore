@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">{{$agent->name}} Customers's</h5>
+                    <h5 class="m-b-10">{{$agent->name}} Customers</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -31,7 +31,7 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-                <a href="{{route('show_agents')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
+                <a href="{{route('show_agents')}}" style="right:0;" class="btn btn-primary">Back</a>&nbsp;&nbsp;&nbsp;
 		<a href="{{route('show_add_customer', ['id'=> $agent->id])}}" style="right:0;" class="btn btn-primary">Add New Customer</a>
         <br>
                     <div class="card">
@@ -83,7 +83,7 @@
                                     }
                                         event.preventDefault();"
                                     class="btn btn-warning" 
-                                    style="color: black">
+                                    style="color: black; background:red;">
                                     Delete
                                 </a>
                             </form>

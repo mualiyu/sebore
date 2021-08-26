@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">User's</h5>
+                    <h5 class="m-b-10">Users</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -32,7 +32,7 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-		<a href="{{route('show_add_user')}}" style="right:0;" class="btn btn-secondary"> Register user</a>
+		<a href="{{route('show_add_user')}}" style="right:0;" class="btn btn-primary"> Register user</a>
                     <div class="card">
                         <div class="card-header">
                             <h5>Users</h5>
@@ -75,12 +75,13 @@
                                 <a href="{{route('show_single_user', ['id'=>$u->id])}}" class="btn btn-primary">Open</a>
                                 @csrf 
                                 <a  onclick="
-                                    if(confirm('Are you sure You want to Delete this Customer -( {{$u->name}} )? ')){
-                                        document.getElementById('delete-form').submit();
-                                    }
-                                        event.preventDefault();"
-                                    class="btn btn-warning" 
-                                    style="color: black">
+                                        if(confirm('Are you sure You want to Delete this Customer -( {{$u->name}} )? ')){
+                                            document.getElementById('delete-form').submit();
+                                        }
+                                        event.preventDefault();
+                                    "
+                                    class="btn btn-delete"
+                                    style="color: black; background:red;">
                                     Delete
                                 </a>
                             </form>

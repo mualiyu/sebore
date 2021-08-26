@@ -55,7 +55,7 @@ class CustomerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255', 'unique:customers'],
             'address' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'lga' => ['required', 'string', 'max:255'],
@@ -70,33 +70,6 @@ class CustomerController extends Controller
         // dd($request->all());
         $agent = Agent::find($request['agent']);
 
-        //Api
-        $hash = hash(
-            'sha512',
-            $request['name'] .
-                $agent->uuid .
-                $request['phone'] .
-                $request['phone']
-        );
-
-        $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash .  '&name=' .
-            $request['name'] . '&agentId=' .
-            $agent->uuid . '&phone=' .
-            $request['phone'] . '&code=' .
-            $request['phone'];
-
-
-        $response = Http::post($url);
-        $res = json_decode($response);
-
-        if ($res->status != "Ok") {
-            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
-        }
-        //End api
-
         $customer = Customer::create([
             'name' => $request['name'],
             'email' => $request['email'],
@@ -108,12 +81,41 @@ class CustomerController extends Controller
             'lga' => $request['lga'],
         ]);
 
-
         Customer::where('id', '=', $customer->id)->update([
             'agent_id' => $request['agent'],
             'org_id' => Auth::user()->organization_id,
-            'uuid' => $res->data->id,
+            // 'uuid' => $res->data->id,
         ]);
+
+
+        //Api
+        $hash = hash(
+            'sha512',
+            $request['name'] .
+                $agent->id .
+                $request['phone'] .
+                $request['phone']
+        );
+
+        $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash .  '&id=' .
+            $customer->id .  '&name=' .
+            $request['name'] . '&agentId=' .
+            $agent->id . '&phone=' .
+            $request['phone'] . '&code=' .
+            $request['phone'];
+
+
+        $response = Http::post($url);
+        $res = json_decode($response);
+
+        if ($res->status != "Ok") {
+            $customer->delete();
+            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        }
+        //End api
 
         return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is Created to system']);
 
