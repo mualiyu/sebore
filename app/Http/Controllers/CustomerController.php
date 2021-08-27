@@ -92,7 +92,7 @@ class CustomerController extends Controller
         $hash = hash(
             'sha512',
             $request['name'] .
-                $agent->id .
+                $agent->phone .
                 $request['phone'] .
                 $request['phone']
         );
@@ -101,9 +101,9 @@ class CustomerController extends Controller
             config('app.apiUser') . '&apiKey=' .
             config('app.apiKey') . '&hash=' .
             $hash .  '&id=' .
-            $customer->id .  '&name=' .
+            $customer->phone .  '&name=' .
             $request['name'] . '&agentId=' .
-            $agent->id . '&phone=' .
+            $agent->phone . '&phone=' .
             $request['phone'] . '&code=' .
             $request['phone'];
 

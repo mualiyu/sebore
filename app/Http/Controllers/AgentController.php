@@ -100,7 +100,7 @@ class AgentController extends Controller
             config('app.apiUser') . '&apiKey=' .
             config('app.apiKey') . '&hash=' .
             $hash . '&id=' .
-            $agent->id . '&organizationId=' .
+            $agent->phone . '&organizationId=' .
             $org->id . '&name=' .
             $request['name'] . '&email=' .
             $request['email'] . '&password=' .

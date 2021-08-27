@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Payment</h5>
+                    <h5 class="m-b-10">Transactions</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Payment</a>
+                    <li class="breadcrumb-item"><a href="#">transaction</a>
                     </li>
                 </ul>
             </div>
@@ -35,33 +35,46 @@
                     <div class="col-sm-12">
 			    <div class="card">
                               <div class="card-header">
-                                  <h5>Generate Payment</h5>
+                                  <h5>Load transactions</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material" method="POST" action="{{route('generate_pay')}}">
+                                  <form class="form-material" method="POST" action="{{route('get_transaction_list')}}">
 					@csrf
                                       <div class="form-group form-default">
                                           {{-- <input type="text" name="name" value="{{old('name')}}" class="form-control" required=""> --}}
 					  <input name="daterange" value="{{old('daterange')}}" required class="form-control" id="range" type="text" >
                                           <span class="form-bar"></span>
-                                          <label class="float-label">Chooce Range</label>
+                                          <label class="float-label">Chooce Range <small>(from - to)</small></label>
 					  <p class="" id="small"></p>
                                           @error('daterange')
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
                                       </div><br>
 				      <div class="form-group form-default">
-                                          <input type="text" id="customer" name="customer" value="{{old('cus')}}" class="form-control">
+					  <select id="req_type" name="request_type" class="form-control">
+						  <option value="all">All</option>
+						  <option value="agent">By Agent</option>
+						  <option value="customer">By Customer</option>
+						  <option value="device">By Device</option>
+						  <option value="item">By Item</option>
+					  </select>
+                                          {{-- <input type="text" id="customer" name="customer" value="{{old('cus')}}" class="form-control"> --}}
                                           <span class="form-bar"></span>
-                                          <label class="float-label"><b>Search</b> Name or Phone no:</label>
-                                          @error('cus')
+                                          <label class="float-label"><b>Load Type:</b></label>
+                                          @error('request_type')
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
+                                      </div><br>
+				      <div class="form-group form-default" id="search_req" style="display: none;">
+                                          <input type="text" id="s_d" name="s_d" class="form-control">
+                                          <span class="form-bar"></span>
+                                          <label class="float-label"><b>Search</b> :</label>
+                                          
                                       </div>
-				      <div class="form-group form-default" id="customer_list"></div>
+				      <div class="form-group form-default" id="data_list"></div>
                                       <div class="form-group form-default">
-                                          <input type="submit" class="btn btn-primary"  value="Generate" style="float: right;" id="">
+                                          <input type="submit" class="btn btn-primary" id="load"  value="Load" style="float: right;" id="">
                                       </div>
                                   </form>
                               </div>
@@ -130,52 +143,40 @@ $(document).ready(function () {
             // end of ajax call
         });
 
-                
-        // $(document).on('click', 'li', function(){
-          
-        //     var value = $(this).text();
-        //     $('#customer').val(value);
-        //     $('#customer_list').html("");
-        // });
-});
+	$('#req_type').on('change', function() {
+        var req_value = this.value;
 
-$(document).ready(function() {
+          if (req_value == "agent" || req_value == "customer" || req_value == "device" || req_value == "item") {   
+		
+		$('#search_req').css('display', 'block');
+		$('#data_list').css('display', 'block');
+		// document.getElementById('load').disabled = true;
+		$('#load').css('display', 'none');
+ 		$('#s_d').on('keyup',function() {
+        	    var query = $(this).val(); 
+        	    $.ajax({
+		
+        	        url:"{{ route('search_data_t') }}",
+		
+        	        type:"GET",
+		
+        	        data:{'data':query, 'req_type':req_value},
+		
+        	        success:function (data) {
+			
+        	            $('#data_list').html(data);
+			//     console.log(data);
+        	        }
+        	    })
+        	    // end of ajax call
+        	});
+
         
-    var html_code = '';
-    var html_code_lga = '';
-
-    $.getJSON('/assets/json/NigeriaState.json', function(data){
-
-   html_code += '<option value="">Select</option>';
-
-   html_code_lga += '<option value="">Select</option>'; 
-
-   $.each(data, function(key, value){
-       
-    html_code += '<option value="'+key+'" id= "'+value.id+'">'+value.name+'</option>';  
-    
-    $('#state-select').on('change', function() {
-        var id = this.value;
-          if (key == id) {   
-              $.each(value.locals, function(k, v) { 
-                  html_code_lga += '<option value="'+v.name+'" id= "'+v.id+'">'+v.name+'</option>';
-                });
-                $('#lga-select').html(html_code_lga);
-
-                html_code_lga = "";
-          }
-    });
-
-    });
-    
-
-    $('#state-select').html(html_code);
-
-    
-//    console.log(data);
-
-  });
-
-})
+          }else{
+		$('#search_req').css('display', 'none');
+		$('#data_list').css('display', 'none');
+	  }
+    	});
+});
 </script>
 @endsection

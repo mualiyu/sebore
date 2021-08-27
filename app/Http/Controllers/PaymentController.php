@@ -97,10 +97,10 @@ class PaymentController extends Controller
         $d = explode(' - ', $request->daterange);
 
         $f = explode('/', $d[0]);
-        $from = $f[1] . '-' . $f[0] . '-' . $f[2];
+        $from = $f[2] . '-' . $f[0] . '-' . $f[1];
         // . ' 00:00:00';
         $t = explode('/', $d[1]);
-        $to = $t[1] . '-' . $t[0] . '-' . $t[2];
+        $to = $t[2] . '-' . $t[0] . '-' . $t[1];
         // . ' 23:59:59';
 
         $customer = Customer::find($request->cus);
