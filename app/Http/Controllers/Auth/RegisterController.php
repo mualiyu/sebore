@@ -114,7 +114,7 @@ class RegisterController extends Controller
             config('app.apiUser') . '&apiKey=' .
             config('app.apiKey') . '&hash=' .
             $hash . '&id=' .
-            $user->id . '&name=' .
+            $organization->id . '&name=' .
             $name . '&description=' .
             $description . '&logoUrl=' .
             $logo . '&phone=' . $phone;

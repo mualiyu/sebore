@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -118,7 +119,30 @@ class HomeController extends Controller
             return back()->with('error', 'Organization not Updated. Try again!');
         }
 
-        $user = Organization::where('id', '=', $id)->update([
+        $name = $request['name'];
+        $description = $request['description'];
+        $logo = url('/storage/pic/default.jpg');
+        $phone = $request['phone'];
+        $hash = hash('sha512', $name . $description . $logo . $phone);
+
+        $url = 'https://api.ajisaqsolutions.com/api/organization/update?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash . '&id=' .
+            $id . '&name=' .
+            $name . '&description=' .
+            $description . '&logoUrl=' .
+            $logo . '&phone=' . $phone;
+
+        $response = Http::post($url);
+
+        $res = json_decode($response);
+
+        if ($res->status != 'Ok') {
+            return back()->with("error", "Sorry! Fail to update your Details, Try later.");
+        }
+
+        $org = Organization::where('id', '=', $id)->update([
             'name' => $request['name'],
             'description' => $request['description'],
             'phone' => $request['phone'],
@@ -153,9 +177,36 @@ class HomeController extends Controller
             return back()->with('error', 'Organization Logo not Uploaded. Try again!');
         }
 
+        $org = Organization::find($id);
+
+        // Api start here
+        $name = $org->name;
+        $description = $org->description;
+        $logo = url('/storage/pic/' . $imageNameToStore);
+        $phone = $org->phone;
+        $hash = hash('sha512', $name . $description . $logo . $phone);
+
+        $url = 'https://api.ajisaqsolutions.com/api/organization/update?apiUser=' .
+            config('app.apiUser') . '&apiKey=' .
+            config('app.apiKey') . '&hash=' .
+            $hash . '&id=' .
+            $id . '&name=' .
+            $name . '&description=' .
+            $description . '&logoUrl=' .
+            $logo . '&phone=' . $phone;
+
+        $response = Http::post($url);
+
+        $res = json_decode($response);
+
+        if ($res->status != 'Ok') {
+            return back()->with("error", "Sorry! System Fail to update your Logo. Try later!");
+        }
+
         $arrayToStore = [
             "logo" => $imageNameToStore,
         ];
+
         Organization::where('id', '=', $id)->update($arrayToStore);
 
 
