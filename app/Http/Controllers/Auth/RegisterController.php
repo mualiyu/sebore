@@ -100,9 +100,9 @@ class RegisterController extends Controller
         ]);
 
 
-        // Organization::where('id', '=', $organization->id)->update([
-        //     // 'uuid' => $res->data->id,
-        // ]);
+        Organization::where('id', '=', $organization->id)->update([
+            'logo' => "default.jpg",
+        ]);
 
         $name = $data['g_name'];
         $description = $data['g_description'];
