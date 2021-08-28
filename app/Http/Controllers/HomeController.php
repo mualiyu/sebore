@@ -123,7 +123,7 @@ class HomeController extends Controller
 
         $name = $request['name'];
         $description = $request['description'];
-        $logo = url('/storage/pic/' . $org->logo ?? 'default.jpg');
+        $logo = url('/storage/pic/' . $org->logo != "" ? $org->logo : 'default.jpg');
         $phone = $request['phone'];
         $hash = hash('sha512', $name . $description . $logo . $phone);
 
