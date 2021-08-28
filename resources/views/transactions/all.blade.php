@@ -31,6 +31,62 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
+                <div class="card shadow" style="width:100%;">
+                  <div class="card-body">  
+			        <div class="row">
+                      <div class="col-sm-3">
+                        <h5 class="mb-0" style="float: right;">Transaction Summary</h5>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Count</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        {{count($transactions)}}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Date range </h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                          <?php $f = explode('-', $from); $from = $f[2]. ' '.$months[(int)$f[1]].', '.$f[0]; ?>
+                          <?php $t = explode('-', $to); $to = $t[2].' '.$months[(int)$t[1]].', '.$t[0]; ?>
+                        from {{$from}} to {{$to}}
+                        <div id="small"></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Total Quantities</h6>
+                      </div>
+                      <?php
+                      $t_amount = 0;
+                      $t_q = 0;
+                        foreach ($transactions as $t) {
+                            $t_amount = $t_amount + $t->amount;
+                            $t_q = $t_q + $t->quantity;
+                        }
+                      ?>
+                      <div class="col-sm-9 text-secondary">
+                        {{$t_q}} Liters
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Total Amount of All transactions is</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        NGN {{$t_amount}}
+                      </div>
+                    </div><br>
+                  </div>
+                </div>
+
 		<div class="card">
                         <div class="card-header">
                             <h5>Transaction's</h5>
@@ -50,12 +106,12 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-					    <th>Item Name</th>
-					    <th>Measure - Unit</th>
+					                        <th>Item Name</th>
+					                        <th>Measure - Unit</th>
                                             <th>Quantity</th>
                                             <th>Total Amount</th>
-					    <th>date</th>
-					    {{-- <th>Action</th> --}}
+					                        <th>date</th>
+					                        {{-- <th>Action</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,21 +120,21 @@
 					<?php
 					// $t_amount = (float)$t_amount + (float)$t->amount;
 
-					$hash = hash('sha512',$t->id);
+					// $hash = hash('sha512',$t->id);
 
-					$url = 'https://api.ajisaqsolutions.com/api/transaction/get?apiUser=' . config('app.apiUser') .
-            					'&apiKey=' . config('app.apiKey') .
-            					'&hash=' . $hash .
-            					'&id=' . $t->id;
-					$response = Http::get($url);
-            				// return $response;
-            				$res = json_decode($response);
+					// $url = 'https://api.ajisaqsolutions.com/api/transaction/get?apiUser=' . config('app.apiUser') .
+            		// 			'&apiKey=' . config('app.apiKey') .
+            		// 			'&hash=' . $hash .
+            		// 			'&id=' . $t->id;
+					// $response = Http::get($url);
+            		// 		// return $response;
+            		// 		$res = json_decode($response);
 					//     dd($res);
 					?>
 					<tr>
 						<th scope="row">{{$i}}</th>
-						<td>{{$res->data->item->name}}</td>
-						<td>{{$res->data->item->measure}} - {{$res->data->item->unit}}</td>
+						<td>{{$t->item->name}}</td>
+						<td>{{$t->item->measure}} - {{$t->item->unit}}</td>
 						<td>{{$t->quantity}}</td>
 						<td>{{$t->amount}}</td>
 						<td>
@@ -97,4 +153,17 @@
         </div>
     </div>
 </div>
+@endsection
+
+
+@section('script')
+    <script>
+        function cb(start, end) {
+        $('#small').html(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
+        }
+        $(function() {
+
+           cb('{{$from}}','{{$to}}'); 
+        });
+    </script>
 @endsection

@@ -124,24 +124,6 @@ $(function() {
  <script type="text/javascript">
 $(document).ready(function () {
              
-        $('#customer').on('keyup',function() {
-            var query = $(this).val(); 
-            $.ajax({
-               
-                url:"{{ route('customer_p') }}",
-          
-                type:"GET",
-               
-                data:{'customer':query},
-               
-                success:function (data) {
-                  
-                    $('#customer_list').html(data);
-		//     console.log(data);
-                }
-            })
-            // end of ajax call
-        });
 
 	$('#req_type').on('change', function() {
         var req_value = this.value;
@@ -175,6 +157,7 @@ $(document).ready(function () {
           }else{
 		$('#search_req').css('display', 'none');
 		$('#data_list').css('display', 'none');
+        $('#load').css('display', 'block');
 	  }
     	});
 });

@@ -174,7 +174,7 @@ $(document).ready(function () {
                                         <?php $mobile_money = \App\Models\MobileMoney::find($p_g->gateway_code); ?>
                                         @endforeach
                                         <?php $mobile_moneys = \App\Models\MobileMoney::all(); ?>
-                                        <form method="POST" id="gateway_form" action="{{route('add_update_gateway_details')}}">
+                                        <form method="" id="gateway_form">
                                              
 						                    @csrf
                                             <div class="form-group"><label for="gateway"><strong>Select Gateway</strong></label>

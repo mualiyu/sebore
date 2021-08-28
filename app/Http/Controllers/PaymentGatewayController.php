@@ -72,26 +72,12 @@ class PaymentGatewayController extends Controller
                             'val_info' => $val_info,
                             'info' => $info,
                             // 'error' => '',
-                            'success' => 'OTP is been sent to you phone. If Not seen after One minute, A re-send button wit appear to request Another OPT! Thank you.'
+                            'success' => 'OTP is been sent to your phone. If Not seen after One minute, Re Try again! Thank you.'
                         ];
                         return $data;
-                        // return view('payment.otp', compact('info', 'val_info'))
-                        //     ->with('success', 'OTP is been sent to you phone. If Not seen after One minute, A re-send button wit appear to request Another OPT! Thank you.');
-
-                        // dd($info, $val_info);
-                        // return redirect()
-                        // ->route('show_otp_eyowo')
-                        // ->with(compact('info', 'val_info'));
-                        // ->with('info', $info)->with('val_info', $val_info);
-                        // ->with('success', 'OTP is been sent to you phone. If Not seen after One minute, A re-send button wit appear to request Another OPT! Thank you.');
                     } else {
                         return ['error' => 'Eyowo says, ' . $send_otp->error];
-                        // return back()->with('error', 'Eyowo says, ' . $send_otp->error);
                     }
-
-                    // dd($val->data);
-                    //08168221826
-                    // return back()->with('success', 'Payment for ' . $request->i_name . ' is Successful! Thank you.');
                 } else {
                     return ['error' => 'Eyowo says, ' . $val->error];
                     // return back()->with('error', 'Eyowo says, ' . $val->error);

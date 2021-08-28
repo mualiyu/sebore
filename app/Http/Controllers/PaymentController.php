@@ -108,7 +108,7 @@ class PaymentController extends Controller
 
         $hash = hash(
             'sha512',
-            $customer->id .
+            $customer->phone .
                 $from .
                 $to
         );
@@ -118,7 +118,7 @@ class PaymentController extends Controller
         $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
             '&apiKey=' . config('app.apiKey') .
             '&hash=' . $hash .
-            '&customerId=' . $customer->id .
+            '&customerId=' . $customer->phone .
             '&from=' . $from .
             '&to=' . $to;
         // dd($url);
