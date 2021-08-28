@@ -119,9 +119,11 @@ class HomeController extends Controller
             return back()->with('error', 'Organization not Updated. Try again!');
         }
 
+        $org = Organization::find($id);
+
         $name = $request['name'];
         $description = $request['description'];
-        $logo = url('/storage/pic/default.jpg');
+        $logo = url('/storage/pic/' . $org->logo ?? 'default.jpg');
         $phone = $request['phone'];
         $hash = hash('sha512', $name . $description . $logo . $phone);
 
@@ -142,7 +144,7 @@ class HomeController extends Controller
             return back()->with("error", "Sorry! Fail to update your Details, Try later.");
         }
 
-        $org = Organization::where('id', '=', $id)->update([
+        $organization = Organization::where('id', '=', $id)->update([
             'name' => $request['name'],
             'description' => $request['description'],
             'phone' => $request['phone'],
