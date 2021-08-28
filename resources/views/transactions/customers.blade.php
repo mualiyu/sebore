@@ -123,7 +123,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($transactions);?>
+					    <?php $i = 1;?>
 				        @foreach ($transactions as $t)
 					
 					<tr>
@@ -135,7 +135,7 @@
 						<td>
 							{{$t->date}}
 						</td>
-						<?php $i--?>
+						<?php $i++?>
 					</tr>
 					@endforeach
                                     </tbody>

@@ -115,7 +115,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($transactions);?>
+					    <?php $i = 1;?>
 				        @foreach ($transactions as $t)
 					<?php
 					// $t_amount = (float)$t_amount + (float)$t->amount;
@@ -140,7 +140,7 @@
 						<td>
 							{{$t->date}}
 						</td>
-						<?php $i--?>
+						<?php $i++?>
 					</tr>
 					@endforeach
                                     </tbody>
