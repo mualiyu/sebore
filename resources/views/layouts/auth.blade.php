@@ -6,11 +6,11 @@
 
       <!-- Meta -->
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="description" content="Mega Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-      <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-      <meta name="author" content="codedthemes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Ajisaq ticketing system." />
+    <meta name="keywords" content="Ticket, ticketing, system">
+    <meta name="author" content="Ajisaq" />
       <!-- Favicon icon -->
 
       <link rel="icon" href="{{asset('assets/images/logo.png" type="image/x-icon')}}">
