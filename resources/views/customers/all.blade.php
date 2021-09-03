@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10"> Customers</h5>
+                    <h5 class="m-b-10"> Farmers</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Customers</a>
+                    <li class="breadcrumb-item"><a href="#">Farmers</a>
                     </li>
                 </ul>
             </div>
@@ -33,7 +33,7 @@
 		     @include(' layouts.flash ')
                 {{-- <!-- Basic table card start -->
                 <a href="{{route(' show_agents ')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp; --}}
-		<a href="{{route('show_add_direct_customer')}}" style="right:0;" class="btn btn-primary">Add New Customer</a>
+		<a href="{{route('show_add_direct_customer')}}" style="right:0;" class="btn btn-primary">Add New Farmers</a>
         <br>
                     <div class="card">
                         <div class="card-header">

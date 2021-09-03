@@ -5,7 +5,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Edit Customer from {{$agent->name}}</h5>
+                    <h5 class="m-b-10">Edit Farmers from {{$agent->name}}</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -15,7 +15,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#!">Edit Customer</a>
+                    <li class="breadcrumb-item"><a href="#!">Edit Farmers</a>
                     </li>
                 </ul>
             </div>
@@ -35,7 +35,7 @@
                     <div class="col-sm-12">
 			    <div class="card">
                               <div class="card-header">
-                                  <h5>edit Customer</h5>
+                                  <h5>edit Farmers</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">

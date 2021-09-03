@@ -11,7 +11,10 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.40",
         "laravel/scout": "^9.2",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "maatwebsite/excel": "^3.1",
+        "php-excel-reader/spreadsheet-reader": "dev-master",
+        "phpoffice/phpspreadsheet": "^1.18"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

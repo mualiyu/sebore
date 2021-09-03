@@ -33,13 +33,13 @@
                 <!-- Basic table card start -->
 		<div class="row">
                     <div class="col-sm-12">
-			    <div class="card">
+			    <div class="card" id="card_form">
                               <div class="card-header">
                                   <h5>Generate Payment</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material" method="POST" action="{{route('generate_pay')}}">
+                                  <form class="form-material" method="POST" action="{{route('generate_pay')}}" onsubmit="generate_t_sumary()">
 					@csrf
                                       <div class="form-group form-default">
                                           {{-- <input type="text" name="name" value="{{old('name')}}" class="form-control" required=""> --}}
@@ -61,13 +61,19 @@
                                       </div>
 				      <div class="form-group form-default" id="customer_list"></div>
                                       <div class="form-group form-default">
-                                          <input type="submit" class="btn btn-primary"  value="Generate" style="float: right;" id="">
+                                          <input type="submit" class="btn btn-primary"  value="Generate" style="float: right;" id="submit">
                                       </div>
                                   </form>
                               </div>
                             </div>
-		    </div>
+		            </div>
+
                 </div>
+
+                <div class="row">
+                    
+                </div>
+
             </div>
         </div>
     </div>
@@ -92,7 +98,7 @@ $(function() {
 
     $('input[name="daterange"]' || ' ').daterangepicker({
         startDate: start,
-        endDate: end,
+        endDate: end,       
         ranges: {
            'Today': [moment(), moment()],
            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -130,52 +136,23 @@ $(document).ready(function () {
             // end of ajax call
         });
 
-                
-        // $(document).on('click', 'li', function(){
-          
-        //     var value = $(this).text();
-        //     $('#customer').val(value);
-        //     $('#customer_list').html("");
+        // $('#submit').on('click',function() {
+        //     console.log(val);
         // });
-});
-
-$(document).ready(function() {
         
-    var html_code = '';
-    var html_code_lga = '';
-
-    $.getJSON('/assets/json/NigeriaState.json', function(data){
-
-   html_code += '<option value="">Select</option>';
-
-   html_code_lga += '<option value="">Select</option>'; 
-
-   $.each(data, function(key, value){
-       
-    html_code += '<option value="'+key+'" id= "'+value.id+'">'+value.name+'</option>';  
-    
-    $('#state-select').on('change', function() {
-        var id = this.value;
-          if (key == id) {   
-              $.each(value.locals, function(k, v) { 
-                  html_code_lga += '<option value="'+v.name+'" id= "'+v.id+'">'+v.name+'</option>';
-                });
-                $('#lga-select').html(html_code_lga);
-
-                html_code_lga = "";
-          }
-    });
-
     });
     
+    function generate_t_sumary() {
+        var val = [];
+        $('input[type=checkbox]:checked').each(function(i){
+          val[i] = $(this).val();
+        });
 
-    $('#state-select').html(html_code);
+        $('#card_form').addClass("card-load");
+        $('#card_form').append('<div class="card-loader"><i class="fa fa-spinner rotate-refresh"></div>');
 
     
-//    console.log(data);
+}
 
-  });
-
-})
 </script>
 @endsection

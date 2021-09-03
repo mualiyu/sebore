@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CustomersImport;
+use PHPExcelReader\SpreadsheetReader as Reader;
+use Illuminate\Support\Collection;
 
 class CustomerController extends Controller
 {
@@ -175,5 +179,22 @@ class CustomerController extends Controller
         return back()->with(['success' => 'Customer is Updated Successfully']);
 
         // dd($request->all());
+    }
+
+    public function import_customers(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            "file" => "required",
+
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        Excel::import(new CustomersImport($id), $request->file('file'));
+
+        return back()->with(['success' => "Customers uploaded Successful"]);
     }
 }

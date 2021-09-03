@@ -32,7 +32,7 @@
     @yield('style')
 </head>
 
-<body>
+<body id="body">
 
 
 <!-- Pre-loader start -->
@@ -105,7 +105,8 @@ if ($organization[0]->logo) {
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" style="background: rgb(90,30,30);">
+        <nav class="navbar header-navbar pcoded-header" style="background: rgb(99,161,0);">
+            {{-- rgb(90,30,30) --}}
             <div class="navbar-wrapper">
                 <div class="navbar-logo">
                     <a class="mobile-menu waves-effect waves-light" id="mobile-collapse" href="#!">
@@ -262,7 +263,7 @@ if ($organization[0]->logo) {
                             <li class="">
                                 <a href="{{route('show_all_customers')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Customers</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Farmers</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

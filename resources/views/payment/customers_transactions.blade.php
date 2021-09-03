@@ -33,7 +33,7 @@
                 <!-- Basic table card start -->
 		<div class="card">
                         <div class="card-header">
-                            <h5>Transaction's</h5>
+                            <h5>Customers Transaction</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -50,51 +50,61 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-					                                  <th>Item Name</th>
-					                                  <th>Measure - Unit</th>
-                                            <th>Quantity</th>
+					    <th>Customer Name</th>
+					    <th>Phone</th>
+                                            <th>Quantities</th>
                                             <th>Total Amount</th>
-					                                  <th>date</th>
-					                                  <th>Action</th>
+					    {{-- <th>date</th> --}}
+					    <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($transactions); $t_amount = 0;?>
-				        @foreach ($transactions as $t)
+					    <?php $i = count($data); $t_amount = 0; $t_q = 0; $c_names = [];?>
+				        @foreach ($data as $d)
 					<?php
-					$t_amount = (float)$t_amount + (float)$t->amount;
+					$customer = \App\Models\Customer::find($d['customer_id']);
+					array_push($c_names, $customer->name);
+					$q_amount = 0;
+					$ts_amount = 0.00;
+					foreach ($d['transactions'] as $t) {
+						$q_amount = $q_amount + (float)$t->quantity;
+						$ts_amount = $ts_amount + (float)$t->amount;
+					}
 
-					$hash = hash('sha512',$t->id);
 
-					$url = 'https://api.ajisaqsolutions.com/api/transaction/get?apiUser=' . config('app.apiUser') .
-            					'&apiKey=' . config('app.apiKey') .
-            					'&hash=' . $hash .
-            					'&id=' . $t->id;
-					$response = Http::get($url);
-            				// return $response;
-            				$res = json_decode($response);
-					//     dd($res);
+					$t_amount = (float)$t_amount + (float)$ts_amount;
+					$t_q = (float)$t_q + (float)$q_amount;
+
+					
 					?>
 					<tr>
 						<th scope="row">{{$i}}</th>
-						<td>{{$res->data->item->name}}</td>
-						<td>{{$res->data->item->measure}} - {{$res->data->item->unit}}</td>
-						<td>{{$t->quantity}}</td>
-						<td>{{$t->amount}}</td>
-						<td>
+						<td>{{$customer->name}}</td>
+						<td>{{$customer->phone}}</td>
+						<td>{{$q_amount}}</td>
+						<td>{{$ts_amount}}</td>
+						{{-- <td>
 							{{$t->date}}
-						</td>
+						</td> --}}
 						<td>
-                            <form method="POST" id="pay-form[{{$i}}]" action="{{route('pay_single_t')}}">
+                            <form method="POST" id="pay-form[{{$i}}]" action="{{route('pay_all_tran_p_c')}}">
                                 @csrf 
-                                <input type="hidden" name="customerNum" value="{{$res->data->customer->phone}}">
-                                <input type="hidden" name="customerId" value="{{$res->data->customer->id}}">
-                                <input type="hidden" name="i_name" value="{{$res->data->item->name}}">
-                                <input type="hidden" name="amount" value="{{$t->amount}}">
-                                {{-- <input type="hidden" name="t_id" value="{{$t->id}}"> --}}
+                                <input type="hidden" name="c_number" value="{{$customer->phone}}">
+                                <input type="hidden" name="c_name" value="{{$customer->name}}">
+                                <input type="hidden" name="c_customerId" value="{{$customer->id}}">
+                                <input type="hidden" name="t_amount" value="{{$ts_amount}}">
                             </form>
-							              <a  onclick="
-                           	 if(confirm('Are you sure You want to Pay only for - ({{ $res->data->item->name }}) ? ')){
+							{{-- <a  onclick="
+                           	 if(confirm('Are you sure You want to Pay for all transactions that belongs to - ({{ $customer->name }}) ? ')){
+                           	     document.getElementById('pay-form[{{$i}}]').submit();
+                           	 }
+                           	     event.preventDefault();"
+                           	 class="btn btn-primary" 
+                           	 style="color: black">
+                           	 Pay
+                           	</a> --}}
+                                <a  onclick="
+                           	 if(confirm('Are you sure You want to Pay only one Customer? ')){
                            	     document.getElementById('pay-form[{{$i}}]').submit();
                            	 }
                            	     event.preventDefault();"
@@ -117,7 +127,7 @@
                           <div class="card-body">  
 			    <div class="row">
                               <div class="col-sm-3">
-                                <h5 class="mb-0" style="float: right;">Transaction Summary</h5>
+                                <h5 class="mb-0" style="float: right;">Payment Summary</h5>
                               </div>
                               <div class="col-sm-9 text-secondary">
                               </div>
@@ -125,18 +135,20 @@
                             <hr>
                             <div class="row">
                               <div class="col-sm-3">
-                                <h6 class="mb-0" style="float: right;">Customer Name</h6>
+                                <h6 class="mb-0" style="float: right;">Customers Names </h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                {{$customer->name}}
+                                  {{-- {{print_r($c_names)}} --}}
+                                {{$c_names[0]}}, {{$c_names[1]}} <?php if(count($c_names) > 2){ echo ' and others'; } ?>
                               </div>
                             </div>
-                            <div class="row">
+                            
+			                <div class="row">
                               <div class="col-sm-3">
-                                <h6 class="mb-0" style="float: right;">Customer Phone No:</h6>
+                                <h6 class="mb-0" style="float: right;">Total Quantities </h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                {{$customer->phone}}
+                                {{$t_q}} Liters
                               </div>
                             </div>
                             <div class="row">
@@ -149,15 +161,14 @@
                             </div><br>
                             <div class="row">
                               <div class="col-sm-3">
-                                {{-- <h6 class="mb-0" style="float: right;">Location</h6> --}}
                               </div>
                               <div class="col-sm-9 text-secondary">
                                   <form method="POST" id="pay-all-form" action="{{route('pay_all_tran_p_c')}}">
                                       @csrf 
-                                      <input type="hidden" name="c_number" value="{{$customer->phone}}">
+                                      {{-- <input type="hidden" name="c_number" value="{{$customer->phone}}">
                                       <input type="hidden" name="c_name" value="{{$customer->name}}">
                                        <input type="hidden" name="c_customerId" value="{{$res->data->customer->id}}">
-                                      <input type="hidden" name="t_amount" value="{{$t_amount}}">
+                                      <input type="hidden" name="t_amount" value="{{$t_amount}}"> --}}
                                   </form>
                                 	<a  onclick="
                            		 if(confirm('Are you sure You want to Pay All Transactions ? ')){

@@ -6527,7 +6527,7 @@ select.form-control:not([size]):not([multiple]) {
 /*====== Image-sizes css ends ======*/
 /*======= Text css starts ===========*/
 .text-primary {
-    color: rgba(90, 30, 30, 0.7) !important;
+    color: rgba(126, 170, 57, 0.7)/*rgba(90, 30, 30, 0.7)*/ !important;
 }
 
 .text-warning {
@@ -11304,7 +11304,7 @@ table tbody .border-bottom-info td {
 }
 
 body[themebg-pattern="theme1"] {
-    background-color: rgb(90, 30, 30);
+    background-color: rgba(99,161,0, 0.7) /*rgb(90, 30, 30)*/;
 }
 body[themebg-pattern="theme2"] {
     background-color: #b71c1c;
@@ -11773,7 +11773,7 @@ body[themebg-pattern="theme6"] {
     .pcoded-submenu
     li:hover
     > a {
-    color: rgba(90, 30, 30, 0.7) !important;
+    color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/ !important;
 }
 .pcoded
     .pcoded-navbar[active-item-theme="theme1"]
@@ -11785,7 +11785,7 @@ body[themebg-pattern="theme6"] {
     font-weight: 500;
 }
 .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item li:hover > a {
-    color: rgba(90, 30, 30, 0.7) !important;
+    color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/ !important;
 }
 .pcoded
     .pcoded-navbar[active-item-theme="theme1"]
@@ -11793,7 +11793,7 @@ body[themebg-pattern="theme6"] {
     li:hover
     > a
     .pcoded-micon {
-    color: rgba(90, 30, 30, 0.7) !important;
+    color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/ !important;
 }
 .pcoded
     .pcoded-navbar[active-item-theme="theme1"]
@@ -11807,7 +11807,7 @@ body[themebg-pattern="theme6"] {
     .pcoded-item
     > li.active
     > a {
-    background: rgba(90, 30, 30, 0.7);
+    background: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/;
     color: #fff !important;
 }
 .pcoded
@@ -13153,7 +13153,7 @@ body[themebg-pattern="theme6"] {
 }
 .pcoded[fream-type="theme1"] .page-header:before,
 .pcoded[fream-type="theme1"] .main-menu .main-menu-header:before {
-    background: rgba(109, 41, 41, 0.7);
+    background: rgba(126, 170, 57, 0.7) /*rgba(109, 41, 41, 0.7)*/;
 }
 .pcoded[fream-type="theme2"] .page-header:before,
 .pcoded[fream-type="theme2"] .main-menu .main-menu-header:before {
@@ -13689,8 +13689,8 @@ body.menu-bottom #collapse-menu {
 .btn-primary,
 .sweet-alert button.confirm,
 .wizard > .actions a {
-    background-color: rgba(90, 30, 30, 0.7);
-    border-color: rgba(90, 30, 30, 0.7);
+    background-color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/;
+    border-color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/;
     color: #fff;
     cursor: pointer;
     -webkit-transition: all ease-in 0.3s;
@@ -13699,14 +13699,14 @@ body.menu-bottom #collapse-menu {
 .btn-primary:hover,
 .sweet-alert button.confirm:hover,
 .wizard > .actions a:hover {
-    background-color: rgba(90, 30, 30, 0.4);
-    border-color: rgba(90, 30, 30, 0.4);
+    background-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4)*/;
+    border-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4)*/;
 }
 .btn-primary:active,
 .sweet-alert button.confirm:active,
 .wizard > .actions a:active {
-    background-color: rgba(90, 30, 30, 0.4) !important;
-    border-color: rgba(90, 30, 30, 0.4);
+    background-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4)*/ !important;
+    border-color: rgba(126, 170, 57, 0.4)/*rgba(90, 30, 30, 0.4)*/;
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #fff;
@@ -18688,7 +18688,7 @@ th {
         stroke-dasharray: 1, 200;
         stroke-dashoffset: 0;
     }
-    50% {
+    50% {rgba(90, 30, 30, 0.7)
         stroke-dasharray: 89, 200;
         stroke-dashoffset: -35px;
     }

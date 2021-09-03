@@ -1,5 +1,24 @@
 @extends('layouts.index')
+@section('style')
+    <style>
+.load{
+    
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
 
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+    </style>
+@endsection
 @section("script")
 <script>
     function showUploadImage(src,target) {
@@ -19,6 +38,8 @@
 </script>
  <script type="text/javascript">
 $(document).ready(function () {
+
+     $('#loader').hide();
              
         $('#submit_g').on('click',function() {
             var query = $('#gateway_form').serialize(); 
@@ -30,8 +51,23 @@ $(document).ready(function () {
                 type:"GET",
                
                 data:query,
+
+                beforeSend: function() // Do the following before sending the request
+                {
+                  //Upload progress
+                  $('#card_eyowo').addClass("card-load");
+                  $('#card_eyowo').append('<div class="card-loader"><i class="fa fa-spinner rotate-refresh"></div>');
+                },
+
+                // uploadProgress : function (event, position, total, percentComplete) {
+                //   $('#prog').width(percentComplete+'%');
+                //   $('#percent').html(percentComplete+'%');
+                // },
                
                 success:function (data) {
+                     $('#card_eyowo').children(".card-loader").remove();
+                     $('#card_eyowo').removeClass("card-load");
+                    //  $('#loader').hide();
                   
                       if (data['error']) {
                           $('#error_p').css('display', 'block');
@@ -91,6 +127,13 @@ $(document).ready(function () {
                 <button type="button" class="close" onclick="document.getElementById('error_p').style.display = 'none';">×</button>
                 <strong id="error_c"></strong>
             </div>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    {{-- <div id="loader" class="loader"></div> --}}
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
 
 		     <?php $oragnization = App\Models\Organization::find(Auth::user()->organization_id); ?>
 		<div class="row">
@@ -121,11 +164,11 @@ $(document).ready(function () {
 			</div>
 			<div class="col-md-8">
 				<div class="row">
-				<div class="card shadow " style="width: 100%;">
-                                    <div class="card-header ">
-                                        <p class="text-primary m-0 font-weight-bold">User Settings</p>
-                                    </div>
-                                    <div class="card-body">
+				<div class="card" style="width: 100%;">
+                    <div class="card-header ">
+                        <p class="text-primary m-0 font-weight-bold">User Settings</p>
+                    </div>
+                    <div class="card-body">
                                         <form  method="POST" action="{{route('update_user')}}">
 						                    @csrf
                                             <div class="form-row">
@@ -142,34 +185,49 @@ $(document).ready(function () {
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group"><label for="last_name"><strong>Role</strong></label>
-							{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
-							<select name="role" id="" class="form-control">
-								<option value="{{Auth::user()->role->name ?? ''}}">{{Auth::user()->role->name ?? ''}}</option>
-                                <?php $roles = \App\Models\AdminRole::all(); ?>
-                                @foreach ($roles as $r)
-                                <option value="{{$r->id}}">{{$r->name}}</option>
-                                @endforeach
-								{{-- <option value="admin">Admin</option>
-								<option value="suppervisor">Suppervisor</option>
-								<option value="user">User</option> --}}
-							</select>
-						</div>
+                                                        {{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
+                                                        <select name="role" id="" class="form-control">
+                                                            <option value="{{Auth::user()->role->name ?? ''}}">{{Auth::user()->role->name ?? ''}}</option>
+                                                            <?php $roles = \App\Models\AdminRole::all(); ?>
+                                                            @foreach ($roles as $r)
+                                                            <option value="{{$r->id}}">{{$r->name}}</option>
+                                                            @endforeach
+                                                            {{-- <option value="admin">Admin</option>
+                                                            <option value="suppervisor">Suppervisor</option>
+                                                            <option value="user">User</option> --}}
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
                                         </form>
                                     </div>
+                                   
                                 </div>
 				</div>  
 			</div>
 		</div>
         <div class="row">
             <div class="col-md-4">
-				<div class="card shadow" style="width: 100%;">
-                                    <div class="card-header">
-                                        <p class="text-primary m-0 font-weight-bold">Payment Gateway Settings</p>
-                                    </div>
-                                    <div class="card-body">
+				<div class="card shadow" id="card_eyowo" style="width: 100%;">
+                    <div class="card-header">
+                        <p class="text-primary m-0 font-weight-bold">Payment Gateway Settings
+                            <div class="card-header-right">
+                                <ul class="list-unstyled card-option">
+                                    <li>
+                                        <i class="fa fa-refresh load"  id="loader"></i>
+                                        {{-- <div id="loader" class="loader"></div> --}}
+                                    </li>
+                                    {{-- <li><i class="fa fa-window-maximize full-card"></i></li>
+                                    <li><i class="fa fa-minus minimize-card"></i></li>
+                                    <li><i class="fa fa-refresh reload-card"></i></li>
+                                    <li><i class="fa fa-trash close-card"></i></li> --}}
+                                </ul>
+                            </div>
+                        </p>
+                    </div>
+                    
+                                    <div class="card-body" id="card_b">
                                         @foreach ($p_gateway as $p_g)
                                         <?php $mobile_money = \App\Models\MobileMoney::find($p_g->gateway_code); ?>
                                         @endforeach

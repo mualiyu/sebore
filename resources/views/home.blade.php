@@ -31,15 +31,83 @@
     <div class="main-body">
         <div class="page-wrapper">
             <div class="page-body">
+	            {{-- <div class="row">
+                    <div class="alert alert-info alert-block" style="width: 100%;">
+                        <strong>Transaction Record</strong>
+                    </div>
+                </div> --}}
+                @if (!empty($transactions))    
+                <div class="card shadow" style="width:100%;">
+                  <div class="card-body">  
+			        <div class="row">
+                      <div class="col-sm-3">
+                        <h5 class="mb-0" style="float: right;">Transaction Summary</h5>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Count</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        {{count($transactions ?? '')}}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Date range </h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                          <?php $f = explode('-', $from); $from = $f[2]. ' '.$months[(int)$f[1]].', '.$f[0]; ?>
+                          <?php $t = explode('-', $to); $to = $t[2].' '.$months[(int)$t[1]].', '.$t[0]; ?>
+                        from {{$from}} to {{$to}}
+                        <div id="small"></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Total Quantities</h6>
+                      </div>
+                      <?php
+                      $t_amount = 0;
+                      $t_q = 0;
+                        foreach ($transactions ?? '' as $t) {
+                            $t_amount = $t_amount + $t->amount;
+                            $t_q = $t_q + $t->quantity;
+                        }
+                      ?>
+                      <div class="col-sm-9 text-secondary">
+                        {{$t_q}} Liters
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0" style="float: right;">Total Amount of All transactions is</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        NGN {{$t_amount}}
+                      </div>
+                    </div><br>
+                  </div>
+                </div>
+                @else
                 <div class="row">
+                    <div class="alert alert-info alert-block" style="width: 100%;">
+                        <strong>No Transaction History For Today!</strong>
+                    </div>
+                </div>
+                @endif
 
+                <div class="row">
                     <div class="col-xl-4 col-md-6">
                         <?php $users = \App\Models\User::where('organization_id', '=', Auth::user()->organization_id)->get(); ?>
                         <div class="card">
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(90,30,30);">{{count($users)}}</h4>
+                                        <h4 class="text-c" style="color: rgb(126, 170, 57);">{{count($users)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Users</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -47,7 +115,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(90,30,30);">
+                            <div class="card-footer" style="background: rgb(126, 170, 57);;">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -65,7 +133,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(99,57,57);">{{count($agents)}}</h4>
+                                        <h4 class="text-c" style="color: rgb(124,155,76);">{{count($agents)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Agents</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -73,7 +141,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(99,57,57);">
+                            <div class="card-footer" style="background: rgb(124,155,76);">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -91,7 +159,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(136,94,94);">{{count($devices)}}</h4>
+                                        <h4 class="text-c" style="color: rgb(139,170,91));">{{count($devices)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Device</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -99,7 +167,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(136,94,94);">
+                            <div class="card-footer" style="background: rgb(139,170,91);">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -118,7 +186,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(90,30,30);">{{count($categories)}}</h4>
+                                        <h4 class="text-c" style="color: rgb(126, 170, 57);">{{count($categories)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Categories</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -126,7 +194,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(90,30,30);">
+                            <div class="card-footer" style="background: rgb(126, 170, 57);">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -144,7 +212,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(99,57,57);">{{count($customers)}}</h4>
+                                        <h4 class="text-c" style="color: rgb(124,155,76);">{{count($customers)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Customers</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -152,7 +220,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(99,57,57);">
+                            <div class="card-footer" style="background: rgb(124,155,76);">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -170,7 +238,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(136,94,94);">{{count($items)}}</h4>
+                                        <h4 class="text-c" style="color: rgb(139,170,91);">{{count($items)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Items</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -178,7 +246,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(136,94,94);">
+                            <div class="card-footer" style="background: rgb(139,170,91);">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>

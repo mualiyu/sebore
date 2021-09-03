@@ -64,8 +64,8 @@ class PaymentController extends Controller
                     // $output .= '<li class="list-group-item"><input name="customer" type="checkbox" value="' . $row->id . '" >'
                     //     . $row->name . ' -> ' . $row->phone . '</li>';
 
-                    $output .= '<li class="list-group-item"><div class="form-check"><input class="form-check-input" type="radio" name="cus" value="'
-                        . $row->id . '" id="flexCheckDefault[' . $i . ']"><label class="form-check-label" for="flexCheckDefault[' . $i . ']">'
+                    $output .= '<li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" name="cus[]" value="'
+                        . $row->id . '" id="cus[' . $i . ']"><label class="form-check-label" for="cus[' . $i . ']">'
                         . $row->name . ' - ' . $row->email . ' - ' . $row->phone .
                         '</label></div></li>';
                     $i++;
@@ -87,7 +87,6 @@ class PaymentController extends Controller
         $validator = Validator::make($request->all(), [
             'daterange' => ['required', 'string', 'max:255'],
             'cus' => ['required'],
-            // 'address' => ['string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -103,44 +102,102 @@ class PaymentController extends Controller
         $to = $t[2] . '-' . $t[0] . '-' . $t[1];
         // . ' 23:59:59';
 
-        $customer = Customer::find($request->cus);
+        // dd($request->cus);
+
+        if (count($request->cus) == 1) {
+            $customer = Customer::find($request->cus[0]);
 
 
-        $hash = hash(
-            'sha512',
-            $customer->phone .
-                $from .
-                $to
-        );
+            $hash = hash(
+                'sha512',
+                $customer->phone .
+                    $from .
+                    $to
+            );
 
-        // return $hash . '  -----------  ' . $from . " " . $to . $customer->id;
+            // return $hash . '  -----------  ' . $from . " " . $to . $customer->id;
 
-        $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
-            '&apiKey=' . config('app.apiKey') .
-            '&hash=' . $hash .
-            '&customerId=' . $customer->phone .
-            '&from=' . $from .
-            '&to=' . $to;
-        // dd($url);
+            $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
+                '&apiKey=' . config('app.apiKey') .
+                '&hash=' . $hash .
+                '&customerId=' . $customer->phone .
+                '&from=' . $from .
+                '&to=' . $to;
+            // dd($url);
 
-        if (
-            $response = Http::get($url)
-        ) {
-            # code...
-            // return $response;
-            $res = json_decode($response);
-            if ($res->status == 'Ok') {
-                if (count($res->data) > 0) {
-                    $transactions = $res->data;
-                    // dd($res);
-                    return view('payment.transactions', compact('transactions', 'customer'));
-                } else {
-                    return back()->with('error', 'No Transaction for this Customer.');
+            try {
+                $response = Http::get($url);
+                if ($response->successful()) {
+
+                    $res = json_decode($response);
+                    if ($res->status == 'Ok') {
+                        if (count($res->data) > 0) {
+                            $transactions = $res->data;
+                            // dd($res);
+                            return view('payment.transactions', compact('transactions', 'customer'));
+                        } else {
+                            return back()->with('error', 'No Transaction for this Customer.');
+                        }
+                    } else {
+                        return back()->with('error', 'Service Error, Try again later!');
+                    }
                 }
-            } else {
-                return back()->with('error', 'Service Error, Try again later!');
+            } catch (\Throwable $th) {
+                return back()->with('error', 'Service Error, Make sure you are connected to Internet!');
             }
+        } else {
+
+            $data = [];
+            foreach ($request->cus as $c) {
+
+                $customer = Customer::find($c);
+
+                $hash = hash(
+                    'sha512',
+                    $customer->phone .
+                        $from .
+                        $to
+                );
+
+                $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
+                    '&apiKey=' . config('app.apiKey') .
+                    '&hash=' . $hash .
+                    '&customerId=' . $customer->phone .
+                    '&from=' . $from .
+                    '&to=' . $to;
+
+                try {
+                    $response = Http::get($url);
+                    if ($response->successful()) {
+
+                        $res = json_decode($response);
+                        if ($res->status == 'Ok') {
+                            if (count($res->data) > 0) {
+                                $transactions = $res->data;
+
+                                $d =  [
+                                    'customer_id' => $customer->id,
+                                    'transactions' => $transactions
+                                ];
+
+                                array_push($data, $d);
+                                // return view('payment.transactions', compact('transactions', 'customer'));
+                            } else {
+                                return back()->with('error', 'No Transaction for ' . $customer->name . '.');
+                            }
+                        } else {
+                            return back()->with('error', 'Service Error, Try again later!');
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    return back()->with('error', 'Service Error, Make sure you are connected to Internet!');
+                }
+            }
+
+            return view('payment.customers_transactions', compact('data'));
         }
+
+
         return back();
     }
 

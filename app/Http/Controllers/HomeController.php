@@ -31,8 +31,67 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $d = now();
+        $da = explode("T", $d);
+        $date = explode(" ", $da[0]);
 
-        return view('home');
+        $from = $date[0];
+        $to = $date[0];
+        // $from = "2021-08-28";
+        // $to = "2021-08-28";
+
+        $months = array(
+            '',
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July ',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        );
+
+        // if load type is set to all
+
+        $hash = hash(
+            'sha512',
+            $from .
+                $to
+        );
+
+        $url = 'https://api.ajisaqsolutions.com/api/transaction/list?apiUser=' . config('app.apiUser') .
+            '&apiKey=' . config('app.apiKey') .
+            '&hash=' . $hash .
+            '&from=' . $from .
+            '&to=' . $to;
+        // dd($hash . "   " . $from . "  " . $to);
+
+        $transactions = [];
+        if (
+            $response = Http::get($url)
+        ) {
+            $res = json_decode($response);
+            // return $response;
+            if ($res->status == 'Ok') {
+                if (count($res->data) > 0) {
+                    $transactions = $res->data;
+                    // return $transactions;
+                    return view('home', compact('transactions', 'from', 'to', 'months'));
+                } else {
+                    return view('home', compact('transactions'));
+                }
+            } else {
+                return view('home', compact('transactions'));
+                // return back()->with('error', 'Service Error, Try again later!');
+            }
+        } else {
+            return view('home', compact('transactions'))->with('error', 'Service Error, Try again later!');;
+        }
     }
 
     public function show_profile()
