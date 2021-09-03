@@ -184,7 +184,7 @@ class CustomerController extends Controller
     public function import_customers(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            "file" => "required",
+            "file" => "required|mimes:csv",
 
         ]);
         if ($validator->fails()) {
