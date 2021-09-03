@@ -188,9 +188,7 @@ class CustomerController extends Controller
 
         ]);
         if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
+            return back()->with(['success' => 'Make sure you upload a csv file'])->withInput();
         }
 
         Excel::import(new CustomersImport($id), $request->file('file'));
