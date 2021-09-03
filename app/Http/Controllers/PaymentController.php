@@ -304,7 +304,7 @@ class PaymentController extends Controller
                     ])->post($mobile_money->url . '/v1/users/transfers/phone', [
                         'sendSms' => false,
                         'mobile' => $num,
-                        'amount' => $request->t_amount,
+                        'amount' => $request->t_amount * 100,
                     ]);
                     $res = json_decode($response);
 

@@ -72,6 +72,7 @@ Route::post('/create_customer', [App\Http\Controllers\CustomerController::class,
 Route::post('/update_customer/{id}', [App\Http\Controllers\CustomerController::class, 'update_customer'])->name('update_customer');
 Route::post('/delete_customer/{id}', [App\Http\Controllers\CustomerController::class, 'delete_customer'])->name('delete_customer');
 Route::post('/importcustomers/bulk/{id}', [App\Http\Controllers\CustomerController::class, 'import_customers'])->name('import_customers');
+Route::get('/download_customers/sample', [App\Http\Controllers\CustomerController::class, 'download_sample'])->name('download_sample');
 
 
 //Payments route 

@@ -82,7 +82,7 @@
 						<td>{{$customer->name}}</td>
 						<td>{{$customer->phone}}</td>
 						<td>{{$q_amount}}</td>
-						<td>{{$ts_amount}}</td>
+						<td>NGN {{$ts_amount}}</td>
 						{{-- <td>
 							{{$t->date}}
 						</td> --}}
@@ -122,7 +122,7 @@
                         </div>
                     </div>
 
-		
+{{-- 		
 			 <div class="card shadow" style="width:100%;">
                           <div class="card-body">  
 			    <div class="row">
@@ -138,8 +138,7 @@
                                 <h6 class="mb-0" style="float: right;">Customers Names </h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                  {{-- {{print_r($c_names)}} --}}
-                                {{$c_names[0]}}, {{$c_names[1]}} <?php if(count($c_names) > 2){ echo ' and others'; } ?>
+                                {{$c_names[0]}}, {{$c_names[1]}} <?php //if(count($c_names) > 2){ echo ' and others'; } ?>
                               </div>
                             </div>
                             
@@ -165,10 +164,10 @@
                               <div class="col-sm-9 text-secondary">
                                   <form method="POST" id="pay-all-form" action="{{route('pay_all_tran_p_c')}}">
                                       @csrf 
-                                      {{-- <input type="hidden" name="c_number" value="{{$customer->phone}}">
+                                      <input type="hidden" name="c_number" value="{{$customer->phone}}">
                                       <input type="hidden" name="c_name" value="{{$customer->name}}">
                                        <input type="hidden" name="c_customerId" value="{{$res->data->customer->id}}">
-                                      <input type="hidden" name="t_amount" value="{{$t_amount}}"> --}}
+                                      <input type="hidden" name="t_amount" value="{{$t_amount}}">
                                   </form>
                                 	<a  onclick="
                            		 if(confirm('Are you sure You want to Pay All Transactions ? ')){
@@ -182,7 +181,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> --}}
             </div>
         </div>
     </div>

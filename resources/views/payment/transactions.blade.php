@@ -91,7 +91,6 @@
                                 <input type="hidden" name="customerId" value="{{$res->data->customer->id}}">
                                 <input type="hidden" name="i_name" value="{{$res->data->item->name}}">
                                 <input type="hidden" name="amount" value="{{$t->amount}}">
-                                {{-- <input type="hidden" name="t_id" value="{{$t->id}}"> --}}
                             </form>
 							              <a  onclick="
                            	 if(confirm('Are you sure You want to Pay only for - ({{ $res->data->item->name }}) ? ')){

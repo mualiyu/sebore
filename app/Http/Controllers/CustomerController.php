@@ -197,4 +197,14 @@ class CustomerController extends Controller
 
         return back()->with(['success' => "Customers uploaded Successful"]);
     }
+
+    public function download_sample()
+    {
+        $filePath = public_path("assets/sample/sample_customers.csv");
+        // dd($filePath);
+        $headers = ['Content-Type: text/csv'];
+        $fileName = 'sample_' . time() . '.csv';
+
+        return response()->download($filePath, $fileName, $headers);
+    }
 }

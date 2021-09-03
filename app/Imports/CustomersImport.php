@@ -33,13 +33,15 @@ class CustomersImport implements ToModel, WithHeadingRow
         // $x = str_replace(',', '', $row['amount']);
 
         // dd($row);
+        $new = substr($row['phone'], -10);
+        $num = '0' . $new;
 
         $agent = Agent::find($this->id);
 
         $customer = Customer::create([
             'name' => $row['name'],
             'email' => $row['email'],
-            'phone' => $row['phone'],
+            'phone' => $num,
             'gps' => $row['location'],
             'state' => $row['state'],
             'country' => $row['country'],
@@ -59,7 +61,7 @@ class CustomersImport implements ToModel, WithHeadingRow
             'sha512',
             $row['name'] .
                 $agent->phone .
-                $row['phone'] .
+                $num .
                 $row['phone']
         );
 
@@ -70,8 +72,8 @@ class CustomersImport implements ToModel, WithHeadingRow
             $customer->phone .  '&name=' .
             $row['name'] . '&agentId=' .
             $agent->phone . '&phone=' .
-            $row['phone'] . '&code=' .
-            $row['phone'];
+            $num . '&code=' .
+            $num;
 
 
         $response = Http::post($url);

@@ -124,7 +124,7 @@
                             </form>
                           </div>
                           <div class="modal-footer">
-                            <a class="btn btn-warning" href="{{route('home')}}">
+                            <a class="btn btn-warning" href="{{route('download_sample')}}">
                              Download csv Sample
                             </a>
                           </div>
