@@ -50,20 +50,25 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-					    <th>Customer Name</th>
-					    <th>Phone</th>
+					                        <th>Customer Name</th>
+					                        <th>Phone</th>
                                             <th>Quantities</th>
                                             <th>Total Amount</th>
-					    {{-- <th>date</th> --}}
-					    <th>Action</th>
+					                        {{-- <th>date</th> --}}
+					                        <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($data); $t_amount = 0; $t_q = 0; $c_names = [];?>
+					    <?php $i = 1; $t_amount = 0; $t_q = 0; $c_names = []; $info=[];?>
 				        @foreach ($data as $d)
 					<?php
 					$customer = \App\Models\Customer::find($d['customer_id']);
-					array_push($c_names, $customer->name);
+                    $ii = [
+                        'customer_id' => $d['customer_id'],
+                        'transactions' => $d['transactions']
+                    ];
+					array_push($info, $ii);
+                    array_push($c_names, $customer->name);
 					$q_amount = 0;
 					$ts_amount = 0.00;
 					foreach ($d['transactions'] as $t) {
@@ -94,15 +99,6 @@
                                 <input type="hidden" name="c_customerId" value="{{$customer->id}}">
                                 <input type="hidden" name="t_amount" value="{{$ts_amount}}">
                             </form>
-							{{-- <a  onclick="
-                           	 if(confirm('Are you sure You want to Pay for all transactions that belongs to - ({{ $customer->name }}) ? ')){
-                           	     document.getElementById('pay-form[{{$i}}]').submit();
-                           	 }
-                           	     event.preventDefault();"
-                           	 class="btn btn-primary" 
-                           	 style="color: black">
-                           	 Pay
-                           	</a> --}}
                                 <a  onclick="
                            	 if(confirm('Are you sure You want to Pay only one Customer? ')){
                            	     document.getElementById('pay-form[{{$i}}]').submit();
@@ -113,7 +109,7 @@
                            	 Pay
                            	</a>
 						</td>
-						<?php $i--?>
+						<?php $i++?>
 					</tr>
 					@endforeach
                                     </tbody>
@@ -122,7 +118,7 @@
                         </div>
                     </div>
 
-{{-- 		
+		
 			 <div class="card shadow" style="width:100%;">
                           <div class="card-body">  
 			    <div class="row">
@@ -138,7 +134,7 @@
                                 <h6 class="mb-0" style="float: right;">Customers Names </h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                {{$c_names[0]}}, {{$c_names[1]}} <?php //if(count($c_names) > 2){ echo ' and others'; } ?>
+                                {{$c_names[0]}}, {{$c_names[1]}} <?php if(count($c_names) > 2){ echo ' and others'; } ?>
                               </div>
                             </div>
                             
@@ -162,26 +158,36 @@
                               <div class="col-sm-3">
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                  <form method="POST" id="pay-all-form" action="{{route('pay_all_tran_p_c')}}">
+                                  <form method="POST" id="pay-all-form" action="{{route('pay_all_tran_p_c_bulk')}}">
                                       @csrf 
-                                      <input type="hidden" name="c_number" value="{{$customer->phone}}">
-                                      <input type="hidden" name="c_name" value="{{$customer->name}}">
-                                       <input type="hidden" name="c_customerId" value="{{$res->data->customer->id}}">
-                                      <input type="hidden" name="t_amount" value="{{$t_amount}}">
+                                      @foreach ($data as $d)
+                                      <input type="hidden" name="info[]" value="{{$d['customer_id']}}">
+                                      <?php  
+                                        // $q_amount = 0;
+					                    $ts_amount = 0.00;
+					                    foreach ($d['transactions'] as $t) {
+					                    	// $q_amount = $q_amount + (float)$t->quantity;
+					                    	$ts_amount = $ts_amount + (float)$t->amount;
+					                    }
+                                      ?>
+                                        <input type="hidden" name="amount[{{$d['customer_id']}}]" value="{{$ts_amount}}">
+                                      @endforeach
+                                       {{-- <input type="hidden" name="c_customerId" value="{{$res->data->customer->id}}">
+                                      <input type="hidden" name="t_amount" value="{{$t_amount}}"> --}}
                                   </form>
                                 	<a  onclick="
-                           		 if(confirm('Are you sure You want to Pay All Transactions ? ')){
+                           		 if(confirm('Are you sure You want to Pay All Selected Customers ? ')){
                            		     document.getElementById('pay-all-form').submit();
                            		 }
                            		     event.preventDefault();"
                            		 class="btn btn-primary" 
                            		 style="color: black">
-                           		 Pay for All
+                           		 Pay All Customers
                            		</a>
                               </div>
                             </div>
                           </div>
-                        </div> --}}
+                        </div>
             </div>
         </div>
     </div>

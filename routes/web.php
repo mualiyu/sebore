@@ -80,6 +80,7 @@ Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'index'])
 Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'get_t_list'])->name('generate_pay');
 Route::post('/pay/single/transaction', [App\Http\Controllers\PaymentController::class, 'pay_single_t'])->name('pay_single_t');
 Route::post('/pay/all/transaction', [App\Http\Controllers\PaymentController::class, 'pay_all_tran_p_c'])->name('pay_all_tran_p_c');
+Route::post('/pay/all/customers', [App\Http\Controllers\PaymentController::class, 'pay_all_tran_p_c_bulk'])->name('pay_all_tran_p_c_bulk');
 Route::get('/customer_name_search_p', [App\Http\Controllers\PaymentController::class, 'customer_search'])->name('customer_p');
 
 //api test route 

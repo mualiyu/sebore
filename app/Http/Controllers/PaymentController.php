@@ -235,7 +235,7 @@ class PaymentController extends Controller
                     ])->post($mobile_money->url . '/v1/users/transfers/phone', [
                         'sendSms' => false,
                         'mobile' => $num,
-                        'amount' => $request->amount,
+                        'amount' => $request->amount * 100,
                     ]);
                     $res = json_decode($response);
 
@@ -309,7 +309,7 @@ class PaymentController extends Controller
                     $res = json_decode($response);
 
                     if ($res->success == true) {
-                        $customer = Customer::where('uuid', $request->c_customerId)->get();
+                        $customer = Customer::where('id', $request->c_customerId)->get();
 
                         $payments = Payment::create([
                             'from_id' => Auth::user()->organization_id,
@@ -335,30 +335,86 @@ class PaymentController extends Controller
         }
 
         return back()->with('error', 'No Wallet Gateway is allocated to this Organization.');
+    }
 
 
+    public function pay_all_tran_p_c_bulk(Request $request)
+    {
 
 
+        $gateway = PaymentGateway::where('org_id', '=', Auth::user()->organization_id)->get();
 
-        // $new = substr($request->c_number, -10);
-        // $num = '234' . $new;
+        // dd(Auth::user()->organization->name);
 
-        // // dd($request->amount);
-        // $response = Http::withHeaders([
-        //     'Content-Type' => 'application/json ',
-        //     'X-App-Key' => 'pk_live_e0dbe1bec398b4681df1f89c1b8e3176',
-        //     'X-App-Wallet-Access-Token' => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTk4ZTcwOTg5YzY2MjJlNjMwZjhmOCIsIm1vYmlsZSI6IjIzNDgxNjcyMzY2MjkiLCJpYXQiOjE2MjkwNjUxOTAsImV4cCI6MTYyOTE1MTU5MH0.XxjRLNveKR4zF42hoeqz4RWIKBNFh6KD9QiIF1CYyB8',
-        // ])->post('https://api.console.eyowo.com/v1/users/transfers/phone', [
-        //     'mobile' => $num,
-        //     'amount' => $request->t_amount,
-        // ]);
-        // $res = json_decode($response);
+        foreach ($gateway as $g) {
 
-        // if ($res->success == true) {
-        //     return back()->with('success', 'Successful! Payment to ' . $request->c_name . ' for All transactions, Thank you.');
-        // } else {
-        //     return back()->with('error', $res->error);
-        // }
-        // return back();
+            $mobile_money = MobileMoney::find($g->gateway_code);
+
+
+            if ($mobile_money->url == 'https://api.console.eyowo.com') {
+
+                $refresh_t = Http::withHeaders([
+                    'Content-Type' => 'application/json ',
+                    'X-App-Key' => config('app.eyowo_app_key'),
+                ])->post($mobile_money->url . '/v1/users/accessToken', [
+                    'refreshToken' => $g->token,
+                ]);
+                $ref_t = json_decode($refresh_t);
+
+                if ($ref_t->success == true) {
+
+                    $c_names = [];
+
+                    foreach ($request->info as $i) {
+
+                        $customer = Customer::find($i);
+
+                        array_push($c_names, $customer->name);
+
+                        $amount = $request->amount[$i];
+
+                        $new = substr($customer->phone, -10);
+                        $num = '234' . $new;
+
+                        //transfer to phone start
+                        $response = Http::withHeaders([
+                            'Content-Type' => 'application/json ',
+                            'X-App-Key' => config('app.eyowo_app_key'),
+                            'X-App-Wallet-Access-Token' => $ref_t->data->accessToken,
+                        ])->post($mobile_money->url . '/v1/users/transfers/phone', [
+                            'sendSms' => false,
+                            'mobile' =>  $num,
+                            'amount' => $amount * 100,
+                        ]);
+                        $res = json_decode($response);
+
+                        if ($res->success == true) {
+                            // $customer = Customer::where('id', $request->c_customerId)->get();
+
+                            $payments = Payment::create([
+                                'from_id' => Auth::user()->organization_id,
+                                'to_id' => $customer->id,
+                                'status' => true,
+                                'type' => 'Transaction payment from ' . Auth::user()->organization->name . ' to ' . $customer->name,
+                                'ref_num' => $res->data->transaction->reference,
+                                'amount' => $res->data->transaction->amount,
+                                'gateway_code' => $mobile_money->id,
+                            ]);
+                            // return back()->with('success', 'Successful! Payment to ' . $request->c_name . ' for All transactions, Thank you.');
+                        } else {
+                            return back()->with('error', $res->error);
+                        }
+                        //transfer to phone end
+                    }
+                    return back()->with('success', 'Successful! Payment to ' . $c_names[0] . ' And others, Thank you.');
+                } else {
+                    return back()->with('error', $ref_t->error);
+                }
+            } else {
+                return back()->with('error', 'Wallet Not found! Make sure you Have added Wallet in Your Profile.');
+            }
+        }
+
+        return back()->with('error', 'No Wallet Gateway is allocated to this Organization.');
     }
 }
