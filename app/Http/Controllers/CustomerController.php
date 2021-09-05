@@ -181,15 +181,17 @@ class CustomerController extends Controller
         // dd($request->all());
     }
 
-    public function import_customers(Request $request, $id)
+    public function import_customers(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            "file" => "required|mimes:csv",
+            "file" => "required",
 
         ]);
         if ($validator->fails()) {
             return back()->with(['error' => 'Make sure you upload a csv file'])->withInput();
         }
+
+        $id = $request->agent;
 
         Excel::import(new CustomersImport($id), $request->file('file'));
 

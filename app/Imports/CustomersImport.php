@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class CustomersImport implements ToModel, WithHeadingRow
 {
-    private $id;
+    public $id;
 
     public function __construct($id)
     {
@@ -62,7 +62,7 @@ class CustomersImport implements ToModel, WithHeadingRow
             $row['name'] .
                 $agent->phone .
                 $num .
-                $row['phone']
+                $num
         );
 
         $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
@@ -75,14 +75,13 @@ class CustomersImport implements ToModel, WithHeadingRow
             $num . '&code=' .
             $num;
 
-
-        $response = Http::post($url);
-        $res = json_decode($response);
-
-        if ($res->status != "Ok") {
-            $customer->delete();
-            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.']);
+        try {
+            $response = Http::post($url);
+            $res = json_decode($response);
+        } catch (\Throwable $th) {
+            // return back()->with(['error' => 'Sorry, An error was encountered. Come back later!']);
         }
+
         //End api
 
         return $customer;

@@ -108,7 +108,7 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form action="{{route('import_customers', ['id' => $agent->id])}}" method="POST" enctype="multipart/form-data">
+                            <form action="{{route('import_customers')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
                                     <input name="file" class="form-control" required onchange="Upload()" accept=".csv" id="fileUpload" type="file" placeholder="choose file" />
@@ -116,6 +116,17 @@
                                       <input name="submit" class="btn btn-success" id="submit" type="submit" aria-describedby="nameHelp" value="Upload" />
                                     </div>
                                 </div>
+                                 <div class="input-group">
+                                    <?php $agents = \App\Models\Agent::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
+						                <select class="form-control"  disabled>
+                                           <option value="">{{$agent->name}}</option>
+                                           <hr>
+						              	 @foreach ($agents as $a)    
+						              	 <option value="{{$a->id}}">{{$a->name}}</option>
+						              	 @endforeach
+						                </select>
+                                </div>
+                                <input type="hidden" name="agent" value="{{$agent->id}}">
                                 <br><br>
                                 <div class="row">
                                     <div id="dvCSV" class="table-responsive">
