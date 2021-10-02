@@ -57,16 +57,16 @@
                                 {{$customer->phone}}
                               </div>
                             </div>
-			    <div class="row">
+			                      <div class="row">
                     	      <div class="col-sm-3">
                     	        <h6 class="mb-0" style="float: right;">Total Amount</h6>
                     	      </div>
                     	      <?php
                     	      $t_amount = 0;
-				  $t_q = 0;
+				                    $t_q = 0;
                     	        foreach ($transactions as $t) {
                     	            $t_amount = $t_amount + $t->amount;
-				    $t_q = $t_q + $t->quantity;
+				                          $t_q = $t_q + (int)$t->quantity;
                     	        }
                     	      ?>
                     	      <div class="col-sm-9 text-secondary">

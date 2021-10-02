@@ -32,7 +32,6 @@ class CustomersImport implements ToModel, WithHeadingRow
 
         // $x = str_replace(',', '', $row['amount']);
 
-        // dd($row);
         $new = substr($row['phone'], -10);
         $num = '0' . $new;
 
@@ -56,33 +55,32 @@ class CustomersImport implements ToModel, WithHeadingRow
             'org_id' => Auth::user()->organization_id,
         ]);
 
-        //Api
-        $hash = hash(
-            'sha512',
-            $row['name'] .
-                $agent->phone .
-                $num .
-                $num
-        );
+        // //Api
+        // $hash = hash(
+        //     'sha512',
+        //     $row['name'] .
+        //         $agent->phone .
+        //         $num .
+        //         $num
+        // );
 
-        $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash .  '&id=' .
-            $customer->phone .  '&name=' .
-            $row['name'] . '&agentId=' .
-            $agent->phone . '&phone=' .
-            $num . '&code=' .
-            $num;
+        // $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash .  '&id=' .
+        //     $customer->phone .  '&name=' .
+        //     $row['name'] . '&agentId=' .
+        //     $agent->phone . '&phone=' .
+        //     $num . '&code=' .
+        //     $num;
 
-        try {
-            $response = Http::post($url);
-            $res = json_decode($response);
-        } catch (\Throwable $th) {
-            // return back()->with(['error' => 'Sorry, An error was encountered. Come back later!']);
-        }
-
-        //End api
+        // try {
+        //     $response = Http::post($url);
+        //     $res = json_decode($response);
+        // } catch (\Throwable $th) {
+        //     // return back()->with(['error' => 'Sorry, An error was encountered. Come back later!']);
+        // }
+        // //End api
 
         return $customer;
     }

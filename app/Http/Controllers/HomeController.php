@@ -58,40 +58,69 @@ class HomeController extends Controller
 
         // if load type is set to all
 
-        $hash = hash(
-            'sha512',
-            $from .
-                $to
-        );
+        // $hash = hash(
+        //     'sha512',
+        //     $from .
+        //         $to
+        // );
 
-        $url = 'https://api.ajisaqsolutions.com/api/transaction/list?apiUser=' . config('app.apiUser') .
-            '&apiKey=' . config('app.apiKey') .
-            '&hash=' . $hash .
-            '&from=' . $from .
-            '&to=' . $to;
-        // dd($hash . "   " . $from . "  " . $to);
+        // $url = 'https://api.ajisaqsolutions.com/api/transaction/list?apiUser=' . config('app.apiUser') .
+        //     '&apiKey=' . config('app.apiKey') .
+        //     '&hash=' . $hash .
+        //     '&from=' . $from .
+        //     '&to=' . $to;
+        // // dd($hash . "   " . $from . "  " . $to);
+
+        // $transactions = [];
+        // if (
+        //     $response = Http::get($url)
+        // ) {
+        //     $res = json_decode($response);
+        //     // return $response;
+        //     if ($res->status == 'Ok') {
+        //         if (count($res->data) > 0) {
+        //             $transactions = $res->data;
+        //             // return $transactions;
+        //             return view('home', compact('transactions', 'from', 'to', 'months'));
+        //         } else {
+        //             return view('home', compact('transactions'));
+        //         }
+        //     } else {
+        //         return view('home', compact('transactions'));
+        //         // return back()->with('error', 'Service Error, Try again later!');
+        //     }
+        // } else {
+        //     return view('home', compact('transactions'))->with('error', 'Service Error, Try again later!');;
+        // }
 
         $transactions = [];
-        if (
-            $response = Http::get($url)
-        ) {
-            $res = json_decode($response);
-            // return $response;
-            if ($res->status == 'Ok') {
-                if (count($res->data) > 0) {
-                    $transactions = $res->data;
-                    // return $transactions;
-                    return view('home', compact('transactions', 'from', 'to', 'months'));
-                } else {
-                    return view('home', compact('transactions'));
-                }
+        $org = Auth::user()->organization;
+
+        if ($org->theme) {
+            if ($org->theme == 1) {
+                $card1 = 'rgb(94,46,46)';
+                $card2 = 'rgb(109,61,61)';
+                $card3 = 'rgb(127,79,79)';
+            } elseif ($org->theme == 2) {
+                $card1 = 'rgb(126,170,57)';
+                $card2 = 'rgb(124,155,76)';
+                $card3 = 'rgb(139,170,91)';
+            } elseif ($org->theme == 3) {
+                $card1 = 'rgb(75, 70, 245)';
+                $card2 = 'rgb(75, 70, 235)';
+                $card3 = 'rgb(75, 70, 225)';
             } else {
-                return view('home', compact('transactions'));
-                // return back()->with('error', 'Service Error, Try again later!');
+                $card1 = 'rgb(109, 41, 41)';
+                $card2 = 'rgb(100, 41, 41)';
+                $card3 = 'rgb(91, 41, 41)';
             }
         } else {
-            return view('home', compact('transactions'))->with('error', 'Service Error, Try again later!');;
+            $card1 = 'rgb(109, 41, 41)';
+            $card2 = 'rgb(100, 41, 41)';
+            $card3 = 'rgb(91, 41, 41)';
         }
+
+        return view('home', compact('transactions', 'card1', 'card2', 'card3'));
     }
 
     public function show_profile()
@@ -173,6 +202,7 @@ class HomeController extends Controller
             'phone' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'address' => ['required', 'string'],
+            'theme' => ['nullable']
         ]);
         if ($validator->fails()) {
             return back()->with('error', 'Organization not Updated. Try again!');
@@ -180,34 +210,36 @@ class HomeController extends Controller
 
         $org = Organization::find($id);
 
-        $name = $request['name'];
-        $description = $request['description'];
-        $logo = url('/storage/pic/' . $org->logo);
-        $phone = $request['phone'];
-        $hash = hash('sha512', $name . $description . $logo . $phone);
+        // //api start
+        // $name = $request['name'];
+        // $description = $request['description'];
+        // $logo = url('/storage/pic/' . $org->logo);
+        // $phone = $request['phone'];
+        // $hash = hash('sha512', $name . $description . $logo . $phone);
 
-        $url = 'https://api.ajisaqsolutions.com/api/organization/update?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash . '&id=' .
-            $id . '&name=' .
-            $name . '&description=' .
-            $description . '&logoUrl=' .
-            $logo . '&phone=' . $phone;
+        // $url = 'https://api.ajisaqsolutions.com/api/organization/update?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash . '&id=' .
+        //     $id . '&name=' .
+        //     $name . '&description=' .
+        //     $description . '&logoUrl=' .
+        //     $logo . '&phone=' . $phone;
 
-        $response = Http::post($url);
+        // $response = Http::post($url);
 
-        $res = json_decode($response);
+        // $res = json_decode($response);
 
-        if ($res->status != 'Ok') {
-            return back()->with("error", "Sorry! Fail to update your Details, Try later.");
-        }
+        // if ($res->status != 'Ok') {
+        //     return back()->with("error", "Sorry! Fail to update your Details, Try later.");
+        // }
 
         $organization = Organization::where('id', '=', $id)->update([
             'name' => $request['name'],
             'description' => $request['description'],
             'phone' => $request['phone'],
             'address' => $request['address'],
+            'theme' => $request['theme'],
         ]);
 
         return redirect()->route('profile')->with(['success' => 'Organization is Updated']);
@@ -240,29 +272,29 @@ class HomeController extends Controller
 
         $org = Organization::find($id);
 
-        // Api start here
-        $name = $org->name;
-        $description = $org->description;
-        $logo = url('/storage/pic/' . $imageNameToStore);
-        $phone = $org->phone;
-        $hash = hash('sha512', $name . $description . $logo . $phone);
+        // // Api start here
+        // $name = $org->name;
+        // $description = $org->description;
+        // $logo = url('/storage/pic/' . $imageNameToStore);
+        // $phone = $org->phone;
+        // $hash = hash('sha512', $name . $description . $logo . $phone);
 
-        $url = 'https://api.ajisaqsolutions.com/api/organization/update?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash . '&id=' .
-            $id . '&name=' .
-            $name . '&description=' .
-            $description . '&logoUrl=' .
-            $logo . '&phone=' . $phone;
+        // $url = 'https://api.ajisaqsolutions.com/api/organization/update?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash . '&id=' .
+        //     $id . '&name=' .
+        //     $name . '&description=' .
+        //     $description . '&logoUrl=' .
+        //     $logo . '&phone=' . $phone;
 
-        $response = Http::post($url);
+        // $response = Http::post($url);
 
-        $res = json_decode($response);
+        // $res = json_decode($response);
 
-        if ($res->status != 'Ok') {
-            return back()->with("error", "Sorry! System Fail to update your Logo. Try later!");
-        }
+        // if ($res->status != 'Ok') {
+        //     return back()->with("error", "Sorry! System Fail to update your Logo. Try later!");
+        // }
 
         $arrayToStore = [
             "logo" => $imageNameToStore,

@@ -6526,9 +6526,9 @@ select.form-control:not([size]):not([multiple]) {
 
 /*====== Image-sizes css ends ======*/
 /*======= Text css starts ===========*/
-.text-primary {
-    color: rgba(126, 170, 57, 0.7)/*rgba(90, 30, 30, 0.7)*/ !important;
-}
+/* .text-primary {
+    color: rgba(126, 170, 57, 0.7) or rgba(90, 30, 30, 0.7) !important;
+} */
 
 .text-warning {
     color: #ffe100 !important;
@@ -11304,7 +11304,7 @@ table tbody .border-bottom-info td {
 }
 
 body[themebg-pattern="theme1"] {
-    background-color: rgba(99,161,0, 0.7) /*rgb(90, 30, 30)*/;
+    background-color: /*rgba(99,161,0, 0.7)*/ rgb(90, 30, 30);
 }
 body[themebg-pattern="theme2"] {
     background-color: #b71c1c;
@@ -11784,16 +11784,16 @@ body[themebg-pattern="theme6"] {
     > a {
     font-weight: 500;
 }
-.pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item li:hover > a {
-    color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/ !important;
-}
-.pcoded
+/* .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item li:hover > a {
+    color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)* !important;
+} 
+ .pcoded
     .pcoded-navbar[active-item-theme="theme1"]
     .pcoded-item
     li:hover
     > a
     .pcoded-micon {
-    color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/ !important;
+    color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)* !important;
 }
 .pcoded
     .pcoded-navbar[active-item-theme="theme1"]
@@ -11807,9 +11807,9 @@ body[themebg-pattern="theme6"] {
     .pcoded-item
     > li.active
     > a {
-    background: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/;
+    background: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*;
     color: #fff !important;
-}
+} */
 .pcoded
     .pcoded-navbar[active-item-theme="theme1"]
     .pcoded-item
@@ -13153,7 +13153,7 @@ body[themebg-pattern="theme6"] {
 }
 .pcoded[fream-type="theme1"] .page-header:before,
 .pcoded[fream-type="theme1"] .main-menu .main-menu-header:before {
-    background: rgba(126, 170, 57, 0.7) /*rgba(109, 41, 41, 0.7)*/;
+    /* background:  rgba(109, 41, 41, 0.7); rgba(126, 170, 57, 0.7) */
 }
 .pcoded[fream-type="theme2"] .page-header:before,
 .pcoded[fream-type="theme2"] .main-menu .main-menu-header:before {
@@ -13686,11 +13686,11 @@ body.menu-bottom #collapse-menu {
 }
 
 /**====== Basic-Buttons css Start ======**/
-.btn-primary,
+/* .btn-primary,
 .sweet-alert button.confirm,
 .wizard > .actions a {
-    background-color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/;
-    border-color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7)*/;
+    background-color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7);
+    border-color: rgba(126, 170, 57, 0.7) /*rgba(90, 30, 30, 0.7);
     color: #fff;
     cursor: pointer;
     -webkit-transition: all ease-in 0.3s;
@@ -13699,14 +13699,14 @@ body.menu-bottom #collapse-menu {
 .btn-primary:hover,
 .sweet-alert button.confirm:hover,
 .wizard > .actions a:hover {
-    background-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4)*/;
-    border-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4)*/;
+    background-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4);
+    border-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4);
 }
 .btn-primary:active,
 .sweet-alert button.confirm:active,
 .wizard > .actions a:active {
-    background-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4)*/ !important;
-    border-color: rgba(126, 170, 57, 0.4)/*rgba(90, 30, 30, 0.4)*/;
+    background-color: rgba(126, 170, 57, 0.4) /*rgba(90, 30, 30, 0.4) !important;
+    border-color: rgba(126, 170, 57, 0.4)/*rgba(90, 30, 30, 0.4);
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #fff;
@@ -13717,13 +13717,13 @@ body.menu-bottom #collapse-menu {
     -webkit-box-shadow: none;
     box-shadow: none;
     color: #fff;
-    background-color: rgba(90, 30, 30, 0.3);
-}
+    background-color: rgba(126, 170, 57, 0.9);
+} */
 .btn-primary.disabled,
 .sweet-alert button.disabled.confirm,
 .wizard > .actions a.disabled {
-    background-color: rgba(68, 138, 255, 0.5);
-    border-color: rgba(68, 138, 255, 0.5);
+    background-color: rgba(162, 190, 240, 0.5);
+    border-color: rgba(151, 181, 231, 0.5);
 }
 
 .btn-warning {

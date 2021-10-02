@@ -28,6 +28,44 @@
       <link rel="stylesheet" type="text/css" href="{{asset('assets/icon/font-awesome/css/font-awesome.min.css')}}">
       <!-- Style.css -->
       <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+
+      @yield('style')
+
+      <style>
+          .btn-primary,
+        .sweet-alert button.confirm,
+        .wizard > .actions a {
+            background-color: rgba(90, 30, 30, 0.7);
+            border-color: rgba(90, 30, 30, 0.7);
+            color: #fff;
+            cursor: pointer;
+            -webkit-transition: all ease-in 0.3s;
+            transition: all ease-in 0.3s;
+        }
+        .btn-primary:hover,
+        .sweet-alert button.confirm:hover,
+        .wizard > .actions a:hover {
+            background-color: rgba(90, 30, 30, 0.4);
+            border-color: rgba(90, 30, 30, 0.4);
+        }
+        .btn-primary:active,
+        .sweet-alert button.confirm:active,
+        .wizard > .actions a:active {
+            background-color: rgba(90, 30, 30, 0.4) !important;
+            border-color: rgba(90, 30, 30, 0.4);
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            color: #fff;
+        }
+        .btn-primary:focus,
+        .sweet-alert button.confirm:focus,
+        .wizard > .actions a:focus {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            color: #fff;
+            background-color: rgba(90, 30, 30, 0.4);
+        }
+      </style>
   </head>
 
   <body themebg-pattern="theme1">

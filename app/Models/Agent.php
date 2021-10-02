@@ -41,4 +41,14 @@ class Agent extends Model
     {
         return $this->hasMany(Customer::class);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return HasMany
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

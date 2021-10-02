@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Device;
 use App\Models\Item;
+use App\Models\Transaction;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,72 +69,34 @@ class transactionController extends Controller
         // if load type is set to all
         if ($request->request_type == "all") {
 
-            $hash = hash(
-                'sha512',
-                $from .
-                    $to
-            );
+            $transactions = Transaction::whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
 
-            $url = 'https://api.ajisaqsolutions.com/api/transaction/list?apiUser=' . config('app.apiUser') .
-                '&apiKey=' . config('app.apiKey') .
-                '&hash=' . $hash .
-                '&from=' . $from .
-                '&to=' . $to;
-            // dd($hash . "   " . $from . "  " . $to);
+            if ($transactions) {
 
-            if (
-                $response = Http::get($url)
-            ) {
-                $res = json_decode($response);
-                // return $response;
-                if ($res->status == 'Ok') {
-                    if (count($res->data) > 0) {
-                        $transactions = $res->data;
-                        return view('transactions.all', compact('transactions', 'from', 'to', 'months'));
-                    } else {
-                        return back()->with('error', 'No Transaction Within this range. Try Again!');
-                    }
+                if (count($transactions) > 0) {
+                    // dd(Auth::user()->organization->name);
+                    return view('transactions.all', compact('transactions', 'from', 'to', 'months'));
                 } else {
-                    return back()->with('error', 'Service Error, Try again later!');
+                    return back()->with('error', 'No Transaction Within this range. Try Again!');
                 }
             }
         }
 
         // load transactions by customer
         if ($request->request_type == "customer") {
+
             if (!$request->data_d) {
                 return back()->with('error', 'Make sure you select Customer.');
             }
             $customer = Customer::find($request->data_d);
-            $hash = hash(
-                'sha512',
-                $customer->phone .
-                    $from .
-                    $to
-            );
 
-            $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
-                '&apiKey=' . config('app.apiKey') .
-                '&hash=' . $hash .
-                '&customerId=' . $customer->phone .
-                '&from=' . $from .
-                '&to=' . $to;
-            // dd($url);
-            if (
-                $response = Http::get($url)
-            ) {
-                $res = json_decode($response);
-                // return $response;
-                if ($res->status == 'Ok') {
-                    if (count($res->data) > 0) {
-                        $transactions = $res->data;
-                        // dd($res);
-                        return view('transactions.customers', compact('transactions', 'customer', 'from', 'to', 'months'));
-                    } else {
-                        return back()->with('error', 'No Transaction for this Customer.');
-                    }
+            $transactions = Transaction::where('customer_id', '=', $customer->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+
+            if ($transactions) {
+                if (count($transactions) > 0) {
+                    return view('transactions.customers', compact('transactions', 'customer', 'from', 'to', 'months'));
                 } else {
-                    return back()->with('error', 'Service Error, Try again later!');
+                    return back()->with('error', 'No Transaction for this Customer.');
                 }
             }
         }
@@ -145,35 +108,12 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select Agent.');
             }
             $agent = Agent::find($request->data_d);
-            $hash = hash(
-                'sha512',
-                $agent->phone .
-                    $from .
-                    $to
-            );
-
-            $url = 'https://api.ajisaqsolutions.com/api/transaction/listByAgent?apiUser=' . config('app.apiUser') .
-                '&apiKey=' . config('app.apiKey') .
-                '&hash=' . $hash .
-                '&agentId=' . $agent->phone .
-                '&from=' . $from .
-                '&to=' . $to;
-            // dd($url);
-            if (
-                $response = Http::get($url)
-            ) {
-                $res = json_decode($response);
-                // return $response;
-                if ($res->status == 'Ok') {
-                    if (count($res->data) > 0) {
-                        $transactions = $res->data;
-                        // dd($res);
-                        return view('transactions.agents', compact('transactions', 'agent', 'from', 'to', 'months'));
-                    } else {
-                        return back()->with('error', 'No Transaction for this Agent.');
-                    }
+            $transactions = Transaction::where('agent_id', '=', $agent->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            if ($transactions) {
+                if (count($transactions) > 0) {
+                    return view('transactions.agents', compact('transactions', 'agent', 'from', 'to', 'months'));
                 } else {
-                    return back()->with('error', 'Service Error, Try again later!');
+                    return back()->with('error', 'No Transaction for this Agent.');
                 }
             }
         }
@@ -184,35 +124,12 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select a device.');
             }
             $device = Device::find($request->data_d);
-            $hash = hash(
-                'sha512',
-                $device->id .
-                    $from .
-                    $to
-            );
-
-            $url = 'https://api.ajisaqsolutions.com/api/transaction/listByDevice?apiUser=' . config('app.apiUser') .
-                '&apiKey=' . config('app.apiKey') .
-                '&hash=' . $hash .
-                '&deviceId=' . $device->id .
-                '&from=' . $from .
-                '&to=' . $to;
-            // dd($url);
-            if (
-                $response = Http::get($url)
-            ) {
-                $res = json_decode($response);
-                // return $response;
-                if ($res->status == 'Ok') {
-                    if (count($res->data) > 0) {
-                        $transactions = $res->data;
-                        // dd($res);
-                        return view('transactions.devices', compact('transactions', 'device', 'from', 'to', 'months'));
-                    } else {
-                        return back()->with('error', 'No Transaction for this Device.');
-                    }
+            $transactions = Transaction::where('device_id', '=', $device->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            if ($transactions) {
+                if (count($transactions) > 0) {
+                    return view('transactions.devices', compact('transactions', 'device', 'from', 'to', 'months'));
                 } else {
-                    return back()->with('error', 'Service Error, Try again later!');
+                    return back()->with('error', 'No Transaction from this Device.');
                 }
             }
         }
@@ -223,35 +140,12 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select Item.');
             }
             $item = Item::find($request->data_d);
-            $hash = hash(
-                'sha512',
-                $item->id .
-                    $from .
-                    $to
-            );
-
-            $url = 'https://api.ajisaqsolutions.com/api/transaction/listByItem?apiUser=' . config('app.apiUser') .
-                '&apiKey=' . config('app.apiKey') .
-                '&hash=' . $hash .
-                '&itemId=' . $item->id .
-                '&from=' . $from .
-                '&to=' . $to;
-            // return $hash . "   " . $item->id . "  " . $from . " " . $to;
-            if (
-                $response = Http::get($url)
-            ) {
-                $res = json_decode($response);
-                // return $response;
-                if ($res->status == 'Ok') {
-                    if (count($res->data) > 0) {
-                        $transactions = $res->data;
-                        // dd($res);
-                        return view('transactions.items', compact('transactions', 'item', 'from', 'to', 'months'));
-                    } else {
-                        return back()->with('error', 'No Transaction for this Item.');
-                    }
+            $transactions = Transaction::where('item_id', '=', $item->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            if ($transactions) {
+                if (count($transactions) > 0) {
+                    return view('transactions.items', compact('transactions', 'item', 'from', 'to', 'months'));
                 } else {
-                    return back()->with('error', 'Service Error, Try again later!');
+                    return back()->with('error', 'No Transaction for this Item.');
                 }
             }
         }

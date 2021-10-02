@@ -30,7 +30,6 @@ class CustomerController extends Controller
         $agent = Agent::find($id);
 
         $customers = Customer::where('agent_id', '=', $id)->orderBy('created_at', 'desc')->get();
-        // dd($customers);
 
         return view('customers.index', compact('customers', 'agent'));
     }
@@ -38,7 +37,6 @@ class CustomerController extends Controller
     public function show_all_customers()
     {
         $customers = Customer::where('org_id', '=', Auth::user()->organization_id)->orderBy('created_at', 'desc')->get();
-        // dd($customers);
 
         return view('customers.all', compact('customers'));
     }
@@ -88,38 +86,37 @@ class CustomerController extends Controller
         Customer::where('id', '=', $customer->id)->update([
             'agent_id' => $request['agent'],
             'org_id' => Auth::user()->organization_id,
-            // 'uuid' => $res->data->id,
         ]);
 
 
-        //Api
-        $hash = hash(
-            'sha512',
-            $request['name'] .
-                $agent->phone .
-                $request['phone'] .
-                $request['phone']
-        );
+        // //Api
+        // $hash = hash(
+        //     'sha512',
+        //     $request['name'] .
+        //         $agent->phone .
+        //         $request['phone'] .
+        //         $request['phone']
+        // );
 
-        $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash .  '&id=' .
-            $customer->phone .  '&name=' .
-            $request['name'] . '&agentId=' .
-            $agent->phone . '&phone=' .
-            $request['phone'] . '&code=' .
-            $request['phone'];
+        // $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash .  '&id=' .
+        //     $customer->phone .  '&name=' .
+        //     $request['name'] . '&agentId=' .
+        //     $agent->phone . '&phone=' .
+        //     $request['phone'] . '&code=' .
+        //     $request['phone'];
 
 
-        $response = Http::post($url);
-        $res = json_decode($response);
+        // $response = Http::post($url);
+        // $res = json_decode($response);
 
-        if ($res->status != "Ok") {
-            $customer->delete();
-            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
-        }
-        //End api
+        // if ($res->status != "Ok") {
+        //     $customer->delete();
+        //     return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        // }
+        // //End api
 
         return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is Created to system']);
 
@@ -163,7 +160,6 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return back()->with('error', "Update fail. Make sure all field's are correct, And Try again!");
         }
-        // dd($request->all());
 
         $customer = Customer::where('id', '=', $id)->update([
             'name' => $request['name'],
@@ -177,22 +173,19 @@ class CustomerController extends Controller
         ]);
 
         return back()->with(['success' => 'Customer is Updated Successfully']);
-
-        // dd($request->all());
     }
 
     public function import_customers(Request $request)
     {
         $validator = Validator::make($request->all(), [
             "file" => "required",
-
         ]);
+
         if ($validator->fails()) {
             return back()->with(['error' => 'Make sure you upload a csv file'])->withInput();
         }
 
         $id = $request->agent;
-
         Excel::import(new CustomersImport($id), $request->file('file'));
 
         return back()->with(['success' => "Customers uploaded Successful"]);
@@ -201,7 +194,7 @@ class CustomerController extends Controller
     public function download_sample()
     {
         $filePath = public_path("assets/sample/sample_customers.csv");
-        // dd($filePath);
+
         $headers = ['Content-Type: text/csv'];
         $fileName = 'sample_' . time() . '.csv';
 

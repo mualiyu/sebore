@@ -54,8 +54,8 @@
                         <h6 class="mb-0" style="float: right;">Date range </h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                          <?php $f = explode('-', $from); $from = $f[2]. ' '.$months[(int)$f[1]].', '.$f[0]; ?>
-                          <?php $t = explode('-', $to); $to = $t[2].' '.$months[(int)$t[1]].', '.$t[0]; ?>
+                          <?php $f = explode('-', $from); $from = (int)$f[2]. ' '.$months[(int)$f[1]].', '.$f[0]; ?>
+                          <?php $t = explode('-', $to); $to = (int)$t[2].' '.$months[(int)$t[1]].', '.$t[0]; ?>
                         from {{$from}} to {{$to}}
                         <div id="small"></div>
                       </div>
@@ -69,7 +69,7 @@
                       $t_q = 0;
                         foreach ($transactions as $t) {
                             $t_amount = $t_amount + $t->amount;
-                            $t_q = $t_q + $t->quantity;
+                            $t_q = $t_q + (int)$t->quantity;
                         }
                       ?>
                       <div class="col-sm-9 text-secondary">
@@ -117,20 +117,8 @@
                                     <tbody>
 					    <?php $i = 1;?>
 				        @foreach ($transactions as $t)
-					<?php
-					// $t_amount = (float)$t_amount + (float)$t->amount;
-
-					// $hash = hash('sha512',$t->id);
-
-					// $url = 'https://api.ajisaqsolutions.com/api/transaction/get?apiUser=' . config('app.apiUser') .
-            		// 			'&apiKey=' . config('app.apiKey') .
-            		// 			'&hash=' . $hash .
-            		// 			'&id=' . $t->id;
-					// $response = Http::get($url);
-            		// 		// return $response;
-            		// 		$res = json_decode($response);
-					//     dd($res);
-					?>
+                <?php ?>
+				
 					<tr>
 						<th scope="row">{{$i}}</th>
 						<td>{{$t->item->name}}</td>

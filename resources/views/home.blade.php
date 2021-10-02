@@ -107,7 +107,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(126, 170, 57);">{{count($users)}}</h4>
+                                        <h4 class="text-c" style="color: {{$card1 ?? ''}};">{{count($users)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Users</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -115,7 +115,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(126, 170, 57);;">
+                            <div class="card-footer" style="background: {{$card1 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -133,7 +133,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(124,155,76);">{{count($agents)}}</h4>
+                                        <h4 class="text-c" style="color: {{$card2 ?? ''}};">{{count($agents)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Agents</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -141,7 +141,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(124,155,76);">
+                            <div class="card-footer" style="background: {{$card2 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -159,7 +159,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(139,170,91));">{{count($devices)}}</h4>
+                                        <h4 class="text-c" style="color: {{$card3 ?? ''}};">{{count($devices)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Device</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -167,7 +167,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(139,170,91);">
+                            <div class="card-footer" style="background: {{$card3 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -186,7 +186,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(126, 170, 57);">{{count($categories)}}</h4>
+                                        <h4 class="text-c" style="color: {{$card3 ?? ''}};">{{count($categories)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Categories</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -194,7 +194,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(126, 170, 57);">
+                            <div class="card-footer" style="background: {{$card3 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -212,7 +212,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(124,155,76);">{{count($customers)}}</h4>
+                                        <h4 class="text-c" style="color: {{$card2 ?? ''}};">{{count($customers)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Customers</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -220,7 +220,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(124,155,76);">
+                            <div class="card-footer" style="background: {{$card2 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -238,7 +238,7 @@
                             <div class="card-block">
                                 <div class="row align-items-center">
                                     <div class="col-8">
-                                        <h4 class="text-c" style="color: rgb(139,170,91);">{{count($items)}}</h4>
+                                        <h4 class="text-c" style="color: {{$card1 ?? ''}};">{{count($items)}}</h4>
                                         <h6 class="text-muted m-b-0">No of Items</h6>
                                     </div>
                                     <div class="col-4 text-right">
@@ -246,7 +246,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: rgb(139,170,91);">
+                            <div class="card-footer" style="background: {{$card1 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <p class="text-white m-b-0">% Open</p>
@@ -259,30 +259,6 @@
                         </div>
                     </div>
 
-
-                    {{-- <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Hello card</h5>
-                                <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
-                                <div class="card-header-right">
-                                    <ul class="list-unstyled card-option">
-                                        <li><i class="fa fa-chevron-left"></i></li>
-                                        <li><i class="fa fa-window-maximize full-card"></i></li>
-                                        <li><i class="fa fa-minus minimize-card"></i></li>
-                                        <li><i class="fa fa-refresh reload-card"></i></li>
-                                        <li><i class="fa fa-times close-card"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-block">
-                                <p>
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                                </p>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
         </div>

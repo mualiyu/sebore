@@ -29,4 +29,14 @@ class Device extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return HasMany
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

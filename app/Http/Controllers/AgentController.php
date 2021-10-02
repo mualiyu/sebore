@@ -63,7 +63,8 @@ class AgentController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        // dd($org->uuid);
+
+
         $role = AgentRole::find($request['role']);
 
         $agent = Agent::create([
@@ -82,43 +83,42 @@ class AgentController extends Controller
         Agent::where('id', '=', $agent->id)->update([
             'user_id' => Auth::user()->id,
             'org_id' => Auth::user()->organization_id,
-            // 'uuid' => $res->data->id,
             'agent_role_id' => $request['role'],
         ]);
 
-        //Api
-        $hash = hash(
-            'sha512',
-            $org->id .
-                $request['name'] .
-                $request['email'] .
-                $request['password'] .
-                $request['phone'] .
-                $role->name
-        );
-        $url = 'https://api.ajisaqsolutions.com/api/agent/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash . '&id=' .
-            $agent->phone . '&organizationId=' .
-            $org->id . '&name=' .
-            $request['name'] . '&email=' .
-            $request['email'] . '&password=' .
-            $request['password'] . '&phone=' .
-            $request['phone'] . '&type=' .
-            $role->name;
+        // //Api
+        // $hash = hash(
+        //     'sha512',
+        //     $org->id .
+        //         $request['name'] .
+        //         $request['email'] .
+        //         $request['password'] .
+        //         $request['phone'] .
+        //         $role->name
+        // );
+        // $url = 'https://api.ajisaqsolutions.com/api/agent/add?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash . '&id=' .
+        //     $agent->phone . '&organizationId=' .
+        //     $org->id . '&name=' .
+        //     $request['name'] . '&email=' .
+        //     $request['email'] . '&password=' .
+        //     $request['password'] . '&phone=' .
+        //     $request['phone'] . '&type=' .
+        //     $role->name;
 
 
-        $response = Http::post($url);
-        // return $response;
-        $res = json_decode($response);
+        // $response = Http::post($url);
+        // // return $response;
+        // $res = json_decode($response);
 
-        // dd($res);
-        if ($res->status != "Ok") {
-            $agent->delete();
-            return back()->with(['error' => 'Sorry, An error was encountered, Please try again later.'])->withInput();
-        }
-        //End Api
+        // // dd($res);
+        // if ($res->status != "Ok") {
+        //     $agent->delete();
+        //     return back()->with(['error' => 'Sorry, An error was encountered, Please try again later.'])->withInput();
+        // }
+        // //End Api
 
 
         return redirect('/agents')->with(['success' => $agent->name . ' is Created to system as agent']);

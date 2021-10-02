@@ -22,6 +22,12 @@ class ItemController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function show_items($id)
     {
         $device = Device::find($id);
@@ -35,7 +41,6 @@ class ItemController extends Controller
     public function show_all_items()
     {
         $items = Item::where('org_id', '=', Auth::user()->organization_id)->orderBy('created_at', 'desc')->get();
-        // dd($customers);
 
         return view('items.all', compact('items'));
     }
@@ -52,6 +57,12 @@ class ItemController extends Controller
         return view('items.add_item', compact('device'));
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
     public function create_item(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -70,8 +81,6 @@ class ItemController extends Controller
 
         $device = Device::find($request['device']);
         $category = Category::find($request['category']);
-        // dd($device->uuid);
-
 
 
         $item = Item::create([
@@ -86,58 +95,51 @@ class ItemController extends Controller
         Item::where('id', '=', $item->id)->update([
             'category_id' => $request['category'],
             'device_id' => $request['device'],
-            // 'uuid' => $res->data->id,
             'org_id' => Auth::user()->organization_id,
         ]);
 
 
 
-        //Api
-        $with_q = $request['with_q'] ? 'true' : 'false';
-        $with_p = $request['with_p'] ? 'true' : 'false';
+        // //Api
+        // $with_q = $request['with_q'] ? 'true' : 'false';
+        // $with_p = $request['with_p'] ? 'true' : 'false';
 
-        $hash = hash(
-            'sha512',
-            $request['code'] .
-                $device->id .
-                $category->name .
-                $request['name'] .
-                $request['measure'] .
-                $request['unit'] .
-                $with_q .
-                $with_p
-        );
+        // $hash = hash(
+        //     'sha512',
+        //     $request['code'] .
+        //         $device->id .
+        //         $category->name .
+        //         $request['name'] .
+        //         $request['measure'] .
+        //         $request['unit'] .
+        //         $with_q .
+        //         $with_p
+        // );
 
+        // $url = 'https://api.ajisaqsolutions.com/api/item/add?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash .  '&code=' .
+        //     $request['code'] . '&id=' .
+        //     $item->id . '&deviceId=' .
+        //     $device->id . '&category=' .
+        //     $category->name . '&name=' .
+        //     $request['name'] . '&measure=' .
+        //     $request['measure'] . '&unit=' .
+        //     $request['unit'] . '&withQuantity=' .
+        //     $with_q . '&withFromTo=' .
+        //     $with_p;
 
-        $url = 'https://api.ajisaqsolutions.com/api/item/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash .  '&code=' .
-            $request['code'] . '&id=' .
-            $item->id . '&deviceId=' .
-            $device->id . '&category=' .
-            $category->name . '&name=' .
-            $request['name'] . '&measure=' .
-            $request['measure'] . '&unit=' .
-            $request['unit'] . '&withQuantity=' .
-            $with_q . '&withFromTo=' .
-            $with_p;
+        // $response = Http::post($url);
+        // $res = json_decode($response);
 
-
-        $response = Http::post($url);
-        $res = json_decode($response);
-
-        // return $response;
-
-        if ($res->status != "Ok") {
-            $item->delete();
-            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
-        }
-        //End api
+        // if ($res->status != "Ok") {
+        //     $item->delete();
+        //     return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        // }
+        // //End api
 
         return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is added to system as Item']);
-
-        // dd($request->all());
     }
 
     public function create_category(Request $request)
@@ -161,8 +163,6 @@ class ItemController extends Controller
         ]);
 
         return back()->with(['success' => 'Category is Created to system']);
-
-        // dd($request->all());
     }
 
 
@@ -170,7 +170,6 @@ class ItemController extends Controller
     {
         $device = Device::find($d_id);
         $item = Item::find($i_id);
-        // dd($customer);
 
         return view('items.edit', compact('device', 'item'));
     }
@@ -190,7 +189,6 @@ class ItemController extends Controller
         if (!$validator) {
             return back()->with('error', 'Item not Updated. Try again!');
         }
-        // dd($request->all());
 
         $item = Item::where('id', '=', $id)->update([
             'name' => $request['name'],
@@ -207,13 +205,11 @@ class ItemController extends Controller
         ]);
 
         return back()->with(['success' => 'Item is Updated successfully']);
-
-        // dd($request->all());
     }
 
     public function delete_item($id)
     {
-        // dd($id);
+
         $res = Item::where('id', $id)->delete();
 
         if ($res) {

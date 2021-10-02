@@ -2,6 +2,50 @@
 <html lang="en">
 
 <head>
+
+    <?php
+        $org = Auth::user()->organization;
+        if ($org->theme) {
+            if ($org->theme == 1) {
+                $tn = 'rgb(90,30,30)';
+                $th = 'rgba(109, 41, 41, 0.7)';
+                $bth = 'rgba(109, 41, 41, 0.4)';
+                $card1 = 'rgb(109, 41, 41)';
+                $card2 ='rgb(102, 41, 41)';
+                $card3 = 'rgb(100, 41, 41)';
+            }
+            elseif ($org->theme == 2) {
+                $tn = 'rgb(99,161,0)';
+                $th = 'rgba(126, 170, 57, 0.7)';
+                $bth = 'rgba(126, 170, 57, 0.4)';
+                $card1 = 'rgb(126,170,57)';
+                $card2 ='rgb(124,155,76)';
+                $card3 = 'rgb(139,170,91)';
+            }
+            elseif ($org->theme == 3) {
+                $tn = 'rgb(0,0,255)';
+                $th = 'rgba(75, 75, 241, 0.7)';
+                $bth = 'rgba(75, 75, 241, 0.4)';
+                $card1 = 'rgb(75, 70, 245)';
+                $card2 ='rgb(75, 70, 235)';
+                $card3 = 'rgb(75, 70, 225)';
+            }else{
+                $tn = 'rgb(90,30,30)';
+                $th = 'rgba(109, 41, 41, 0.7)';
+                $bth = 'rgba(109, 41, 41, 0.4)';
+                $card1 = 'rgb(109, 41, 41)';
+                $card2 ='rgb(102, 41, 41)';
+                $card3 = 'rgb(100, 41, 41)';
+            }
+        }else {
+            $tn = 'rgb(90,30,30)';
+            $th = 'rgba(109, 41, 41, 0.7)';
+            $bth = 'rgba(109, 41, 41, 0.4)';
+            $card1 = 'rgb(109, 41, 41)';
+            $card2 = 'rgb(102, 41, 41)';
+            $card3 = 'rgb(100, 41, 41)';
+        }
+    ?>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -30,6 +74,82 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/jquery.mCustomScrollbar.css')}}">
 
     @yield('style')
+
+    <style>
+
+        .page-header:before {
+            background: <?php echo $th;?>
+        }
+
+        /* line 6529 */
+        .text-primary {
+            color: {{$th}} !important;
+        }
+
+        /* line 13688 */
+
+        .btn-primary,
+        .sweet-alert button.confirm,
+        .wizard > .actions a {
+            background-color: {{$th}} /*rgba(90, 30, 30, 0.7)*/;
+            border-color: {{$tn}} /*rgba(90, 30, 30, 0.7)*/;
+            color: #fff;
+            cursor: pointer;
+            -webkit-transition: all ease-in 0.3s;
+            transition: all ease-in 0.3s;
+        }
+        .btn-primary:hover,
+        .sweet-alert button.confirm:hover,
+        .wizard > .actions a:hover {
+            background-color: {{$bth}} /*rgba(90, 30, 30, 0.4)*/;
+            border-color: {{$bth}} /*rgba(90, 30, 30, 0.4)*/;
+        }
+        .btn-primary:active,
+        .sweet-alert button.confirm:active,
+        .wizard > .actions a:active {
+            background-color: {{$bth}} /*rgba(90, 30, 30, 0.4)*/ !important;
+            border-color: {{$bth}} /*rgba(90, 30, 30, 0.4)*/;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            color: #fff;
+        }
+        .btn-primary:focus,
+        .sweet-alert button.confirm:focus,
+        .wizard > .actions a:focus {
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            color: #fff;
+            background-color: {{$th}};
+        }
+
+        /* 11788 */
+        .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item li:hover > a {
+            color: <?php echo $th;?> !important;
+        }
+        .pcoded
+        .pcoded-navbar[active-item-theme="theme1"]
+        .pcoded-item
+        li:hover
+        > a
+        .pcoded-micon {
+        color: <?php echo $th;?> /*rgba(90, 30, 30, 0.7)*/ !important;
+        }
+        .pcoded
+            .pcoded-navbar[active-item-theme="theme1"]
+            .pcoded-item
+            li:hover
+            > a:before {
+            border-left-color: transparent;
+        }
+        .pcoded
+            .pcoded-navbar[active-item-theme="theme1"]
+            .pcoded-item
+            > li.active
+            > a {
+            background: <?php echo $th;?> /*rgba(90, 30, 30, 0.7)*/;
+            color: #fff !important;
+        }
+    </style>
 </head>
 
 <body id="body">
@@ -105,7 +225,7 @@ if ($organization[0]->logo) {
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>
     <div class="pcoded-container navbar-wrapper">
-        <nav class="navbar header-navbar pcoded-header" style="background: rgb(99,161,0);">
+        <nav class="navbar header-navbar pcoded-header" style="background: {{$tn}};">
             {{-- rgb(90,30,30) --}}
             <div class="navbar-wrapper">
                 <div class="navbar-logo">

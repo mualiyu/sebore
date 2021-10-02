@@ -287,6 +287,18 @@ $(document).ready(function () {
                                             <div class="col">
                                                 <div class="form-group"><label for="country"><strong>Address</strong></label><input class="form-control" type="text" value="{{$oragnization->address}}" placeholder="Sunset Blvd, 38" name="address"></div>
                                             </div>
+                                             <div class="col">
+                                                <div class="form-group"><label for="country"><strong>Select Theme</strong></label>
+                                                    <select name="theme" id="theme" class="form-control">
+                                                        <option value="{{$organization->theme ?? "1"}}"><?php if($organization->theme == 1){ echo 'Ajisaq Theme';}elseif($organization->theme == 2){ echo 'Green Theme';}elseif($organization->theme == 3){ echo 'Blue Theme';}else{echo 'Ajisaq Theme';} ?></option>
+                                                        <option value="1">Ajisaq Theme</option>
+                                                        <option value="2">Green Theme</option>
+                                                        <option value="3">Blue Theme</option>
+                                                        <option value="1">Dark Theme</option>
+                                                    </select>
+                                                    {{-- <input class="form-control" type="text" value="{{$oragnization->address}}" placeholder="Sunset Blvd, 38" name="address"> --}}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
                                     </form>

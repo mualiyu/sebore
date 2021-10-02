@@ -80,7 +80,6 @@ class RegisterController extends Controller
         $role = AdminRole::where('name', 'admin')->get();
 
         $organization = Organization::create([
-            // 'id' => $res->data->id,
             'name' => $data['g_name'],
             'description' => $data['g_description'],
             'address' => $data['g_address'],
@@ -104,31 +103,31 @@ class RegisterController extends Controller
             'logo' => "default.jpg",
         ]);
 
-        $name = $data['g_name'];
-        $description = $data['g_description'];
-        $logo = url('/storage/pic/default.jpg');
-        $phone = $data['g_phone'];
-        $hash = hash('sha512', $name . $description . $logo . $phone);
+        // $name = $data['g_name'];
+        // $description = $data['g_description'];
+        // $logo = url('/storage/pic/default.jpg');
+        // $phone = $data['g_phone'];
+        // $hash = hash('sha512', $name . $description . $logo . $phone);
 
-        $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash . '&id=' .
-            $organization->id . '&name=' .
-            $name . '&description=' .
-            $description . '&logoUrl=' .
-            $logo . '&phone=' . $phone;
+        // $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash . '&id=' .
+        //     $organization->id . '&name=' .
+        //     $name . '&description=' .
+        //     $description . '&logoUrl=' .
+        //     $logo . '&phone=' . $phone;
 
-        $response = Http::post($url);
+        // $response = Http::post($url);
 
-        $res = json_decode($response);
+        // $res = json_decode($response);
 
-        // dd($res);
+        // // dd($res);
 
-        if ($res->status != 'Ok') {
-            return [0];
-            // back()->with("error", "Sorry! Our system is having issues at this Time. but out Support Team are on it. ");
-        }
+        // if ($res->status != 'Ok') {
+        //     return [0];
+        //     // back()->with("error", "Sorry! Our system is having issues at this Time. but out Support Team are on it. ");
+        // }
 
         return $user;
     }

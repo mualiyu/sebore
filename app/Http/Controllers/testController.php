@@ -58,6 +58,7 @@ class testController extends Controller
 
     public function index()
     {
+        return view('plan.index');
         // // $name = "aliyu muktar";
         // // $phone = "08127455859";
         // // $code = "123456789";
@@ -183,25 +184,25 @@ class testController extends Controller
         // return $response;
 
 
-        $id = '7';
-        $name = "g name";
-        $description = 'g_description';
-        $logo = url('/storage/pic/default.jpg');
-        $phone = '09167843245';
-        $hash = hash('sha512', $name . $description . $logo . $phone);
+        // $id = '7';
+        // $name = "g name";
+        // $description = 'g_description';
+        // $logo = url('/storage/pic/default.jpg');
+        // $phone = '09167843245';
+        // $hash = hash('sha512', $name . $description . $logo . $phone);
 
-        $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=2&apiKey=1234' . '&hash=' .
-            $hash . '&id=' .
-            $id . '&name=' .
-            $name . '&description=' .
-            $description . '&logoUrl=' .
-            $logo . '&phone=' . $phone;
+        // $url = 'https://api.ajisaqsolutions.com/api/organization/add?apiUser=2&apiKey=1234' . '&hash=' .
+        //     $hash . '&id=' .
+        //     $id . '&name=' .
+        //     $name . '&description=' .
+        //     $description . '&logoUrl=' .
+        //     $logo . '&phone=' . $phone;
 
-        $response = Http::post($url);
+        // $response = Http::post($url);
 
-        $res = json_decode($response);
+        // $res = json_decode($response);
 
-        return  $response;
+        // return  $response;
     }
 
     public function insert()

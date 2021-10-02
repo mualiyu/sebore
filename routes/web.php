@@ -84,8 +84,8 @@ Route::post('/pay/all/customers', [App\Http\Controllers\PaymentController::class
 Route::get('/customer_name_search_p', [App\Http\Controllers\PaymentController::class, 'customer_search'])->name('customer_p');
 
 //api test route 
-Route::get('/test/api', [App\Http\Controllers\testController::class, 'index'])->name('index');
-Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
+Route::get('/test', [App\Http\Controllers\testController::class, 'index'])->name('index');
+// Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
 
 
 

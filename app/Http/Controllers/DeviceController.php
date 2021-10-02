@@ -49,8 +49,6 @@ class DeviceController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        // dd($request->all());
-
 
 
         $device = Device::create([
@@ -68,44 +66,40 @@ class DeviceController extends Controller
             'community' => $request['community'],
         ]);
 
-        //Api
+        // //Api
+        // $hash = hash(
+        //     'sha512',
+        //     $org->id .
+        //         $request['name'] .
+        //         $device->id .
+        //         $request['location'] .
+        //         $request['lga'] .
+        //         $request['state'] .
+        //         $request['community']
+        // );
 
-        $hash = hash(
-            'sha512',
-            $org->id .
-                $request['name'] .
-                $device->id .
-                $request['location'] .
-                $request['lga'] .
-                $request['state'] .
-                $request['community']
-        );
-
-        $url = 'https://api.ajisaqsolutions.com/api/device/add?apiUser=' .
-            config('app.apiUser') . '&apiKey=' .
-            config('app.apiKey') . '&hash=' .
-            $hash .  '&id=' .
-            $device->id .  '&organizationId=' .
-            $org->id . '&name=' .
-            $request['name'] .  '&deviceId=' .
-            $device->id . '&location=' .
-            $request['location'] . '&lga=' .
-            $request['lga'] . '&state=' .
-            $request['state'] . '&community=' .
-            $request['community'];
+        // $url = 'https://api.ajisaqsolutions.com/api/device/add?apiUser=' .
+        //     config('app.apiUser') . '&apiKey=' .
+        //     config('app.apiKey') . '&hash=' .
+        //     $hash .  '&id=' .
+        //     $device->id .  '&organizationId=' .
+        //     $org->id . '&name=' .
+        //     $request['name'] .  '&deviceId=' .
+        //     $device->id . '&location=' .
+        //     $request['location'] . '&lga=' .
+        //     $request['lga'] . '&state=' .
+        //     $request['state'] . '&community=' .
+        //     $request['community'];
 
 
-        $response = Http::post($url);
-        $res = json_decode($response);
+        // $response = Http::post($url);
+        // $res = json_decode($response);
 
-        // return $response;
-        // dd($res);
-
-        if ($res->status != "Ok") {
-            $device->delete();
-            return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
-        }
-        //End api
+        // if ($res->status != "Ok") {
+        //     $device->delete();
+        //     return back()->with(['error' => 'Sorry, An error was encountered, Come back later.'])->withInput();
+        // }
+        // //End api
 
         return redirect('/devices')->with(['success' => $device->name . ' is Created to system']);
         //
@@ -129,7 +123,6 @@ class DeviceController extends Controller
         if ($validator->fails()) {
             return back()->with('error', 'device not updated. Try again!');
         }
-        // dd($request->all());
 
         $agent = Device::where('id', '=', $id)->update([
             'name' => $request['name'],
@@ -142,7 +135,5 @@ class DeviceController extends Controller
         // ]);
 
         return redirect()->route('show_single_device', ['id' => $id])->with(['success' => $request['name'] . ' is Updated']);
-
-        // dd($request->all());
     }
 }
