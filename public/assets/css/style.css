@@ -11304,7 +11304,7 @@ table tbody .border-bottom-info td {
 }
 
 /* body[themebg-pattern="theme1"] {
-    background-color: /*rgba(99,161,0, 0.7)*/ rgb(90, 30, 30);
+    background-color: /*rgba(99,161,0, 0.7) rgb(90, 30, 30);
 } */
 body[themebg-pattern="theme2"] {
     background-color: #b71c1c;

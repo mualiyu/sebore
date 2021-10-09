@@ -78,7 +78,7 @@
     <style>
 
         .page-header:before {
-            background: <?php echo $th;?>
+            background: {{$th}};
         }
 
         /* line 6529 */
@@ -124,7 +124,7 @@
 
         /* 11788 */
         .pcoded .pcoded-navbar[active-item-theme="theme1"] .pcoded-item li:hover > a {
-            color: <?php echo $th;?> !important;
+            color: {{$th}} !important;
         }
         .pcoded
         .pcoded-navbar[active-item-theme="theme1"]
@@ -132,7 +132,7 @@
         li:hover
         > a
         .pcoded-micon {
-        color: <?php echo $th;?> /*rgba(90, 30, 30, 0.7)*/ !important;
+        color: {{$th}} /*rgba(90, 30, 30, 0.7)*/ !important;
         }
         .pcoded
             .pcoded-navbar[active-item-theme="theme1"]
