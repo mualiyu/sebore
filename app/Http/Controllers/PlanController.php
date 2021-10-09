@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\PlanDetail;
 use App\Models\PlanPaymentRecord;
@@ -24,9 +25,35 @@ class PlanController extends Controller
     {
         $plans = Plan::all();
 
+        $org = Organization::find(Auth::user()->organization_id);
+        // themes for plan
+        if ($org->theme) {
+            if ($org->theme == 1) {
+                $card1 = 'rgb(94,46,46)';
+                $card2 = 'rgb(109,61,61)';
+                $card3 = 'rgb(127,79,79)';
+            } elseif ($org->theme == 2) {
+                $card1 = 'rgb(126,170,57)';
+                $card2 = 'rgb(124,155,76)';
+                $card3 = 'rgb(139,170,91)';
+            } elseif ($org->theme == 3) {
+                $card1 = 'rgb(75, 70, 245)';
+                $card2 = 'rgb(75, 70, 235)';
+                $card3 = 'rgb(75, 70, 225)';
+            } else {
+                $card1 = 'rgb(109, 41, 41)';
+                $card2 = 'rgb(100, 41, 41)';
+                $card3 = 'rgb(91, 41, 41)';
+            }
+        } else {
+            $card1 = 'rgb(109, 41, 41)';
+            $card2 = 'rgb(100, 41, 41)';
+            $card3 = 'rgb(91, 41, 41)';
+        }
+
         $plan_detail = PlanDetail::where('org_id', '=', Auth::user()->organization_id)->orderBy('id', 'desc')->first();
 
-        return view('plan.index', compact('plans', 'plan_detail'));
+        return view('plan.index', compact('plans', 'plan_detail', 'card1', 'card2', 'card3'));
     }
 
     public function pay($id)

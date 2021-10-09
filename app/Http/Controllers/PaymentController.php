@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\MobileMoney;
 use App\Models\Payment;
 use App\Models\PaymentGateway;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -96,10 +97,10 @@ class PaymentController extends Controller
         $d = explode(' - ', $request->daterange);
 
         $f = explode('/', $d[0]);
-        $from = $f[2] . '-' . $f[0] . '-' . $f[1];
+        $from = $f[2] . '-' . $f[1] . '-' . $f[0];
         // . ' 00:00:00';
         $t = explode('/', $d[1]);
-        $to = $t[2] . '-' . $t[0] . '-' . $t[1];
+        $to = $t[2] . '-' . $t[1] . '-' . $t[0];
         // . ' 23:59:59';
 
         // dd($request->cus);
@@ -107,44 +108,51 @@ class PaymentController extends Controller
         if (count($request->cus) == 1) {
             $customer = Customer::find($request->cus[0]);
 
+            $transactions = Transaction::where('customer_id', '=', $customer->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            // dd($transactions);
 
-            $hash = hash(
-                'sha512',
-                $customer->phone .
-                    $from .
-                    $to
-            );
-
-            // return $hash . '  -----------  ' . $from . " " . $to . $customer->id;
-
-            $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
-                '&apiKey=' . config('app.apiKey') .
-                '&hash=' . $hash .
-                '&customerId=' . $customer->phone .
-                '&from=' . $from .
-                '&to=' . $to;
-            // dd($url);
-
-            try {
-                $response = Http::get($url);
-                if ($response->successful()) {
-
-                    $res = json_decode($response);
-                    if ($res->status == 'Ok') {
-                        if (count($res->data) > 0) {
-                            $transactions = $res->data;
-                            // dd($res);
-                            return view('payment.transactions', compact('transactions', 'customer'));
-                        } else {
-                            return back()->with('error', 'No Transaction for this Customer.');
-                        }
-                    } else {
-                        return back()->with('error', 'Service Error, Try again later!');
-                    }
-                }
-            } catch (\Throwable $th) {
-                return back()->with('error', 'Service Error, Make sure you are connected to Internet!');
+            if (count($transactions) > 0) {
+                return view('payment.transactions', compact('transactions', 'customer'));
+            } else {
+                return back()->with('error', 'No Transaction for this Customer, Or Within the range.');
             }
+            // $hash = hash(
+            //     'sha512',
+            //     $customer->phone .
+            //         $from .
+            //         $to
+            // );
+
+            // // return $hash . '  -----------  ' . $from . " " . $to . $customer->id;
+
+            // $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
+            //     '&apiKey=' . config('app.apiKey') .
+            //     '&hash=' . $hash .
+            //     '&customerId=' . $customer->phone .
+            //     '&from=' . $from .
+            //     '&to=' . $to;
+            // // dd($url);
+
+            // try {
+            //     $response = Http::get($url);
+            //     if ($response->successful()) {
+
+            //         $res = json_decode($response);
+            //         if ($res->status == 'Ok') {
+            //             if (count($res->data) > 0) {
+            //                 $transactions = $res->data;
+            //                 // dd($res);
+            //                 return view('payment.transactions', compact('transactions', 'customer'));
+            //             } else {
+            //                 return back()->with('error', 'No Transaction for this Customer.');
+            //             }
+            //         } else {
+            //             return back()->with('error', 'Service Error, Try again later!');
+            //         }
+            //     }
+            // } catch (\Throwable $th) {
+            //     return back()->with('error', 'Service Error, Make sure you are connected to Internet!');
+            // }
         } else {
 
             $data = [];
@@ -152,46 +160,63 @@ class PaymentController extends Controller
 
                 $customer = Customer::find($c);
 
-                $hash = hash(
-                    'sha512',
-                    $customer->phone .
-                        $from .
-                        $to
-                );
+                $transactions = Transaction::where('customer_id', '=', $customer->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+                // dd($transactions);
 
-                $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
-                    '&apiKey=' . config('app.apiKey') .
-                    '&hash=' . $hash .
-                    '&customerId=' . $customer->phone .
-                    '&from=' . $from .
-                    '&to=' . $to;
+                if (count($transactions) > 0) {
 
-                try {
-                    $response = Http::get($url);
-                    if ($response->successful()) {
+                    $d =  [
+                        'customer_id' => $customer->id,
+                        'transactions' => $transactions
+                    ];
 
-                        $res = json_decode($response);
-                        if ($res->status == 'Ok') {
-                            if (count($res->data) > 0) {
-                                $transactions = $res->data;
+                    array_push($data, $d);
 
-                                $d =  [
-                                    'customer_id' => $customer->id,
-                                    'transactions' => $transactions
-                                ];
-
-                                array_push($data, $d);
-                                // return view('payment.transactions', compact('transactions', 'customer'));
-                            } else {
-                                return back()->with('error', 'No Transaction for ' . $customer->name . '.');
-                            }
-                        } else {
-                            return back()->with('error', 'Service Error, Try again later!');
-                        }
-                    }
-                } catch (\Throwable $th) {
-                    return back()->with('error', 'Service Error, Make sure you are connected to Internet!');
+                    // return view('payment.transactions', compact('transactions', 'customer'));
+                } else {
+                    return back()->with('error', 'No Transaction for ' . $customer->name . ', Or Within the range.');
                 }
+
+                // $hash = hash(
+                //     'sha512',
+                //     $customer->phone .
+                //         $from .
+                //         $to
+                // );
+
+                // $url = 'https://api.ajisaqsolutions.com/api/transaction/listByCustomer?apiUser=' . config('app.apiUser') .
+                //     '&apiKey=' . config('app.apiKey') .
+                //     '&hash=' . $hash .
+                //     '&customerId=' . $customer->phone .
+                //     '&from=' . $from .
+                //     '&to=' . $to;
+
+                // try {
+                //     $response = Http::get($url);
+                //     if ($response->successful()) {
+
+                //         $res = json_decode($response);
+                //         if ($res->status == 'Ok') {
+                //             if (count($res->data) > 0) {
+                //                 $transactions = $res->data;
+
+                //                 $d =  [
+                //                     'customer_id' => $customer->id,
+                //                     'transactions' => $transactions
+                //                 ];
+
+                //                 array_push($data, $d);
+                //                 // return view('payment.transactions', compact('transactions', 'customer'));
+                //             } else {
+                //                 return back()->with('error', 'No Transaction for ' . $customer->name . '.');
+                //             }
+                //         } else {
+                //             return back()->with('error', 'Service Error, Try again later!');
+                //         }
+                //     }
+                // } catch (\Throwable $th) {
+                //     return back()->with('error', 'Service Error, Make sure you are connected to Internet!');
+                // }
             }
 
             return view('payment.customers_transactions', compact('data'));

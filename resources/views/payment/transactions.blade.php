@@ -62,23 +62,27 @@
 					    <?php $i = count($transactions); $t_amount = 0;?>
 				        @foreach ($transactions as $t)
 					<?php
-					$t_amount = (float)$t_amount + (float)$t->amount;
+					$t_amount = (float)$t_amount + (float)$t->amount/100;
 
-					$hash = hash('sha512',$t->id);
+          $item = \App\Models\Item::find($t->item_id);
 
-					$url = 'https://api.ajisaqsolutions.com/api/transaction/get?apiUser=' . config('app.apiUser') .
-            					'&apiKey=' . config('app.apiKey') .
-            					'&hash=' . $hash .
-            					'&id=' . $t->id;
-					$response = Http::get($url);
-            				// return $response;
-            				$res = json_decode($response);
-					//     dd($res);
+          
+
+					// $hash = hash('sha512',$t->id);
+
+					// $url = 'https://api.ajisaqsolutions.com/api/transaction/get?apiUser=' . config('app.apiUser') .
+          //   					'&apiKey=' . config('app.apiKey') .
+          //   					'&hash=' . $hash .
+          //   					'&id=' . $t->id;
+					// $response = Http::get($url);
+          //   				// return $response;
+          //   				$res = json_decode($response);
+					// //     dd($res);
 					?>
 					<tr>
 						<th scope="row">{{$i}}</th>
-						<td>{{$res->data->item->name}}</td>
-						<td>{{$res->data->item->measure}} - {{$res->data->item->unit}}</td>
+						<td>{{$t->item->name}}</td>
+						<td>{{$t->item->measure}} - {{$t->item->unit}}</td>
 						<td>{{$t->quantity}}</td>
 						<td>{{$t->amount}}</td>
 						<td>
@@ -87,13 +91,13 @@
 						<td>
                             <form method="POST" id="pay-form[{{$i}}]" action="{{route('pay_single_t')}}">
                                 @csrf 
-                                <input type="hidden" name="customerNum" value="{{$res->data->customer->phone}}">
-                                <input type="hidden" name="customerId" value="{{$res->data->customer->id}}">
-                                <input type="hidden" name="i_name" value="{{$res->data->item->name}}">
+                                <input type="hidden" name="customerNum" value="{{$t->customer->phone}}">
+                                <input type="hidden" name="customerId" value="{{$t->customer->id}}">
+                                <input type="hidden" name="i_name" value="{{$t->item->name}}">
                                 <input type="hidden" name="amount" value="{{$t->amount}}">
                             </form>
 							              <a  onclick="
-                           	 if(confirm('Are you sure You want to Pay only for - ({{ $res->data->item->name }}) ? ')){
+                           	 if(confirm('Are you sure You want to Pay only for - ({{ $t->item->name }}) ? ')){
                            	     document.getElementById('pay-form[{{$i}}]').submit();
                            	 }
                            	     event.preventDefault();"
@@ -155,7 +159,7 @@
                                       @csrf 
                                       <input type="hidden" name="c_number" value="{{$customer->phone}}">
                                       <input type="hidden" name="c_name" value="{{$customer->name}}">
-                                       <input type="hidden" name="c_customerId" value="{{$res->data->customer->id}}">
+                                       <input type="hidden" name="c_customerId" value="{{$customer->id}}">
                                       <input type="hidden" name="t_amount" value="{{$t_amount}}">
                                   </form>
                                 	<a  onclick="

@@ -18,7 +18,7 @@ ul li {
 }
 .pricing-divider {
     border-radius: 20px;
-    background-color: rgb(136,72,77) !important;
+    background-color: {{$card1}} !important;
     padding: 1em 0 4em;
     position: relative
 }
@@ -38,7 +38,7 @@ ul li {
 
 
 .btn-custom {
-    background: rgb(136,72,77);
+    background: {{$card2}};
     color: #fff;
     border-radius: 20px
 }

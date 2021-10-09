@@ -143,7 +143,7 @@
                                 <h6 class="mb-0" style="float: right;">Total Quantities </h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                {{$t_q}} Liters
+                                {{$t_q}} {{--Liters--}}
                               </div>
                             </div>
                             <div class="row">

@@ -1,6 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-
+@guest
+    <?php 
+                $tn = 'rgb(90,30,30)';
+                $th = 'rgba(109, 41, 41, 0.7)';
+                $bth = 'rgba(109, 41, 41, 0.4)';
+                $card1 = 'rgb(109, 41, 41)';
+                $card2 ='rgb(102, 41, 41)';
+                $card3 = 'rgb(100, 41, 41)';
+    ?>
+@else
+<?php
+        $org = Auth::user()->organization;
+        if ($org->theme) {
+            if ($org->theme == 1) {
+                $tn = 'rgb(90,30,30)';
+                $th = 'rgba(109, 41, 41, 0.7)';
+                $bth = 'rgba(109, 41, 41, 0.4)';
+                $card1 = 'rgb(109, 41, 41)';
+                $card2 ='rgb(102, 41, 41)';
+                $card3 = 'rgb(100, 41, 41)';
+            }
+            elseif ($org->theme == 2) {
+                $tn = 'rgb(99,161,0)';
+                $th = 'rgba(126, 170, 57, 0.7)';
+                $bth = 'rgba(126, 170, 57, 0.4)';
+                $card1 = 'rgb(126,170,57)';
+                $card2 ='rgb(124,155,76)';
+                $card3 = 'rgb(139,170,91)';
+            }
+            elseif ($org->theme == 3) {
+                $tn = 'rgb(0,0,255)';
+                $th = 'rgba(75, 75, 241, 0.7)';
+                $bth = 'rgba(75, 75, 241, 0.4)';
+                $card1 = 'rgb(75, 70, 245)';
+                $card2 ='rgb(75, 70, 235)';
+                $card3 = 'rgb(75, 70, 225)';
+            }else{
+                $tn = 'rgb(90,30,30)';
+                $th = 'rgba(109, 41, 41, 0.7)';
+                $bth = 'rgba(109, 41, 41, 0.4)';
+                $card1 = 'rgb(109, 41, 41)';
+                $card2 ='rgb(102, 41, 41)';
+                $card3 = 'rgb(100, 41, 41)';
+            }
+        }else {
+            $tn = 'rgb(90,30,30)';
+            $th = 'rgba(109, 41, 41, 0.7)';
+            $bth = 'rgba(109, 41, 41, 0.4)';
+            $card1 = 'rgb(109, 41, 41)';
+            $card2 = 'rgb(102, 41, 41)';
+            $card3 = 'rgb(100, 41, 41)';
+        }
+    ?>
+@endguest
 <head>
     <title>{{ config('app.name', 'Ajisaq Ticketing System - ATS') }}</title>
 
@@ -32,11 +85,15 @@
       @yield('style')
 
       <style>
+        /* line 11306 */
+        body[themebg-pattern="theme1"] {
+            background-color: /*rgba(99,161,0, 0.7)*/ {{$tn}};
+        }
           .btn-primary,
         .sweet-alert button.confirm,
         .wizard > .actions a {
-            background-color: rgba(90, 30, 30, 0.7);
-            border-color: rgba(90, 30, 30, 0.7);
+            background-color: {{$th}};
+            border-color: {{$th}};
             color: #fff;
             cursor: pointer;
             -webkit-transition: all ease-in 0.3s;
@@ -45,14 +102,14 @@
         .btn-primary:hover,
         .sweet-alert button.confirm:hover,
         .wizard > .actions a:hover {
-            background-color: rgba(90, 30, 30, 0.4);
-            border-color: rgba(90, 30, 30, 0.4);
+            background-color: {{$bth}};
+            border-color: {{$bth}};
         }
         .btn-primary:active,
         .sweet-alert button.confirm:active,
         .wizard > .actions a:active {
-            background-color: rgba(90, 30, 30, 0.4) !important;
-            border-color: rgba(90, 30, 30, 0.4);
+            background-color: {{$bth}} !important;
+            border-color: {{$bth}};
             -webkit-box-shadow: none;
             box-shadow: none;
             color: #fff;
@@ -63,7 +120,7 @@
             -webkit-box-shadow: none;
             box-shadow: none;
             color: #fff;
-            background-color: rgba(90, 30, 30, 0.4);
+            background-color: {{$bth}};
         }
       </style>
   </head>
@@ -124,7 +181,7 @@
   </div>
 
   <!-- Pre-loader end -->
-  <section class="login-block">
+  <section class="login-block" style="background: ">
         <!-- Container-fluid starts -->
         @yield('content')
         <!-- end of container-fluid -->
