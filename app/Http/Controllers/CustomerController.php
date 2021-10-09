@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CustomersImport;
+use App\Models\Organization;
+use App\Models\Plan;
+use App\Models\PlanDetail;
 use PHPExcelReader\SpreadsheetReader as Reader;
 use Illuminate\Support\Collection;
 
@@ -55,6 +58,8 @@ class CustomerController extends Controller
 
     public function create_customer(Request $request)
     {
+        $org = Organization::find(Auth::user()->organization_id);
+
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255', 'unique:customers'],
@@ -69,24 +74,45 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        // dd($request->all());
-        $agent = Agent::find($request['agent']);
 
-        $customer = Customer::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'phone' => $request['phone'],
-            'gps' => $request['gps'],
-            'state' => $request['state'],
-            'country' => $request['country'],
-            'address' => $request['address'],
-            'lga' => $request['lga'],
-        ]);
+        $plan_detail = PlanDetail::where('org_id', '=', $org->id)->orderBy('id', 'desc')->first();
 
-        Customer::where('id', '=', $customer->id)->update([
-            'agent_id' => $request['agent'],
-            'org_id' => Auth::user()->organization_id,
-        ]);
+        if ($plan_detail && $plan_detail->status == 1) {
+
+            $plan = Plan::find($plan_detail->plan_id);
+
+            // return $plan;
+            $cus = Customer::where('org_id', '=', $org->id)->get();
+
+            if (count($cus) < $plan->no_customers) {
+
+                $agent = Agent::find($request['agent']);
+
+                $customer = Customer::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'phone' => $request['phone'],
+                    'gps' => $request['gps'],
+                    'state' => $request['state'],
+                    'country' => $request['country'],
+                    'address' => $request['address'],
+                    'lga' => $request['lga'],
+                ]);
+
+                Customer::where('id', '=', $customer->id)->update([
+                    'agent_id' => $request['agent'],
+                    'org_id' => Auth::user()->organization_id,
+                ]);
+
+                return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is created to system']);
+            } else {
+                return back()->with('error', "Sorry, You have reached the maximum number of Customers allowed for your Plan. Upgrade to enjoy more of ATS services");
+            }
+        } else {
+            return back()->with('error', "You don't have any active plan, Subscribe and try again.");
+        }
+
+
 
 
         // //Api
@@ -118,7 +144,7 @@ class CustomerController extends Controller
         // }
         // //End api
 
-        return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is Created to system']);
+        // return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is Created to system']);
 
         // dd($request->all());
     }

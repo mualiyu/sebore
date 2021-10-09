@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\Organization;
+use App\Models\Plan;
+use App\Models\PlanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -50,21 +52,41 @@ class DeviceController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $plan_detail = PlanDetail::where('org_id', '=', $org->id)->orderBy('id', 'desc')->first();
 
-        $device = Device::create([
-            'name' => $request['name'],
-            'location' => $request['location'],
-            'type' => $request['type'],
-        ]);
+        if ($plan_detail && $plan_detail->status == 1) {
 
-        Device::where('id', '=', $device->id)->update([
-            'user_id' => Auth::user()->id,
-            'org_id' => Auth::user()->organization_id,
-            'device_id' => $device->id,
-            'lga' => $request['lga'],
-            'state' => $request['state'],
-            'community' => $request['community'],
-        ]);
+            $plan = Plan::find($plan_detail->plan_id);
+
+            // return $plan;
+            $dev = Device::where('org_id', '=', $org->id)->get();
+
+            if (count($dev) < $plan->no_devices) {
+
+                $device = Device::create([
+                    'name' => $request['name'],
+                    'location' => $request['location'],
+                    'type' => $request['type'],
+                ]);
+
+                Device::where('id', '=', $device->id)->update([
+                    'user_id' => Auth::user()->id,
+                    'org_id' => Auth::user()->organization_id,
+                    'device_id' => $device->id,
+                    'lga' => $request['lga'],
+                    'state' => $request['state'],
+                    'community' => $request['community'],
+                ]);
+
+                return redirect('/devices')->with(['success' => $device->name . ' is Created to system']);
+            } else {
+                return back()->with('error', "Sorry, You have reached the maximum number of devices allowed for your Plan. Upgrade to enjoy more of ATS services");
+            }
+        } else {
+            return back()->with('error', "You don't have Any Active plan, Subscribe and try again.");
+        }
+
+
 
         // //Api
         // $hash = hash(
@@ -101,7 +123,7 @@ class DeviceController extends Controller
         // }
         // //End api
 
-        return redirect('/devices')->with(['success' => $device->name . ' is Created to system']);
+        // return redirect('/devices')->with(['success' => $device->name . ' is Created to system']);
         //
     }
 

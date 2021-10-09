@@ -14,7 +14,8 @@
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
         "php-excel-reader/spreadsheet-reader": "dev-master",
-        "phpoffice/phpspreadsheet": "^1.18"
+        "phpoffice/phpspreadsheet": "^1.18",
+        "unicodeveloper/laravel-paystack": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

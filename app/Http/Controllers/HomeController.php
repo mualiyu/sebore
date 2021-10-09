@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Organization;
 use App\Models\PaymentGateway;
+use App\Models\Plan;
+use App\Models\PlanDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +33,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        $plan = PlanDetail::where('org_id', '=', Auth::user()->organization_id)->orderBy('id', 'desc')->first();
+        if ($plan) {
+            if ($plan->status != 1) {
+                $p = 'You have reached your limit for this Plan, consider Upgrading.';
+            }
+        } else {
+            return redirect('/plan');
+        }
         $d = now();
         $da = explode("T", $d);
         $date = explode(" ", $da[0]);

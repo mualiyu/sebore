@@ -36,6 +36,8 @@
                         <strong>Transaction Record</strong>
                     </div>
                 </div> --}}
+                {{-- @extends('layouts.flash') --}}
+
                 @if (!empty($transactions))    
                 <div class="card shadow" style="width:100%;">
                   <div class="card-body">  

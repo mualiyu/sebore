@@ -287,6 +287,11 @@ if ($organization[0]->logo) {
                                     </a>
                                 </li>
                                 <li class="waves-effect waves-light">
+                                    <a href="{{route('plan_index')}}">
+                                        <i class="ti-user"></i> Upgrade
+                                    </a>
+                                </li>
+                                <li class="waves-effect waves-light">
                                      <a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

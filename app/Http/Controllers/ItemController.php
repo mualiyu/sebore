@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Device;
 use App\Models\Item;
+use App\Models\Organization;
+use App\Models\Plan;
+use App\Models\PlanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -65,6 +68,8 @@ class ItemController extends Controller
      */
     public function create_item(Request $request)
     {
+        $org = Organization::find(Auth::user()->organization_id);
+
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'measure' => ['required', 'int'],
@@ -79,26 +84,41 @@ class ItemController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        $device = Device::find($request['device']);
-        $category = Category::find($request['category']);
+        $plan_detail = PlanDetail::where('org_id', '=', $org->id)->orderBy('id', 'desc')->first();
 
+        if ($plan_detail && $plan_detail->status == 1) {
 
-        $item = Item::create([
-            'name' => $request['name'],
-            'measure' => $request['measure'] * 100,
-            'unit' => $request['unit'],
-            'code' => $request['code'],
-            'with_q' => $request['with_q'],
-            'with_p' => $request['with_p'],
-        ]);
+            $plan = Plan::find($plan_detail->plan_id);
 
-        Item::where('id', '=', $item->id)->update([
-            'category_id' => $request['category'],
-            'device_id' => $request['device'],
-            'org_id' => Auth::user()->organization_id,
-        ]);
+            $$items = Item::where('org_id', '=', $org->id)->get();
 
+            if (count($items) < $plan->no_items) {
 
+                $device = Device::find($request['device']);
+                $category = Category::find($request['category']);
+
+                $item = Item::create([
+                    'name' => $request['name'],
+                    'measure' => $request['measure'] * 100,
+                    'unit' => $request['unit'],
+                    'code' => $request['code'],
+                    'with_q' => $request['with_q'],
+                    'with_p' => $request['with_p'],
+                ]);
+
+                Item::where('id', '=', $item->id)->update([
+                    'category_id' => $request['category'],
+                    'device_id' => $request['device'],
+                    'org_id' => Auth::user()->organization_id,
+                ]);
+
+                return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is added to system as Item']);
+            } else {
+                return back()->with('error', "Sorry, You have reached the maximum number of Items allowed for your Plan. Upgrade to enjoy more of ATS services");
+            }
+        } else {
+            return back()->with('error', "You don't have Any Active plan, Subscribe and try again.");
+        }
 
         // //Api
         // $with_q = $request['with_q'] ? 'true' : 'false';
@@ -139,7 +159,7 @@ class ItemController extends Controller
         // }
         // //End api
 
-        return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is added to system as Item']);
+        // return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is added to system as Item']);
     }
 
     public function create_category(Request $request)

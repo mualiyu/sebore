@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use App\Models\AgentRole;
 use App\Models\Organization;
+use App\Models\Plan;
+use App\Models\PlanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -64,27 +66,47 @@ class AgentController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $plan_detail = PlanDetail::where('org_id', '=', $org->id)->orderBy('id', 'desc')->first();
 
-        $role = AgentRole::find($request['role']);
+        if ($plan_detail && $plan_detail->status == 1) {
 
-        $agent = Agent::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'phone' => $request['phone'],
-            'password' => Hash::make($request['password']),
-            'username' => $request['username'],
-            'gps' => $request['gps'],
-            'state' => $request['state'],
-            'country' => $request['country'],
-            'address' => $request['address'],
-            'lga' => $request['lga'],
-        ]);
+            $plan = Plan::find($plan_detail->plan_id);
 
-        Agent::where('id', '=', $agent->id)->update([
-            'user_id' => Auth::user()->id,
-            'org_id' => Auth::user()->organization_id,
-            'agent_role_id' => $request['role'],
-        ]);
+            // return $plan;
+            $agent = Agent::where('org_id', '=', $org->id)->get();
+
+            if (count($agent) < $plan->no_agents) {
+
+                $role = AgentRole::find($request['role']);
+
+                $agent = Agent::create([
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'phone' => $request['phone'],
+                    'password' => Hash::make($request['password']),
+                    'username' => $request['username'],
+                    'gps' => $request['gps'],
+                    'state' => $request['state'],
+                    'country' => $request['country'],
+                    'address' => $request['address'],
+                    'lga' => $request['lga'],
+                ]);
+
+                Agent::where('id', '=', $agent->id)->update([
+                    'user_id' => Auth::user()->id,
+                    'org_id' => Auth::user()->organization_id,
+                    'agent_role_id' => $request['role'],
+                ]);
+
+                return redirect('/agents')->with(['success' => $agent->name . ' is Created to system as agent']);
+            } else {
+                return back()->with('error', "Sorry, You have reached the maximum number of Agents allowed for your Plan. Upgrade to enjoy more of ATS services");
+            }
+        } else {
+            return back()->with('error', "You don't have Any Active plan, Subscribe and try again.");
+        }
+
+
 
         // //Api
         // $hash = hash(
@@ -121,7 +143,7 @@ class AgentController extends Controller
         // //End Api
 
 
-        return redirect('/agents')->with(['success' => $agent->name . ' is Created to system as agent']);
+        // return redirect('/agents')->with(['success' => $agent->name . ' is Created to system as agent']);
 
         // dd($request->all());
     }

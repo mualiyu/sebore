@@ -75,14 +75,25 @@ ul li {
 <div class="container-fluid w-90">
 
 	<div class="text-center">
-             <a href="{{url('/')}}" style="color: white; font-size:25px; text-decoration:bold;"><img src="assets/images/auth/Logo-small-bottom.png" style="width: 40px; height:40px;" alt="small-logo.png">  <b>ATS</b></a>
-        </div>
+             <a href="{{url('/')}}" style="color: white; font-size:25px; text-decoration:bold;"><img src="{{asset('assets/images/auth/Logo-small-bottom.png')}}" style="width: 40px; height:40px;" alt="small-logo.png">  <b>ATS</b>
+		<h1>Subscription Plan</h1>
+        
+	     </a>
+    </div>
+    @include('layouts.flash')
+<br>
+	<div class="row m-auto w-100 text-center " style="margin-bottom:5px;">
+		<a href="{{route('home')}}" style="right:0;" class="btn btn-primary">back</a>
+		<br>
+	</div><br>
 <div class="row m-auto text-center w-100" >
 
-<div class="col-3 princing-item">
+@foreach ($plans as $p)
+@if ($p->price == 0)
+<div class="col-md-3 princing-item">
     <div class="pricing-divider">
-	<h3 class="text-light">FREE</h3>
-	<h4 class="my-0 display-2 text-light font-weight-normal mb-3"><span class="h3">₦</span> 0.00 <span class="h5">/month</span></h4> 
+	<h3 class="text-light">{{$p->name}}</h3>
+	<h4 class="my-0 display-2 text-light font-weight-normal mb-3"><span class="h3">₦</span> {{$p->price/100}} <span class="h5">/month</span></h4> 
 	<svg class='pricing-divider-img' enable-background='new 0 0 300 100' height='100px' preserveAspectRatio='none' version='1.1' viewBox='0 0 300 100' width='300px' x='0px' xml:space='preserve' y='0px'>
 	<path class='deco-layer deco-layer--4' d='M-34.667,62.998c0,0,56-45.667,120.316-27.839C167.484,57.842,197,41.332,232.286,30.428	c53.07-16.399,104.047,36.903,104.047,36.903l1.333,36.667l-372-2.954L-34.667,62.998z' fill='#FFFFFF'></path>
 	</svg>
@@ -90,15 +101,67 @@ ul li {
 
     <div class="card-body bg-white mt-0 shadow">
 	<ul class="list-unstyled mb-5 position-relative">
-	    <li>3 Device only</li>
-	    <li>3 Agents</li>
-	    <li>15 customers</li>
-	    <li>100 transactions Per month</li>
-	</ul> <button type="button" class="btn btn-lg btn-block btn-custom ">Procced</button>
+	    <li>{{$p->no_devices}} Device</li>
+	    <li>{{$p->no_agents}} Agents</li>
+	    <li>{{$p->no_customers}} Customers</li>
+	    <li>{{$p->no_transactions}} transactions</li>
+	</ul> 
+    <form action="{{route('plan_add')}}" method="POST">
+        @csrf
+        <input type="hidden" value="{{$p->id}}" name="plan_id">
+        {{-- <input type="hidden" name="currency" value="NGN">
+        <input type="hidden" name="metadata" value="{{ json_encode($array = ['plan_id'=> $p->id, 'org_id' => Auth::user()->organisation_id,]) }}" >  --}}
+        <input type="hidden" name="email" value="{{Auth::user()->email}}">
+        <button type="submit" class="btn btn-lg btn-block btn-custom ">Proceed</button>
+    </form>
+    </div>
+</div>  
+@endif
+@if ($p->price != 0)    
+<div class="col-md-3 princing-item">
+    <div class="pricing-divider">
+	<h3 class="text-light">{{$p->name}}</h3>
+	<h4 class="my-0 display-2 text-light font-weight-normal mb-3"><span class="h3">₦</span> {{$p->price/100}} <span class="h5">/month</span></h4> 
+	<svg class='pricing-divider-img' enable-background='new 0 0 300 100' height='100px' preserveAspectRatio='none' version='1.1' viewBox='0 0 300 100' width='300px' x='0px' xml:space='preserve' y='0px'>
+	<path class='deco-layer deco-layer--4' d='M-34.667,62.998c0,0,56-45.667,120.316-27.839C167.484,57.842,197,41.332,232.286,30.428	c53.07-16.399,104.047,36.903,104.047,36.903l1.333,36.667l-372-2.954L-34.667,62.998z' fill='#FFFFFF'></path>
+	</svg>
+    </div>
+
+    <div class="card-body bg-white mt-0 shadow">
+	<ul class="list-unstyled mb-5 position-relative">
+	    <li>{{$p->no_devices}} Device</li>
+	    <li>{{$p->no_agents}} Agents</li>
+	    <li>{{$p->no_customers}} Customers</li>
+	    <li>{{$p->no_transactions}} transactions</li>
+	</ul> 
+    <form action="{{route('plan_pay', ['id'=>$p->id])}}" method="POST">
+        @csrf
+        <?php 
+            $metadata = [
+                'plan_id'=> $p->id,'org_id' => Auth::user()->organisation_id,
+            ];
+            
+        ?>
+        <input type="hidden" value="{{$p->price}}" name="amount">
+        <input type="hidden" name="currency" value="NGN">
+        <input type="hidden" name="metadata" value="{{ json_encode($array = [
+            'plan_id'=> $p->id, 
+            'org_id' => Auth::user()->organization_id,
+            "upgrade" => 0,
+            "plan_detail" => '',
+            ]) }}" > 
+        <input type="hidden" name="email" value="{{Auth::user()->email}}">
+        <input type="hidden" name="reference" value="{{ Paystack::genTranxRef()}}">
+        <button type="submit" class="btn btn-lg btn-block btn-custom ">Pay</button>
+    </form>
     </div>
 </div>
+@endif
 
-<div class="col-3 princing-item">
+
+@endforeach
+
+{{-- <div class="col-3 princing-item">
     <div class="pricing-divider">
 	<h3 class="text-light">BASIC</h3>
 	<h4 class="my-0 display-2 text-light font-weight-normal mb-3"><span class="h3">₦</span> 5000 <span class="h5">/month</span></h4> 
@@ -115,43 +178,7 @@ ul li {
 	    <li>500 transactions Per month</li>
 	</ul> <button type="button" class="btn btn-lg btn-block btn-custom ">Pay now </button>
     </div>
-</div>
-
-<div class="col-3 princing-item red">
-    <div class="pricing-divider ">
-	<h3 class="text-light">STANDARD</h3>
-	<h4 class="my-0 display-2 text-light font-weight-normal mb-3"><span class="h3">₦</span> 6500 <span class="h5">/month</span></h4> 
-	<svg class='pricing-divider-img' enable-background='new 0 0 300 100' height='100px' id='Layer_1' preserveAspectRatio='none' version='1.1' viewBox='0 0 300 100' width='300px' x='0px' xml:space='preserve' y='0px'>
-	    <path class='deco-layer deco-layer--4' d='M-34.667,62.998c0,0,56-45.667,120.316-27.839C167.484,57.842,197,41.332,232.286,30.428	c53.07-16.399,104.047,36.903,104.047,36.903l1.333,36.667l-372-2.954L-34.667,62.998z' fill='#FFFFFF'></path>
-	</svg>
-    </div>
-    <div class="card-body bg-white mt-0 shadow">
-	<ul class="list-unstyled mb-5 position-relative">
-	    <li>20 Device only</li>
-	    <li>25 Agents</li>
-	    <li>200 customers</li>
-	    <li>1000 transactions Per month</li>
-	</ul> <button type="button" class="btn btn-lg btn-block btn-custom ">Pay now </button>
-    </div>
-</div>
-
-<div class="col-3 princing-item red">
-    <div class="pricing-divider ">
-	<h3 class="text-light">PREMIUM</h3>
-	<h4 class="my-0 display-2 text-light font-weight-normal mb-3"><span class="h3">₦</span> 8000 <span class="h5">/month</span></h4> 
-	<svg class='pricing-divider-img' enable-background='new 0 0 300 100' height='100px' preserveAspectRatio='none' version='1.1' viewBox='0 0 300 100' width='300px' x='0px' xml:space='preserve' y='0px'>
-	<path class='deco-layer deco-layer--4' d='M-34.667,62.998c0,0,56-45.667,120.316-27.839C167.484,57.842,197,41.332,232.286,30.428	c53.07-16.399,104.047,36.903,104.047,36.903l1.333,36.667l-372-2.954L-34.667,62.998z' fill='#FFFFFF'></path>
-	</svg>
-    </div>
-    <div class="card-body bg-white mt-0 shadow">
-	<ul class="list-unstyled mb-5 position-relative">
-	    <li>100 Device only</li>
-	    <li>Unlimited Agents</li>
-	    <li>Unlimited customers</li>
-	    <li>Unlimited transactions Per month</li>
-	</ul> <button type="button" class="btn btn-lg btn-block btn-custom ">Pay now </button>
-    </div>
-</div>
+</div> --}}
 
 </div>
 

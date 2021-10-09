@@ -277,8 +277,18 @@ $(document).ready(function () {
                                     <form method="POST" action="{{route('update_organization', ['id'=>$oragnization->id])}}">
                                         @csrf
                                         <div class="form-group"><label for="address"><strong>Name</strong></label><input class="form-control" value="{{$oragnization->name}}" type="text" placeholder="john" name="name"></div>
-
-                                        <div class="form-group"><label for="city"><strong>Description</strong></label><textarea class="form-control" value="{{$oragnization->description}}" name="description">{{$oragnization->description}}</textarea></div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label for="city"><strong>Description</strong></label><textarea class="form-control" value="{{$oragnization->description}}" name="description">{{$oragnization->description}}</textarea></div>
+                                            </div>
+                                            <div class="col">
+                                                <?php 
+                                                    $plan_detail = \App\Models\PlanDetail::where('org_id', '=', Auth::user()->organization_id)->orderBy('id', 'desc')->first();
+                                                    $plan =  \App\Models\Plan::find($plan_detail->plan_id);
+                                                ?>
+                                                <div class="form-group"><label for="address"><strong>Plan</strong></label><input class="form-control" value="{{$plan->name}}" type="text" placeholder="john" name="name" disabled></div>
+                                            </div>
+                                        </div>
                     
                                         <div class="form-row">
                                             <div class="col">

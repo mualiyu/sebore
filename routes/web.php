@@ -98,5 +98,13 @@ Route::post('/otp_e', [App\Http\Controllers\PaymentGatewayController::class, 've
 //api transactions route 
 Route::get('/transactions', [App\Http\Controllers\transactionController::class, 'index'])->name('show_transactions');
 Route::post('/transactions', [App\Http\Controllers\transactionController::class, 'get_transaction_list'])->name('get_transaction_list');
-// Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
 Route::get('/data_search_t', [App\Http\Controllers\transactionController::class, 'search_data_t'])->name('search_data_t');
+
+
+//plans
+Route::get('/plan', [App\Http\Controllers\PlanController::class, 'index'])->name('plan_index');
+Route::get('/plan/upgrade/{id}/{p_d}', [App\Http\Controllers\PlanController::class, 'plan_show_upgrade'])->name('plan_show_upgrade');
+Route::post('/plan/pay/{id}', [App\Http\Controllers\PlanController::class, 'pay'])->name('plan_pay');
+Route::post('/plan/upgrade', [App\Http\Controllers\PlanController::class, 'plan_upgrade'])->name('plan_upgrade');
+Route::post('/plan/pay', [App\Http\Controllers\PlanController::class, 'add_plan_detail'])->name('plan_add');
+Route::get('/plan/callback', [App\Http\Controllers\PlanController::class, 'payment_callback'])->name('plan_pay_callback');
