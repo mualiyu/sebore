@@ -21,7 +21,7 @@ class ApiItemController extends Controller
         if ($validator->fails()) {
             $res = [
                 'status' => false,
-                'data' => $validator
+                'data' => $validator->errors(),
             ];
             return response()->json($res);
         }
@@ -31,7 +31,7 @@ class ApiItemController extends Controller
         if (count($api) > 0) {
             if ($api[0]->api_key == $request->api_key) {
 
-                $items = Item::where('device_id', '=', $request->device_id)->get();
+                $items = Item::where('device_id', '=', $request->device_id)->with('item_cart')->get();
 
                 if (count($items) > 0) {
                     $res = [

@@ -52,15 +52,25 @@ Route::post('/update_device/{id}', [App\Http\Controllers\DeviceController::class
 
 
 //items
-Route::get('/items', [App\Http\Controllers\ItemController::class, 'show_all_items'])->name('show_all_items');
 Route::get('/device/{id}/items', [App\Http\Controllers\ItemController::class, 'show_items'])->name('show_items');
-Route::get('/create_item/{id}', [App\Http\Controllers\ItemController::class, 'show_add_item'])->name('show_add_item');
-Route::get('/create_item', [App\Http\Controllers\ItemController::class, 'show_add_direct_item'])->name('show_add_direct_item');
-Route::get('/device/{d_id}/item/{i_id}/edit', [App\Http\Controllers\ItemController::class, 'show_edit_item'])->name('show_edit_item');
-Route::post('/create_item', [App\Http\Controllers\ItemController::class, 'create_item'])->name('create_item');
-Route::post('/update_item/{id}', [App\Http\Controllers\ItemController::class, 'update_item'])->name('update_item');
-Route::post('/delete_item/{id}', [App\Http\Controllers\ItemController::class, 'delete_item'])->name('delete_item');
+Route::get('/create/item/{id}', [App\Http\Controllers\ItemController::class, 'show_add_item'])->name('show_add_item');
+Route::get('/create/item', [App\Http\Controllers\ItemController::class, 'show_add_direct_item'])->name('show_add_direct_item');
+// Route::get('/device/{d_id}/item/{i_id}/edit', [App\Http\Controllers\ItemController::class, 'show_edit_item'])->name('show_edit_item');
+Route::post('/create/item', [App\Http\Controllers\ItemController::class, 'create_item'])->name('create_item');
+// Route::post('/update/item/{id}', [App\Http\Controllers\ItemController::class, 'update_item'])->name('update_item');
+Route::post('/delete/item/{id}', [App\Http\Controllers\ItemController::class, 'delete_item'])->name('delete_item');
 Route::post('/create_category', [App\Http\Controllers\ItemController::class, 'create_category'])->name('create_category');
+
+// items cart
+Route::get('/items', [App\Http\Controllers\ItemsCartController::class, 'show_all_items'])->name('show_all_items');
+// Route::get('/items/{id}', [App\Http\Controllers\ItemsCartController::class, 'show_item_cart'])->name('show_items_cart');
+// Route::get('/create_item/{id}', [App\Http\Controllers\ItemController::class, 'show_add_item'])->name('show_add_item_cart');
+Route::get('/create_item', [App\Http\Controllers\ItemsCartController::class, 'show_add_item'])->name('show_add_direct_item_cart');
+Route::get('items/{id}/edit', [App\Http\Controllers\ItemsCartController::class, 'show_edit_item'])->name('show_edit_item_cart');
+Route::post('/create_item', [App\Http\Controllers\ItemsCartController::class, 'create_item'])->name('create_item_cart');
+Route::post('/update_item/{id}', [App\Http\Controllers\ItemsCartController::class, 'update_item'])->name('update_item_cart');
+Route::post('/delete_item/{id}', [App\Http\Controllers\ItemsCartController::class, 'delete_item'])->name('delete_item_cart');
+// Route::post('/create_category', [App\Http\Controllers\ItemController::class, 'create_category'])->name('create_category');
 
 //customers
 Route::get('/agent/{id}/customers', [App\Http\Controllers\CustomerController::class, 'show_customers'])->name('show_customers');

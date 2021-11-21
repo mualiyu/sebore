@@ -12,14 +12,9 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'measure',
-        'unit',
-        'code',
-        'with_q',
-        'with_p',
+        'org_id',
         'device_id',
-        'category_id',
+        'item_cart_id'
     ];
 
 
@@ -28,9 +23,9 @@ class Item extends Model
         return $this->belongsTo(Device::class);
     }
 
-    public function category(): BelongsTo
+    public function item_cart(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(ItemsCart::class, 'item_cart_id');
     }
 
     /**

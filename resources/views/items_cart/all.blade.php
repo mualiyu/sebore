@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">{{$device->name}} Items's</h5>
+                    <h5 class="m-b-10">Items</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -31,12 +31,13 @@
             <div class="page-body">
 		     @include('layouts.flash')
                 <!-- Basic table card start -->
-                <a href="{{route('show_devices')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp;
-		<a href="{{route('show_add_item', ['id'=> $device->id])}}" style="right:0;" class="btn btn-primary">Add New Item</a>
+                {{-- <a href="{{route('show_devices')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp; --}}
+		<a href="{{route('show_add_direct_item_cart')}}" style="right:0;" class="btn btn-primary">Create New Item</a>
+        <a href="{{route('show_add_direct_item')}}" style="right:0;" class="btn btn-primary">Add Item To Device</a>
         <br>
                     <div class="card">
                         <div class="card-header">
-                            <h5>Item</h5>
+                            <h5>Items</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -55,6 +56,7 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Category</th>
+					    {{-- <th>Belongs To</th> --}}
 					    <th>Measure</th>
 					    <th>Unit</th>
 					    <th>Code</th>
@@ -66,22 +68,23 @@
                                     <tbody>
 					    <?php $i_i = count($items); ?>
 				        @foreach ($items as $i)
-					<?php  $cat = \App\Models\Category::find($i->item_cart->category_id); ?>
+					<?php  $cat = \App\Models\Category::find($i->category_id); ?>
 					<tr>
 						<th scope="row">{{$i_i}}</th>
-						<td>{{$i->item_cart->name}}</td>
+						<td>{{$i->name}}</td>
 						<td>{{$cat->name}}</td>
-						<td>{{$i->item_cart->measure/100}}</td>
-						<td>{{$i->item_cart->unit}}</td>
-						<td>{{$i->item_cart->code}}</td>
-						<td>{{$i->item_cart->with_q ? 'Yes':'No'}}</td>
-						<td>{{$i->item_cart->with_p ? 'Yes':'No'}}</td>
+						{{-- <td>{{$i->device->name}}</td> --}}
+						<td>{{$i->measure/100}}</td>
+						<td>{{$i->unit}}</td>
+						<td>{{$i->code}}</td>
+						<td>{{$i->with_q ? 'Yes':'No'}}</td>
+						<td>{{$i->with_p ? 'Yes':'No'}}</td>
 						<td>
-                            <form method="POST" id="delete-form[{{$i_i}}]" action="{{route('delete_item',['id'=>$i->id])}}">
-                                <a href="{{route('show_edit_item_cart', ['id'=>$i->item_cart->id])}}" class="btn btn-primary">Edit</a>
+                            <form method="POST" id="delete-form[{{$i_i}}]" action="{{route('delete_item_cart',['id'=>$i->id])}}">
+                                <a href="{{route('show_edit_item_cart', ['id'=>$i->id])}}" class="btn btn-primary">Edit</a>
                                 @csrf 
                                 <a  onclick="
-                                    if(confirm('Are you sure You want to Delete this Item -( {{$i->id}} )? ')){
+                                    if(confirm('Are you sure You want to Delete this Item -( {{$i->name}}, {{$i->id}} )? ')){
                                         document.getElementById('delete-form[{{$i_i}}]').submit();
                                     }
                                         event.preventDefault();"

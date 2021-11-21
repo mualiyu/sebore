@@ -20,13 +20,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/transaction/create', [App\Http\Controllers\ApiTransactionController::class, 'create']);
 
-Route::get('/device/get_by_code', [App\Http\Controllers\ApiDeviceController::class, 'show']);
-Route::post('/device/update_code', [App\Http\Controllers\ApiDeviceController::class, 'update_code']);
+Route::get('/device/get_by_id', [App\Http\Controllers\ApiDeviceController::class, 'show']);
+Route::get('/device/update_code', [App\Http\Controllers\ApiDeviceController::class, 'update_code']);
 
-Route::get('/agent/get_by_phone', [App\Http\Controllers\ApiAgentController::class, 'get_by_phone']);
+Route::get('/agent/login', [App\Http\Controllers\ApiAgentController::class, 'login']);
 Route::post('/agent/update_password', [App\Http\Controllers\ApiAgentController::class, 'update_password']);
 
 Route::get('/item/get_by_device', [App\Http\Controllers\ApiItemController::class, 'get_by_device']);
+
+Route::get('/customer/get_by_agent', [App\Http\Controllers\ApiCustomerController::class, 'get_by_agent']);
+Route::post('/customer/create', [App\Http\Controllers\ApiCustomerController::class, 'create']);
 
 Route::get('/get_api_by_name', [App\Http\Controllers\ApiApiController::class, 'get_by_name']);
 Route::post('/new_api_user', [App\Http\Controllers\ApiApiController::class, 'create']);

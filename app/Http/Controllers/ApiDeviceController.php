@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+// use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiDeviceResource;
 use App\Models\Api;
+use App\Models\Category;
 use App\Models\Device;
+use App\Models\Item;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\HttpCache\ResponseCacheStrategy;
@@ -21,13 +24,13 @@ class ApiDeviceController extends Controller
         $validator = Validator::make($request->all(), [
             'api_user' => 'required',
             'api_key' => 'required',
-            'device_code' => 'required',
+            'device_id' => 'required',
         ]);
 
         if ($validator->fails()) {
             $res = [
                 'status' => false,
-                'data' => $validator
+                'data' => $validator->errors(),
             ];
             return response()->json($res);
         }
@@ -36,14 +39,46 @@ class ApiDeviceController extends Controller
         if (count($api) > 0) {
             if ($api[0]->api_key == $request->api_key) {
 
-                $device = Device::where('device_id', '=', $request->device_code)->get();
+                $device = Device::where('id', '=', $request->device_id)->get();
 
                 if (count($device) > 0) {
+                    $org_cat = Category::where('org_id', '=', $device[0]->org_id)->get();
+
+                    $category = [];
+
+                    foreach ($org_cat as $oc) {
+                        $category[$oc->name] = [];
+                    }
+
+                    $items = Item::where('device_id', '=', $device[0]->id)->get();
+
+                    foreach ($items as $i) {
+                        $item = $i->item_cart;
+
+                        $cat = Category::find($item->category_id);
+
+                        array_push($category[$cat->name], $item);
+                        // $category[$cat->name] = $item;
+                    }
+
+                    $data = [
+                        'device' => $device[0],
+                        'items' => $category
+                    ];
+
+                    // array_push($device, $category);
+
                     $res = [
                         'status' => true,
-                        'data' => $device
+                        'data' => $data
                     ];
                     return response()->json($res);
+
+                    // $res = [
+                    //     'status' => true,
+                    //     'data' => $device
+                    // ];
+                    // return response()->json($res);
                 } else {
                     $res = [
                         'status' => false,
@@ -87,7 +122,7 @@ class ApiDeviceController extends Controller
         if ($validator->fails()) {
             $res = [
                 'status' => false,
-                'data' => $validator
+                'data' => $validator->errors(),
             ];
             return response()->json($res);
         }
@@ -96,22 +131,49 @@ class ApiDeviceController extends Controller
         if (count($api) > 0) {
             if ($api[0]->api_key == $request->api_key) {
 
-                Device::where('id', '=', $request->device_id)->update([
+                $d_u = Device::where('device_id', '=', $request->device_id)->update([
                     'device_id' => $request->device_code
                 ]);
 
-                $device = Device::find($request->device_id);
+                if ($d_u) {
 
-                if ($device) {
+                    $device = Device::where('device_id', '=', $request->device_code)->get();
+
+                    $org_cat = Category::where('org_id', '=', $device[0]->org_id)->get();
+
+                    $category = [];
+
+                    foreach ($org_cat as $oc) {
+                        $category[$oc->name] = [];
+                    }
+
+                    $items = Item::where('device_id', '=', $device[0]->id)->get();
+
+                    foreach ($items as $i) {
+                        $item = $i->item_cart;
+
+                        $cat = Category::find($item->category_id);
+
+                        array_push($category[$cat->name], $item);
+                        // $category[$cat->name] = $item;
+                    }
+
+                    $data = [
+                        'device' => $device[0],
+                        'items' => $category
+                    ];
+
+                    // array_push($device, $category);
+
                     $res = [
                         'status' => true,
-                        'data' => $device
+                        'data' => $data
                     ];
                     return response()->json($res);
                 } else {
                     $res = [
                         'status' => false,
-                        'data' => 'No data found in system'
+                        'data' => 'Device not found in system'
                     ];
                     return response()->json($res);
                 }

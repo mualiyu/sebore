@@ -68,6 +68,11 @@
 							<input class="form-control" value="{{$device->type}}" type="text" placeholder="type" name="type">
 						</div>
                                                 </div>
+                                                {{-- <div class="col">
+                                                    <div class="form-group"><label for="last_name"><strong>Device Id</strong></label>
+							<input class="form-control" value="{{$device->device_id}}" type="text" placeholder="type" name="type">
+						</div>
+                                                </div> --}}
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
                                         </form>
@@ -108,6 +113,15 @@
                               </div>
                               <div class="col-sm-9 text-secondary">
                                 {{$device->type}}
+                              </div>
+                            </div>
+                            {{-- <hr> --}}
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Device Id</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$device->device_id}}
                               </div>
                             </div>
                             <hr>
@@ -151,28 +165,28 @@
                                     <tbody>
 					    <?php $i_i = count($items); ?>
 				        @foreach ($items as $i)
-					<?php  $cat = \App\Models\Category::find($i->category_id); ?>
+					<?php  $cat = \App\Models\Category::find($i->item_cart->category_id); ?>
 					<tr>
 						<th scope="row">{{$i_i}}</th>
-						<td>{{$i->name}}</td>
+						<td>{{$i->item_cart->name}}</td>
 						<td>{{$cat->name}}</td>
-						<td>{{$i->measure/100}}</td>
-						<td>{{$i->unit}}</td>
-						<td>{{$i->code}}</td>
-						<td>{{$i->with_q ? 'Yes':'No'}}</td>
-						<td>{{$i->with_p ? 'Yes':'No'}}</td>
+						<td>{{$i->item_cart->measure/100}}</td>
+						<td>{{$i->item_cart->unit}}</td>
+						<td>{{$i->item_cart->code}}</td>
+						<td>{{$i->item_cart->with_q ? 'Yes':'No'}}</td>
+						<td>{{$i->item_cart->with_p ? 'Yes':'No'}}</td>
 						<td>
                             <form method="POST" id="delete-form[{{$i_i}}]" action="{{route('delete_item',['id'=>$i->id])}}">
-                                <a href="{{route('show_edit_item', ['d_id'=>$device->id, 'i_id'=>$i->id])}}" class="btn btn-primary">Edit</a>
+                                <a href="{{route('show_edit_item_cart', ['id'=>$i->item_cart->id])}}" class="btn btn-primary">Edit</a>
                                 @csrf 
                                 <a  onclick="
-                                    if(confirm('Are you sure You want to Delete this Item -( {{$i->name}}, {{$i->id}} )? ')){
+                                    if(confirm('Are you sure You want to remove this Item -({{$i->item_cart->name}}) form {{$device->name}}? ')){
                                         document.getElementById('delete-form[{{$i_i}}]').submit();
                                     }
                                         event.preventDefault();"
                                     class="btn btn-warning" 
                                     style="color: black">
-                                    Delete
+                                    Remove
                                 </a>
                             </form>
 						</td>

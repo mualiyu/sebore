@@ -71,13 +71,8 @@ class ItemController extends Controller
         $org = Organization::find(Auth::user()->organization_id);
 
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'measure' => ['required', 'int'],
-            'unit' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:255'],
-            'with_q' => ['required', 'int', 'max:255'],
-            'with_p' => ['required', 'int', 'max:255'],
-            'category' => ['required', 'string', 'max:255'],
+            'item' => ['required', 'string', 'max:255'],
+            'device' => ['required', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -90,7 +85,7 @@ class ItemController extends Controller
 
             $plan = Plan::find($plan_detail->plan_id);
 
-            $$items = Item::where('org_id', '=', $org->id)->get();
+            $items = Item::where('org_id', '=', $org->id)->get();
 
             if (count($items) < $plan->no_items) {
 
@@ -98,21 +93,18 @@ class ItemController extends Controller
                 $category = Category::find($request['category']);
 
                 $item = Item::create([
-                    'name' => $request['name'],
-                    'measure' => $request['measure'] * 100,
-                    'unit' => $request['unit'],
-                    'code' => $request['code'],
-                    'with_q' => $request['with_q'],
-                    'with_p' => $request['with_p'],
-                ]);
-
-                Item::where('id', '=', $item->id)->update([
-                    'category_id' => $request['category'],
+                    'item_cart_id' => $request['item'],
                     'device_id' => $request['device'],
                     'org_id' => Auth::user()->organization_id,
                 ]);
 
-                return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->name . ' is added to system as Item']);
+                Item::where('id', '=', $item->id)->update([
+                    'item_cart_id' => $request['item'],
+                    'device_id' => $request['device'],
+                    'org_id' => Auth::user()->organization_id,
+                ]);
+
+                return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->item_cart->name . ' is added to system as Item']);
             } else {
                 return back()->with('error', "Sorry, You have reached the maximum number of Items allowed for your Plan. Upgrade to enjoy more of ATS services");
             }
@@ -186,46 +178,46 @@ class ItemController extends Controller
     }
 
 
-    public function show_edit_item($d_id, $i_id)
-    {
-        $device = Device::find($d_id);
-        $item = Item::find($i_id);
+    // public function show_edit_item($d_id, $i_id)
+    // {
+    //     $device = Device::find($d_id);
+    //     $item = Item::find($i_id);
 
-        return view('items.edit', compact('device', 'item'));
-    }
+    //     return view('items.edit', compact('device', 'item'));
+    // }
 
-    public function update_item(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'measure' => ['required', 'int', 'max:255'],
-            'unit' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:255'],
-            'with_q' => ['required', 'int', 'max:255'],
-            'with_p' => ['required', 'iny', 'max:255'],
-            'category' => ['required', 'string', 'max:255'],
-        ]);
+    // public function update_item(Request $request, $id)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'measure' => ['required', 'int', 'max:255'],
+    //         'unit' => ['required', 'string', 'max:255'],
+    //         'code' => ['required', 'string', 'max:255'],
+    //         'with_q' => ['required', 'int', 'max:255'],
+    //         'with_p' => ['required', 'iny', 'max:255'],
+    //         'category' => ['required', 'string', 'max:255'],
+    //     ]);
 
-        if (!$validator) {
-            return back()->with('error', 'Item not Updated. Try again!');
-        }
+    //     if (!$validator) {
+    //         return back()->with('error', 'Item not Updated. Try again!');
+    //     }
 
-        $item = Item::where('id', '=', $id)->update([
-            'name' => $request['name'],
-            'measure' => $request['measure'] * 100,
-            'unit' => $request['unit'],
-            'code' => $request['code'],
-            'with_q' => $request['with_q'],
-            'with_p' => $request['with_p'],
-        ]);
+    //     $item = Item::where('id', '=', $id)->update([
+    //         'name' => $request['name'],
+    //         'measure' => $request['measure'] * 100,
+    //         'unit' => $request['unit'],
+    //         'code' => $request['code'],
+    //         'with_q' => $request['with_q'],
+    //         'with_p' => $request['with_p'],
+    //     ]);
 
 
-        Item::where('id', '=', $id)->update([
-            'category_id' => $request['category'],
-        ]);
+    //     Item::where('id', '=', $id)->update([
+    //         'category_id' => $request['category'],
+    //     ]);
 
-        return back()->with(['success' => 'Item is Updated successfully']);
-    }
+    //     return back()->with(['success' => 'Item is Updated successfully']);
+    // }
 
     public function delete_item($id)
     {

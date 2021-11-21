@@ -57,7 +57,7 @@
 						  <option value="agent">By Agent</option>
 						  <option value="customer">By Customer</option>
 						  <option value="device">By Device</option>
-						  <option value="item">By Item</option>
+						  {{-- <option value="item">By Item</option> --}}
 					  </select>
                                           {{-- <input type="text" id="customer" name="customer" value="{{old('cus')}}" class="form-control"> --}}
                                           <span class="form-bar"></span>

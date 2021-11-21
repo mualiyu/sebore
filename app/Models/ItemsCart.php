@@ -7,27 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class ItemsCart extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'org_id',
+        'measure',
+        'unit',
+        'code',
+        'with_q',
+        'with_p',
+        'device_id',
+        'category_id',
     ];
 
-    public function organization(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
+
 
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);
-    }
-
-    public function items_cart(): HasMany
-    {
-        return $this->hasMany(ItemsCart::class);
     }
 }
