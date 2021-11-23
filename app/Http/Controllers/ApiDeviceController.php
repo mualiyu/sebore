@@ -39,7 +39,7 @@ class ApiDeviceController extends Controller
         if (count($api) > 0) {
             if ($api[0]->api_key == $request->api_key) {
 
-                $device = Device::where('id', '=', $request->device_id)->get();
+                $device = Device::where('id', '=', $request->device_id)->with('org')->get();
 
                 if (count($device) > 0) {
                     $org_cat = Category::where('org_id', '=', $device[0]->org_id)->get();

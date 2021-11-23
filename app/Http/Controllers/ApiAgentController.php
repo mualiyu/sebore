@@ -54,10 +54,10 @@ class ApiAgentController extends Controller
                     // return $p;
                     if (Hash::check($request->password, $agent[0]->password)) {
                         # code...
-                        $a = Agent::where('id', '=', $agent[0]->id)->with('customers')->get();
+                        $a = Agent::where('id', '=', $agent[0]->id)->with('customers')->with('role')->get();
                         $res = [
                             'status' => true,
-                            'data' => $a
+                            'data' => $a[0],
                         ];
                         return response()->json($res);
                     } else {
@@ -103,7 +103,7 @@ class ApiAgentController extends Controller
         $validator = Validator::make($request->all(), [
             'api_user' => 'required',
             'api_key' => 'required',
-            'agent_id' => 'required',
+            'phone_or_username' => 'required',
             'old_password' => 'required',
             'new_password' => 'required',
         ]);
@@ -120,20 +120,29 @@ class ApiAgentController extends Controller
         if (count($api) > 0) {
             if ($api[0]->api_key == $request->api_key) {
 
-                $agent = Agent::find($request->agent_id);
+                $user = $request->phone_or_username;
 
-                if ($agent) {
-                    if (Hash::check($request->old_password, $agent->password)) {
+                if (is_numeric($user) == true) {
+                    $agent = Agent::where('phone', '=', $user)->get();
+                } else {
+                    $agent = Agent::where('username', '=', $user)->get();
+                }
 
-                        $a = Agent::where('id', '=',  $request->agent_id)->update([
+                // $agent = Agent::find($request->agent_id);
+
+                if (count($agent) > 0) {
+                    if (Hash::check($request->old_password, $agent[0]->password)) {
+
+                        $a = Agent::where('id', '=',  $agent[0]->id)->update([
                             'password' => Hash::make($request->new_password)
                         ]);
 
                         if ($a) {
-                            // $a_new = 
+                            $a_new = Agent::where('id', '=', $agent[0]->id)->with('customers')->with('role')->get();
+
                             $res = [
                                 'status' => true,
-                                'data' => "Password successfully updated",
+                                'data' => $a_new[0],
                             ];
                             return response()->json($res);
                         } else {

@@ -40,6 +40,11 @@ class Organization extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
+
     /**
      * Undocumented function
      *

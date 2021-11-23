@@ -17,6 +17,7 @@ class Device extends Model
         'location',
         'device_id',
         'user',
+        'org_id',
     ];
 
 
@@ -37,6 +38,11 @@ class Device extends Model
      */
     public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class, 'org_id');
+    }
+
+    public function org(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
     }
 }
