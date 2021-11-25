@@ -43,6 +43,13 @@ Route::post('/create_agent', [App\Http\Controllers\AgentController::class, 'crea
 Route::post('/update_agent/{id}', [App\Http\Controllers\AgentController::class, 'update_agent'])->name('update_agent');
 
 
+// Agents role
+Route::get('/role/agent', [App\Http\Controllers\AgentRoleController::class, 'index'])->name('show_all_agent_roles');
+Route::get('/role/agent/create', [App\Http\Controllers\AgentRoleController::class, 'create'])->name('show_add_agent_role');
+Route::post('/role/agent/create', [App\Http\Controllers\AgentRoleController::class, 'store'])->name('store_agent_role');
+Route::post('/role/agent/{id}/delete', [App\Http\Controllers\ItemController::class, 'destroy'])->name('delete_agent_role');
+
+
 //devices
 Route::get('/devices', [App\Http\Controllers\DeviceController::class, 'show_devices'])->name('show_devices');
 Route::get('/device/{id}', [App\Http\Controllers\DeviceController::class, 'show_single_device'])->name('show_single_device');

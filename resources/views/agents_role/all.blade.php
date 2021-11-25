@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Agents</h5>
+                    <h5 class="m-b-10">Agent Roles</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Agent</a>
+                    <li class="breadcrumb-item"><a href="#">Agent Role</a>
                     </li>
                 </ul>
             </div>
@@ -30,12 +30,12 @@
         <div class="page-wrapper">
             <div class="page-body">
 		     @include('layouts.flash')
-                <!-- Basic table card start -->
-		<a href="{{route('show_add_agent')}}" style="right:0;" class="btn btn-primary">Add New Agent</a>
-        <a href="{{route('show_all_agent_roles')}}" style="right:0;" class="btn btn-primary">Agent Roles</a>
+		        <a href="{{route('show_add_agent_role')}}" style="right:0;" class="btn btn-primary">Add New Role</a>
+                {{-- <a href="{{route('show_add_direct_item')}}" style="right:0;" class="btn btn-primary">Add Item To Device</a> --}}
+                <br>
                     <div class="card">
                         <div class="card-header">
-                            <h5>Agents</h5>
+                            <h5>Agent Roles</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -52,27 +52,35 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>UserName</th>
-                                            <th>Email</th>
-					    <th>Phone</th>
-					    <th>Role</th>
-					    <th>Action</th>
+                                            <th>Name</th>
+                                            <th>type</th>
+					                        <th>Permission</th>
+					                        <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($agents); ?>
-				        @foreach ($agents as $a)
+					    <?php $i_i = count($roles); ?>
+				        @foreach ($roles as $r)
 					<tr>
-						<th scope="row">{{$i}}</th>
-						<td>{{$a->name}}</td>
-						<td>{{$a->email}}</td>
-						<td>{{$a->phone}}</td>
-						<td>{{$a->role->name}}</td>
+						<th scope="row">{{$i_i}}</th>
+						<td>{{$r->name}}</td>
+						<td>{{$r->type}}</td>
+						<td>{{$r->permission == 'rw'? "Read & Write" : "Read only"}}</td>
 						<td>
-						  <a href="{{route('show_single_agent', ['id'=>$a->id])}}" class="btn btn-success">Open</a>
-						  <a href="{{url('/agent/'.$a->id.'/customers')}}" class="btn btn-primary">View Farmers</a>
+                            <form method="POST" id="delete-form[{{$i_i}}]" action="{{route('delete_agent_role',['id'=>$r->id])}}">
+                                @csrf 
+                                <a  onclick="
+                                    if(confirm('Are you sure You want to Delete this Item -( {{$r->name}}, {{$r->id}} )? ')){
+                                        document.getElementById('delete-form[{{$i_i}}]').submit();
+                                    }
+                                        event.preventDefault();"
+                                    class="btn btn-warning" 
+                                    style="color: black; background:red;">
+                                    Delete
+                                </a>
+                            </form>
 						</td>
-						<?php $i--?>
+						<?php $i_i--?>
 					</tr>
 					@endforeach
                                     </tbody>

@@ -24,9 +24,10 @@ class ApiTransactionController extends Controller
             'api_user' => 'required',
             'api_key' => 'required',
             'agent_id' => 'required',
+            'ref_id' => 'required',
             'device_id' => 'required',
             'item_id' => 'required',
-            'customer_id' => 'nullable',
+            'customer_id' => 'required',
             'quantity' => 'required',
             'date' => 'required',
             'amount' => 'required',
@@ -35,7 +36,7 @@ class ApiTransactionController extends Controller
         if ($validator->fails()) {
             $res = [
                 'status' => false,
-                'data' => $validator
+                'data' => $validator->errors(),
             ];
             return response()->json($res);
         }
@@ -56,6 +57,7 @@ class ApiTransactionController extends Controller
                     'quantity' => $request->quantity,
                     'date' => $request->date,
                     'amount' => $request->amount,
+                    'ref_id' => $request->ref_id,
                 ]);
 
                 if ($transaction) {
