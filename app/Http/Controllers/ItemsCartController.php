@@ -76,7 +76,7 @@ class ItemsCartController extends Controller
 
                 $item = ItemsCart::create([
                     'name' => $request['name'],
-                    'measure' => $request['measure'] * 100,
+                    'measure' => $request['measure'],
                     'unit' => $request['unit'],
                     'code' => $request['code'],
                     'with_q' => $request['with_q'],
@@ -123,7 +123,7 @@ class ItemsCartController extends Controller
 
         $item = ItemsCart::where('id', '=', $id)->update([
             'name' => $request['name'],
-            'measure' => $request['measure'] * 100,
+            'measure' => $request['measure'],
             'unit' => $request['unit'],
             'code' => $request['code'],
             'with_q' => $request['with_q'],

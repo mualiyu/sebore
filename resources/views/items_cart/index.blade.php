@@ -71,7 +71,7 @@
 						<th scope="row">{{$i_i}}</th>
 						<td>{{$i->name}}</td>
 						<td>{{$cat->name}}</td>
-						<td>{{$i->measure/100}}</td>
+						<td>{{$i->measure}}</td>
 						<td>{{$i->unit}}</td>
 						<td>{{$i->code}}</td>
 						<td>{{$i->with_q ? 'Yes':'No'}}</td>

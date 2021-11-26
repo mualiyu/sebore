@@ -59,7 +59,7 @@
                                           <label class="float-label">Name</label>
                                       </div>
                                       <div class="form-group form-default">
-                                          <input type="number" name="measure" value="{{$item->measure/100}}" class="form-control" required="">
+                                          <input type="number" name="measure" value="{{$item->measure}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Measure</label>
                                       </div>
