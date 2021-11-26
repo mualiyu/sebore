@@ -117,7 +117,7 @@
                                     <tbody>
 					    <?php $i = 1;?>
 				        @foreach ($transactions as $t)
-                <?php $item = \App\Model\Item::find($t->item_id); ?>
+                <?php $item = \App\Models\Item::find($t->item_id); ?>
 				
 					<tr>
 						<th scope="row">{{$i}}</th>
