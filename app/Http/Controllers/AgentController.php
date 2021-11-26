@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent;
 use App\Models\AgentRole;
+use App\Models\Customer;
 use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\PlanDetail;
@@ -98,7 +99,29 @@ class AgentController extends Controller
                     'agent_role_id' => $request['role'],
                 ]);
 
-                return redirect('/agents')->with(['success' => $agent->name . ' is Created to system as agent']);
+                if ($agent) {
+                    $customer = Customer::create([
+                        'agent_id' => $agent->id,
+                        'org_id' => Auth::user()->organization_id,
+                        'name' => $agent->name,
+                        'email' => $agent->email,
+                        'phone' => $agent->phone,
+                        'gps' => $agent->gps,
+                        'state' => $agent->state,
+                        'country' => $agent->country,
+                        'address' => $agent->address,
+                        'lga' => $agent->lga,
+                    ]);
+
+                    Customer::where('id', '=', $customer->id)->update([
+                        'agent_id' => $agent->id,
+                        'org_id' => Auth::user()->organization_id,
+                    ]);
+
+                    return redirect('/agents')->with(['success' => $agent->name . ' is Created to system as Agent and Customer']);
+                } else {
+                    return back()->with('error', "Sorry, Agent not created, Try again!");
+                }
             } else {
                 return back()->with('error', "Sorry, You have reached the maximum number of Agents allowed for your Plan. Upgrade to enjoy more of ATS services");
             }
