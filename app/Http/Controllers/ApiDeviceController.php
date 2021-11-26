@@ -54,6 +54,16 @@ class ApiDeviceController extends Controller
 
                     foreach ($items as $i) {
                         $item = $i->item_cart;
+                        if ($item->with_q == 1) {
+                            $item->with_q = true;
+                        } else {
+                            $item->with_q = false;
+                        }
+                        if ($item->with_p == 1) {
+                            $item->with_p = true;
+                        } else {
+                            $item->with_p = false;
+                        }
 
                         $cat = Category::find($item->category_id);
 
