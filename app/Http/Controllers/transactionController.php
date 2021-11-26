@@ -69,7 +69,7 @@ class transactionController extends Controller
         // if load type is set to all
         if ($request->request_type == "all") {
 
-            $transactions = Transaction::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
+            $transactions = Transaction::where('org_id', '=', Auth::user()->organization_id)->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
             // return $transactions;
             if ($transactions) {
 
