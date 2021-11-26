@@ -69,8 +69,8 @@ class transactionController extends Controller
         // if load type is set to all
         if ($request->request_type == "all") {
 
-            $transactions = Transaction::whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
-
+            $transactions = Transaction::whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
+            // return $transactions;
             if ($transactions) {
 
                 if (count($transactions) > 0) {
@@ -90,7 +90,7 @@ class transactionController extends Controller
             }
             $customer = Customer::find($request->data_d);
 
-            $transactions = Transaction::where('customer_id', '=', $customer->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            $transactions = Transaction::where('customer_id', '=', $customer->id)->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
 
             if ($transactions) {
                 if (count($transactions) > 0) {
@@ -108,7 +108,7 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select Agent.');
             }
             $agent = Agent::find($request->data_d);
-            $transactions = Transaction::where('agent_id', '=', $agent->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            $transactions = Transaction::where('agent_id', '=', $agent->id)->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
             if ($transactions) {
                 if (count($transactions) > 0) {
                     return view('transactions.agents', compact('transactions', 'agent', 'from', 'to', 'months'));
@@ -124,7 +124,7 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select a device.');
             }
             $device = Device::find($request->data_d);
-            $transactions = Transaction::where('device_id', '=', $device->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            $transactions = Transaction::where('device_id', '=', $device->id)->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
             if ($transactions) {
                 if (count($transactions) > 0) {
                     return view('transactions.devices', compact('transactions', 'device', 'from', 'to', 'months'));
@@ -140,7 +140,7 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select Item.');
             }
             $item = Item::find($request->data_d);
-            $transactions = Transaction::where('item_id', '=', $item->id)->whereBetween('date', [$from . '00:00:00', $to . '23:59:59'])->get();
+            $transactions = Transaction::where('item_id', '=', $item->id)->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
             if ($transactions) {
                 if (count($transactions) > 0) {
                     return view('transactions.items', compact('transactions', 'item', 'from', 'to', 'months'));

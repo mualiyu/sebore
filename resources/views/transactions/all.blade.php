@@ -117,12 +117,12 @@
                                     <tbody>
 					    <?php $i = 1;?>
 				        @foreach ($transactions as $t)
-                <?php $item = \App\Models\Item::where('=', '=', $t->item_id)->with('item_cart')->get(); ?>
+                <?php $item = \App\Models\Item::where('id', '=', $t->item_id)->with('item_cart')->get(); ?>
 				
 					<tr>
 						<th scope="row">{{$i}}</th>
-						<td>{{$item->item_cart->name}}</td>
-						<td>{{$item->item_cart->measure}} - {{$item->item_cart->unit}}</td>
+						<td>{{$item[0]->item_cart->name}}</td>
+						<td>{{$item[0]->item_cart->measure}} - {{$item[0]->item_cart->unit}}</td>
 						<td>{{$t->quantity}}</td>
 						<td>{{$t->amount}}</td>
 						<td>
