@@ -117,7 +117,7 @@
                                     <tbody>
 					    <?php $i = 1;?>
 				        @foreach ($transactions as $t)
-                <?php $item = \App\Models\Item::find($t->item_id); ?>
+                <?php $item = \App\Models\Item::where('=', '=', $t->item_id)->with('item_cart')->get(); ?>
 				
 					<tr>
 						<th scope="row">{{$i}}</th>
