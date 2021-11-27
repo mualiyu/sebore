@@ -137,7 +137,7 @@
 					<div class="col-sm-5">
 					    <div class="form-group form-default">
 						<select type="text" name="role" class="form-control" required="">
-                            <?php $roles = \App\Models\AgentRole::all(); ?>
+                            <?php $roles = \App\Models\AgentRole::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
                             @foreach ($roles as $r)
                             <option value="{{$r->id}}">{{$r->name}}</option>
                             @endforeach
