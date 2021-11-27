@@ -58,7 +58,7 @@
 						<div class="form-group form-default">
 						  <select name="item" class="form-control" required>
 							 @foreach ($items as $i)    
-							 <option value="{{$i->id}}">{{$i->name}} -> {{$i->measure/100}} {{$i->unit}}</option>
+							 <option value="{{$i->id}}">{{$i->name}} -> {{$i->measure}} {{$i->unit}}</option>
 							 @endforeach
 						  </select>
 						  <span class="form-bar"></span>
