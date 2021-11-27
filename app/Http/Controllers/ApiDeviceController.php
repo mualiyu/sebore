@@ -54,6 +54,7 @@ class ApiDeviceController extends Controller
                     $items = Item::where('device_id', '=', $device[0]->id)->get();
 
                     foreach ($items as $i) {
+                        $i->item_cart->id = $i->id;
                         $item = $i->item_cart;
                         if ($item->with_q == 1) {
                             $item->with_q = true;
@@ -162,7 +163,10 @@ class ApiDeviceController extends Controller
                     $items = Item::where('device_id', '=', $device[0]->id)->get();
 
                     foreach ($items as $i) {
+                        $i->item_cart->id = $i->id;
                         $item = $i->item_cart;
+                        // $item->id = $i->id;
+
                         if ($item->with_q == 1) {
                             $item->with_q = true;
                         } else {
