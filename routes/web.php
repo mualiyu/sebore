@@ -56,6 +56,7 @@ Route::get('/device/{id}', [App\Http\Controllers\DeviceController::class, 'show_
 Route::get('/create_device', [App\Http\Controllers\DeviceController::class, 'show_add_device'])->name('show_add_device');
 Route::post('/create_device', [App\Http\Controllers\DeviceController::class, 'create_device'])->name('create_device');
 Route::post('/update_device/{id}', [App\Http\Controllers\DeviceController::class, 'update_device'])->name('update_device');
+Route::post('/reset_device/{id}', [App\Http\Controllers\DeviceController::class, 'reset_device'])->name('reset_device');
 
 
 //items

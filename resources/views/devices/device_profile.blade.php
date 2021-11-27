@@ -84,7 +84,19 @@
                           <div class="card-body">
                               <div class="row">
                                 <div class="col-sm-12">
-                                  <a class="btn btn-primary" onclick="edit()" style="color: white;">Edit</a>
+                                  <a class="btn btn-primary" onclick="edit()" style="color: white; float:left">Edit</a>
+                                <form method="POST" id="reset-form" action="{{route('reset_device',['id'=>$device->id])}}">
+                                @csrf 
+                                <a  onclick="
+                                    if(confirm('Are you sure You want to reset this Device -({{$device->name}})? ')){
+                                        document.getElementById('reset-form').submit();
+                                    }
+                                        event.preventDefault();"
+                                    class="btn btn-warning" 
+                                    style="color: black">
+                                    Reset
+                                </a>
+                            </form>
                                 </div>
                               </div>
                               <br>
@@ -119,6 +131,15 @@
                             <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Device Id</h6>
+                              </div>
+                              <div class="col-sm-9 text-secondary">
+                                {{$device->id}}
+                              </div>
+                            </div>
+                            {{-- <hr> --}}
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <h6 class="mb-0" style="float: right;">Device Key</h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
                                 {{$device->device_id}}
@@ -224,5 +245,7 @@
                 p.style.display = 'block';
             }
         }
+
+
     </script>
 @endsection

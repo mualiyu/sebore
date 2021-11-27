@@ -40,6 +40,7 @@ class ApiDeviceController extends Controller
             if ($api[0]->api_key == $request->api_key) {
 
                 $device = Device::where('id', '=', $request->device_id)->with('org')->get();
+                $device[0]->org->logo = url('/storage/pic') . '/' . $device[0]->org->logo;
 
                 if (count($device) > 0) {
                     $org_cat = Category::where('org_id', '=', $device[0]->org_id)->get();
@@ -147,7 +148,8 @@ class ApiDeviceController extends Controller
 
                 if ($d_u) {
 
-                    $device = Device::where('device_id', '=', $request->device_code)->get();
+                    $device = Device::where('device_id', '=', $request->device_code)->with('org')->get();
+                    $device[0]->org->logo = url('/storage/pic') . '/' . $device[0]->org->logo;
 
                     $org_cat = Category::where('org_id', '=', $device[0]->org_id)->get();
 
@@ -161,6 +163,17 @@ class ApiDeviceController extends Controller
 
                     foreach ($items as $i) {
                         $item = $i->item_cart;
+                        if ($item->with_q == 1) {
+                            $item->with_q = true;
+                        } else {
+                            $item->with_q = false;
+                        }
+                        if ($item->with_p == 1) {
+                            $item->with_p = true;
+                        } else {
+                            $item->with_p = false;
+                        }
+
 
                         $cat = Category::find($item->category_id);
 

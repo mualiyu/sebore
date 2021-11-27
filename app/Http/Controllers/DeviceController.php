@@ -158,4 +158,19 @@ class DeviceController extends Controller
 
         return redirect()->route('show_single_device', ['id' => $id])->with(['success' => $request['name'] . ' is Updated']);
     }
+
+
+    public function reset_device($id)
+    {
+        $device = Device::find($id);
+
+        $rand_num = random_int(1000000000, 9999999999);
+
+        $device->update([
+            'device_id' => $rand_num,
+        ]);
+
+        return back()->with('success', 'The ' . $device->name . ' Device key reset is successful');
+        // return $rand_num;
+    }
 }
