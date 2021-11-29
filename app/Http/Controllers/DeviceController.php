@@ -42,7 +42,7 @@ class DeviceController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'location' => ['required', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
             'type' => ['required', 'string'],
             'lga' => ['required', 'string'],
             'state' => ['required', 'string'],
@@ -139,14 +139,14 @@ class DeviceController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'location' => ['required', 'string', 'max:1000'],
+            'location' => ['nullable', 'string', 'max:1000'],
             'type' => ['required', 'string'],
         ]);
         if ($validator->fails()) {
             return back()->with('error', 'device not updated. Try again!');
         }
 
-        $agent = Device::where('id', '=', $id)->update([
+        $device = Device::where('id', '=', $id)->update([
             'name' => $request['name'],
             'location' => $request['location'],
             'type' => $request['type'],

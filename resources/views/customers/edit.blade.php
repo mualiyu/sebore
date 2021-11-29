@@ -63,34 +63,55 @@
                                           <label class="float-label">Address</label>
                                       </div>
 				      <div class="row">
-					<div class="col-sm-3">
-						      <div class="form-group form-default">
-							  <input type="text" name="lga" value="{{$customer->lga  ?? ''}}" class="form-control" required>
-							  <span class="form-bar"></span>
-							  <label class="float-label">LGA:</label>
-						      </div>
-					</div>
-					<div class="col-sm-3">
-					    <div class="form-group form-default">
-					  	<input type="text" name="state" value="{{$customer->state ?? ''}}" class="form-control" required>
-					  	<span class="form-bar"></span>
-					  	<label class="float-label">State:</label>
-					    </div>
-					</div>
-					<div class="col-sm-3">
-					    <div class="form-group form-default">
-					  	<input type="text" name="country" value="{{$customer->country ?? ''}}" class="form-control" required>
-					  	<span class="form-bar"></span>
-					  	<label class="float-label">Country:</label>
-					    </div>
-					</div>
-					<div class="col-sm-3">
+                          <div class="col-sm-3">
+                                <div class="form-group form-default">
+                                  <select name="country" value="{{$customer->country ?? ''}}"  class="form-control" required id="country-select">
+                                      <option value="nigeria">Nigeria</option>
+                                  </select>
+                                <span class="form-bar"></span>
+                                <label class="float-label">Country:</label>
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                                {{-- <div class="form-group form-default">
+                                    <input type="text" name="state" value="{{$customer->state ?? ''}}" class="form-control" required>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">State:</label>
+                                </div> --}}
+
+                                <div class="form-group form-default">
+                                     <select name="state" class="form-control" id="state-select">
+                                         <option value="{{$customer->state ?? ''}}">{{$customer->state ?? ''}}</option>
+                                     </select>
+                                   <span class="form-bar"></span>
+                                   <label class="float-label">State:</label>
+                                 </div>
+                            </div>
+                            <div class="col-sm-3">
+                                      {{-- <div class="form-group form-default">
+                                      <input type="text" name="lga" value="{{$customer->lga  ?? ''}}" class="form-control" required>
+                                      <span class="form-bar"></span>
+                                      <label class="float-label">LGA:</label>
+                                      </div> --}}
+
+                                      <div class="form-group form-default">
+                                            <select name="lga" class="form-control" id="lga-select">
+                                                <option value="{{$customer->lga  ?? ''}}">{{$customer->lga  ?? ''}}</option>
+                                            </select>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">LGA:</label>
+                                        @error('lga')
+                                                          <Span style="color: red;">{{$message}}</Span>
+                                                    @enderror
+                                        </div>
+                            </div>
+					{{-- <div class="col-sm-3">
 						<div class="form-group form-default">
 						    <input type="text" name="gps" value="{{$customer->gps ?? ''}}" class="form-control" required>
 						    <span class="form-bar"></span>
 						    <label class="float-label">Location <small>(Gps)</small></label>
 						</div>
-					</div>
+					</div> --}}
 				      </div>
 
 				      

@@ -48,7 +48,7 @@
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
                                       </div>
-                                      <div class="row">
+                                      {{-- <div class="row">
                                             <div class="col-sm-2">
                                              <div class="form-group form-default">
                                                  <input type="button" class="btn btn-primary bg-light" value="Use Map" id="" style="color:black;width: 100%;">
@@ -64,7 +64,7 @@
                                                   @enderror
                                               </div>
                                             </div>
-                                      </div>
+                                      </div> --}}
 				                      <div class="form-group form-default">
                                           <input type="text" name="type" value="{{old('type')}}" class="form-control" required="">
                                           <span class="form-bar"></span>

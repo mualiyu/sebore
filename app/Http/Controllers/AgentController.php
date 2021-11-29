@@ -60,7 +60,7 @@ class AgentController extends Controller
             'lga' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
-            'gps' => ['required', 'string', 'max:255'],
+            'gps' => ['nullable', 'string', 'max:255'],
             'role' => ['required', 'string'],
         ]);
         if ($validator->fails()) {
@@ -182,13 +182,13 @@ class AgentController extends Controller
             'lga' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
-            'gps' => ['required', 'string', 'max:255'],
+            'gps' => ['nullable', 'string', 'max:255'],
             'role' => ['required', 'string'],
         ]);
         if ($validator->fails()) {
             return back()->with('error', 'Agent not Created. Try again!');
         }
-        // dd($request->all());
+
 
         $agent = Agent::where('id', '=', $id)->update([
             'name' => $request['name'],

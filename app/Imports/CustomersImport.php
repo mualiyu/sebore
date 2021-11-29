@@ -41,7 +41,6 @@ class CustomersImport implements ToModel, WithHeadingRow
             'name' => $row['name'],
             'email' => $row['email'],
             'phone' => $num,
-            'gps' => $row['location'],
             'state' => $row['state'],
             'country' => $row['country'],
             'address' => $row['address'],

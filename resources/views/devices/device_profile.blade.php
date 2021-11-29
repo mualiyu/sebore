@@ -59,20 +59,15 @@
                                                 </div>
 					    </div>
 					    <div class="form-row">
-                                                <div class="col">
+                                                {{-- <div class="col">
                                                     <div class="form-group"><label for="first_name"><strong>location</strong></label>
-							<input value="{{$device->location}}" class="form-control" type="text" placeholder='location' name="location"></div>
-                                                </div>
+							                                      <input value="{{$device->location}}" class="form-control" type="text" placeholder='location' name="location"></div>
+                                                </div> --}}
                                                 <div class="col">
                                                     <div class="form-group"><label for="last_name"><strong>type</strong></label>
 							<input class="form-control" value="{{$device->type}}" type="text" placeholder="type" name="type">
 						</div>
                                                 </div>
-                                                {{-- <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Device Id</strong></label>
-							<input class="form-control" value="{{$device->device_id}}" type="text" placeholder="type" name="type">
-						</div>
-                                                </div> --}}
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
                                         </form>
@@ -110,14 +105,14 @@
                               </div>
                             </div>
                             {{-- <hr> --}}
-                            <div class="row">
+                            {{-- <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;">Location</h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
                                 {{$device->location}}
                               </div>
-                            </div>
+                            </div> --}}
                             {{-- <hr> --}}
                             <div class="row">
                               <div class="col-sm-3">

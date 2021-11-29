@@ -68,7 +68,7 @@ class CustomerController extends Controller
             'lga' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
-            'gps' => ['required', 'string', 'max:255'],
+            'gps' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -180,7 +180,7 @@ class CustomerController extends Controller
             'lga' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
-            'gps' => ['required', 'string', 'max:255'],
+            'gps' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {

@@ -78,7 +78,7 @@ class ApiCustomerController extends Controller
             'lga' => 'required',
             'state' => 'required',
             'country' => 'required',
-            'gps' => 'required'
+            'gps' => 'nullable'
         ]);
 
         if ($validator->fails()) {

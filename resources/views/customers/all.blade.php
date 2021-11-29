@@ -49,6 +49,7 @@
                                 </ul>
                             </div>
                         </div>
+                        
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
                                 <table class="table">
@@ -62,6 +63,7 @@
 					    <th>LGA</th>
 					    <th>Sate</th>
 					    <th>Agent</th>
+                        <th>Qr Code</th>
 					    <th>Action</th>
                                         </tr>
                                     </thead>
@@ -77,6 +79,13 @@
 						<td>{{$c->lga}}</td>
 						<td>{{$c->state}}</td>
 						<td>{{$c->agent->name}}</td>
+                        <td>
+                            <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
+                                            ->merge('assets/images/logo.png', 0.3, true)
+                                            ->errorCorrection('H')
+                                            ->size(100)
+                                            ->generate($c->phone)) !!}" />
+                        </td>
 						<td>
                            			 <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_customer',['id'=>$c->id])}}">
                            			     <a href="{{route('show_edit_customer', ['a_id'=> $c->agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>

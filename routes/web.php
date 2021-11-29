@@ -102,7 +102,7 @@ Route::post('/pay/all/customers', [App\Http\Controllers\PaymentController::class
 Route::get('/customer_name_search_p', [App\Http\Controllers\PaymentController::class, 'customer_search'])->name('customer_p');
 
 //api test route 
-Route::get('/test', [App\Http\Controllers\testController::class, 'index'])->name('index');
+// Route::get('/test', [App\Http\Controllers\testController::class, 'index'])->name('index');
 // Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
 
 
@@ -126,3 +126,6 @@ Route::post('/plan/pay/{id}', [App\Http\Controllers\PlanController::class, 'pay'
 Route::post('/plan/upgrade', [App\Http\Controllers\PlanController::class, 'plan_upgrade'])->name('plan_upgrade');
 Route::post('/plan/pay', [App\Http\Controllers\PlanController::class, 'add_plan_detail'])->name('plan_add');
 Route::get('/plan/callback', [App\Http\Controllers\PlanController::class, 'payment_callback'])->name('plan_pay_callback');
+
+// Pdf route
+Route::get('/pdf/agent/{username}/customers', [App\Http\Controllers\PdfController::class, 'get_customers'])->name('export_customers_pdf');

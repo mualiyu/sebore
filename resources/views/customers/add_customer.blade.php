@@ -98,37 +98,64 @@
                                           </div>
                                       </div>
 				      <div class="row">
-					<div class="col-sm-3">
-						      <div class="form-group form-default">
-							  <input type="text" name="lga" value="{{old('lga')}}" class="form-control" required>
-							  <span class="form-bar"></span>
-							  <label class="float-label">LGA:</label>
-                              @error('lga')
-                                                <Span style="color: red;">{{$message}}</Span>
-                                          @enderror
-						      </div>
-					</div>
-					<div class="col-sm-3">
-					    <div class="form-group form-default">
-					  	<input type="text" name="state" value="{{old('state')}}" class="form-control" required>
-					  	<span class="form-bar"></span>
-					  	<label class="float-label">State:</label>
-                          @error('state')
-                                                <Span style="color: red;">{{$message}}</Span>
-                                          @enderror
-					    </div>
-					</div>
-					<div class="col-sm-3">
-					    <div class="form-group form-default">
-					  	<input type="text" name="country" value="{{old('country')}}" class="form-control" required>
-					  	<span class="form-bar"></span>
-					  	<label class="float-label">Country:</label>
-                          @error('country')
-                                                <Span style="color: red;">{{$message}}</Span>
-                                          @enderror
-					    </div>
-					</div>
-					<div class="col-sm-3">
+                          <div class="col-sm-4">
+                              {{-- <div class="form-group form-default">
+                                  <input type="text" name="country" value="{{old('country')}}" class="form-control" required>
+                                  <span class="form-bar"></span>
+                                  <label class="float-label">Country:</label>
+                                  @error('country')
+                                  <Span style="color: red;">{{$message}}</Span>
+                                  @enderror
+                                </div> --}}
+
+                                <div class="form-group form-default">
+                                  <select name="country" class="form-control" required id="country-select">
+                                      <option value="nigeria">Nigeria</option>
+                                  </select>
+                                <span class="form-bar"></span>
+                                <label class="float-label">Country:</label>
+                                @error('country')
+                                      <Span style="color: red;">{{$message}}</Span>
+                                @enderror
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                                {{-- <div class="form-group form-default">
+                                    <input type="text" name="state" value="{{old('state')}}" class="form-control" required>
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">State:</label>
+                                    @error('state')
+                                    <Span style="color: red;">{{$message}}</Span>
+                                    @enderror
+                                </div> --}}
+                                 <div class="form-group form-default">
+                                     <select name="state" class="form-control" id="state-select"></select>
+                                   <span class="form-bar"></span>
+                                   <label class="float-label">State:</label>
+                                   @error('state')
+                                                         <Span style="color: red;">{{$message}}</Span>
+                                                   @enderror
+                                 </div>
+                            </div>
+                            <div class="col-sm-4">
+                                      {{-- <div class="form-group form-default">
+                                      <input type="text" name="lga" value="{{old('lga')}}" class="form-control" required>
+                                      <span class="form-bar"></span>
+                                      <label class="float-label">LGA:</label>
+                                      @error('lga')
+                                                        <Span style="color: red;">{{$message}}</Span>
+                                                  @enderror
+                                      </div> --}}
+                                        <div class="form-group form-default">
+                                            <select name="lga" class="form-control" id="lga-select"></select>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">LGA:</label>
+                                        @error('lga')
+                                                          <Span style="color: red;">{{$message}}</Span>
+                                                    @enderror
+                                        </div>
+                            </div>
+					{{-- <div class="col-sm-3">
 						<div class="form-group form-default">
 						    <input type="text" name="gps" value="{{old('gps')}}" class="form-control" required>
 						    <span class="form-bar"></span>
@@ -137,7 +164,7 @@
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
 						</div>
-					</div>
+					</div> --}}
 				      </div>
 
 				      

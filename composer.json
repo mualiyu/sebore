@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -15,6 +16,7 @@
         "maatwebsite/excel": "^3.1",
         "php-excel-reader/spreadsheet-reader": "dev-master",
         "phpoffice/phpspreadsheet": "^1.18",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "unicodeveloper/laravel-paystack": "^1.0"
     },
     "require-dev": {

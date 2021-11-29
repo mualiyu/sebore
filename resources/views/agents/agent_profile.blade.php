@@ -49,6 +49,7 @@
                                         <div class="row">
                                           <div class="col-sm-12">
                                             <a class="btn btn-primary" onclick="edit()" style="color: white;">close</a>
+                                           
                                           </div>
                                         </div><br><br>
                                         <form  method="POST" action="{{route('update_agent', ['id'=>$agent->id])}}">
@@ -88,9 +89,7 @@
                                                 <div class="col">
                                                     <div class="form-group"><label for="first_name"><strong>Phone</strong></label><input value="{{$agent->phone}}" class="form-control" type="number" placeholder="phone" name="phone"></div>
                                                 </div>
-						<div class="col">
-                                                    <div class="form-group"><label for="first_name"><strong>Gps</strong></label><input value="{{$agent->gps}}" class="form-control" type="text" placeholder="Location (gps)" name="gps"></div>
-                                                </div>
+						
                                                 <div class="col">
                                                     <div class="form-group"><label for="last_name"><strong>Role</strong></label>
 							{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
@@ -100,10 +99,6 @@
                     @foreach ($roles as $r)
                     <option value="{{$r->id}}">{{$r->name}}</option>
                     @endforeach
-								{{-- <option value="agent">Agent</option>
-							    <option value="mareter">Marketer</option>
-							    <option value="transporter">Transpoter</option>
-							    <option value="aggregator">Aggregator</option> --}}
 							</select>
 						</div>
                                                 </div>
@@ -121,6 +116,7 @@
                               <div class="row">
                                 <div class="col-sm-12">
                                   <a class="btn btn-primary" onclick="edit()" style="color: white;">Edit</a>
+                                   <a class=" btn btn-success" href="{{route('export_customers_pdf', ['username'=>$agent->username])}}" >Export Customers Qr Code</a>
                                 </div>
                               </div>
                               <br>
@@ -229,6 +225,7 @@
 					    <th>Address</th>
 					    <th>LGA</th>
 					    <th>Sate</th>
+              <th>Qr Code</th>
 					    <th>Action</th>
                                         </tr>
                                     </thead>
@@ -243,6 +240,13 @@
 						<td>{{$c->address}}</td>
 						<td>{{$c->lga}}</td>
 						<td>{{$c->state}}</td>
+            <td>
+                <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
+                                ->merge('assets/images/logo.png', 0.3, true)
+                                ->errorCorrection('H')
+                                ->size(100)
+                                ->generate($c->phone)) !!}" />
+            </td>
 						<td>
                             <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_customer',['id'=>$c->id])}}">
                                 <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
