@@ -242,7 +242,7 @@
 						<td>{{$c->state}}</td>
             <td>
                 <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
-                                ->merge('assets/images/logo.png', 0.3, true)
+                                // ->merge('assets/images/logo.png', 0.3, true)
                                 ->errorCorrection('H')
                                 ->size(100)
                                 ->generate($c->phone)) !!}" />
