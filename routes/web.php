@@ -103,6 +103,7 @@ Route::get('/customer_name_search_p', [App\Http\Controllers\PaymentController::c
 
 //api test route 
 // Route::get('/test', [App\Http\Controllers\testController::class, 'index'])->name('index');
+Route::get('test', fn () => phpinfo());
 // Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
 
 
