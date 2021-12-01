@@ -19,7 +19,7 @@
                 <tr class="table-header">
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Email</th>
+                    {{-- <th scope="col">Email</th> --}}
                     <th scope="col">Phone</th>
                     <th scope="col">Qrcode</th>
                 </tr>
@@ -29,16 +29,13 @@
                 <tr>
                     <th scope="row">{{ $data->id }}</th>
                     <td style="margin: auto;">{{ $data->name }}</td>
-                    <td>{{ $data->email }}</td>
+                    {{-- <td>{{ $data->email }}</td> --}}
                     <td>{{ $data->phone }}</td>
                     <td>
-			<img style="width: 150px; height:150px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
-                                // ->merge('assets/images/logo.png', 0.3, true)
+			<img style="width: 150px; height:160px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
                                 ->errorCorrection('H')
                                 ->size(200)
                                 ->generate($data->phone)) !!}" />
-			{{-- {!! QrCode::size(200)
-                                ->generate($data->phone) !!} --}}
 		    </td>
                 </tr>
                 @endforeach
