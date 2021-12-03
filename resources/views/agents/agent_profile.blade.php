@@ -94,7 +94,7 @@
                                                     <div class="form-group"><label for="last_name"><strong>Role</strong></label>
 							{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
 							<select name="role" id="" class="form-control">
-								<option value="{{$agent->role->name ?? ''}}">{{$agent->role->name ?? ''}}</option>
+								<option value="{{$agent->role->id ?? ''}}">{{$agent->role->name ?? ''}}</option>
                 <?php $roles = \App\Models\AgentRole::all(); ?>
                     @foreach ($roles as $r)
                     <option value="{{$r->id}}">{{$r->name}}</option>
