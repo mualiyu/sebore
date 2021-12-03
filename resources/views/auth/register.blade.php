@@ -55,7 +55,8 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group form-primary">
-                                    <input type="password" class="form-control @error('password') is-invalid @enderror"  name="password" required autocomplete="new-password">
+                                    <input type="password" id="password" class="form-control @error('password') is-invalid @enderror"  name="password" required autocomplete="new-password">
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -67,7 +68,8 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group form-primary">
-                                    <input type="password" name="password_confirmation" class="form-control" required>
+                                    <input type="password" id="cPassword" name="password_confirmation" class="form-control" required>
+                                    <i class="bi bi-eye-slash" id="toggleCPassword"></i>
                                     <span class="form-bar"></span>
                                     <label class="float-label">Confirm Password</label>
                                 </div>

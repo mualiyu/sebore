@@ -81,6 +81,7 @@
       <link rel="stylesheet" type="text/css" href="{{asset('assets/icon/font-awesome/css/font-awesome.min.css')}}">
       <!-- Style.css -->
       <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
 
       @yield('style')
 
@@ -121,6 +122,15 @@
             box-shadow: none;
             color: #fff;
             background-color: {{$bth}};
+        }
+
+        #togglePassword {
+            margin-left: -30px;
+            cursor: pointer;
+        }
+        #toggleCPassword {
+            margin-left: -30px;
+            cursor: pointer;
         }
       </style>
   </head>
@@ -202,6 +212,30 @@
 <script type="text/javascript" src="bower_components/i18next-browser-languagedetector/js/i18nextBrowserLanguageDetector.min.js"></script>
 <script type="text/javascript" src="bower_components/jquery-i18next/js/jquery-i18next.min.js"></script>
 <script type="text/javascript" src="{{asset('assets/js/common-pages.js')}}"></script>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye / eye slash icon
+        this.classList.toggle('bi-eye');
+    });
+
+    const toggleCPassword = document.querySelector('#toggleCPassword');
+    const cPassword = document.querySelector('#cPassword');
+
+    toggleCPassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = cPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        cPassword.setAttribute('type', type);
+        // toggle the eye / eye slash icon
+        this.classList.toggle('bi-eye');
+    });
+</script>
 </body>
 
 </html>
