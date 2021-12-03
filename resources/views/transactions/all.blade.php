@@ -121,8 +121,8 @@
 				
 					<tr>
 						<th scope="row">{{$i}}</th>
-						<td>{{$item->item_cart->name}}</td>
-						<td>{{$item->item_cart->measure}} - {{$item->item_cart->unit}}</td>
+						<td>{{$item->item_cart->name ?? ""}}</td>
+						<td>{{$item->item_cart->measure ?? ""}} - {{$item->item_cart->unit ?? ""}}</td>
 						<td>{{$t->quantity}}</td>
 						<td>{{$t->amount}}</td>
 						<td>
