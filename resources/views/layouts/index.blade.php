@@ -6,6 +6,8 @@
     <?php
         $org = Auth::user()->organization;
         if ($org->theme) {
+            $cookie_name = 'Ats_Theme';
+            
             if ($org->theme == 1) {
                 $tn = 'rgb(90,30,30)';
                 $th = 'rgba(109, 41, 41, 0.7)';
@@ -13,6 +15,15 @@
                 $card1 = 'rgb(109, 41, 41)';
                 $card2 ='rgb(102, 41, 41)';
                 $card3 = 'rgb(100, 41, 41)';
+
+                $cookie_value = [
+                    "tn" => 'rgb(90,30,30)',
+                    "th" => 'rgba(109, 41, 41, 0.7)',
+                    "bth" => 'rgba(109, 41, 41, 0.4)',
+                    "card1" => 'rgb(109, 41, 41)',
+                    "card2" =>'rgb(102, 41, 41)',
+                    "card3" => 'rgb(100, 41, 41)',
+                ];
             }
             elseif ($org->theme == 2) {
                 $tn = 'rgb(99,161,0)';
@@ -21,6 +32,15 @@
                 $card1 = 'rgb(126,170,57)';
                 $card2 ='rgb(124,155,76)';
                 $card3 = 'rgb(139,170,91)';
+
+                $cookie_value = [
+                    "tn" => 'rgb(99,161,0)',
+                    "th" => 'rgba(126, 170, 57, 0.7)',
+                    "bth" => 'rgba(126, 170, 57, 0.4)',
+                    "card1" => 'rgb(126,170,57)',
+                    "card2" =>'rgb(124,155,76)',
+                    "card3" => 'rgb(124,155,76)',
+                ];
             }
             elseif ($org->theme == 3) {
                 $tn = 'rgb(0,0,255)';
@@ -29,6 +49,15 @@
                 $card1 = 'rgb(75, 70, 245)';
                 $card2 ='rgb(75, 70, 235)';
                 $card3 = 'rgb(75, 70, 225)';
+
+                $cookie_value = [
+                    "tn" => 'rgb(0,0,255)',
+                    "th" => 'rgba(75, 75, 241, 0.7)',
+                    "bth" => 'rgba(75, 75, 241, 0.4)',
+                    "card1" => 'rgb(75, 70, 245)',
+                    "card2" =>'rgb(75, 70, 235)',
+                    "card3" => 'rgb(75, 70, 255)',
+                ];
             }else{
                 $tn = 'rgb(90,30,30)';
                 $th = 'rgba(109, 41, 41, 0.7)';
@@ -36,7 +65,18 @@
                 $card1 = 'rgb(109, 41, 41)';
                 $card2 ='rgb(102, 41, 41)';
                 $card3 = 'rgb(100, 41, 41)';
+
+                $cookie_value = [
+                    "tn" => 'rgb(90,30,30)',
+                    "th" => 'rgba(109, 41, 41, 0.7)',
+                    "bth" => 'rgba(109, 41, 41, 0.4)',
+                    "card1" => 'rgb(109, 41, 41)',
+                    "card2" =>'rgb(102, 41, 41)',
+                    "card3" => 'rgb(100, 41, 41)',
+                ];
             }
+            setcookie($cookie_name, json_encode($cookie_value), time() + (86400 * 30), '/');
+
         }else {
             $tn = 'rgb(90,30,30)';
             $th = 'rgba(109, 41, 41, 0.7)';

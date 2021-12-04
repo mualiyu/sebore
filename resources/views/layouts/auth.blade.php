@@ -2,12 +2,23 @@
 <html lang="en">
 @guest
     <?php 
-                $tn = 'rgb(90,30,30)';
-                $th = 'rgba(109, 41, 41, 0.7)';
-                $bth = 'rgba(109, 41, 41, 0.4)';
-                $card1 = 'rgb(109, 41, 41)';
-                $card2 ='rgb(102, 41, 41)';
-                $card3 = 'rgb(100, 41, 41)';
+    $cookie_name = 'Ats_Theme';
+        if (isset($_COOKIE[$cookie_name])) {
+            $theme = json_decode($_COOKIE[$cookie_name], true);
+            $tn = $theme['tn'];
+            $th = $theme['th'];
+            $bth = $theme['bth'];
+            $card1 = $theme['card1'];
+            $card2 = $theme['card2'];
+            $card3 = $theme['card3'];
+        }else{
+            $tn = 'rgb(90,30,30)';
+            $th = 'rgba(109, 41, 41, 0.7)';
+            $bth = 'rgba(109, 41, 41, 0.4)';
+            $card1 = 'rgb(109, 41, 41)';
+            $card2 ='rgb(102, 41, 41)';
+            $card3 = 'rgb(100, 41, 41)';
+        }
     ?>
 @else
 <?php
