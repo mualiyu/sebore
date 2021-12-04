@@ -115,11 +115,16 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-					    <th>Item Name</th>
-					    <th>Measure - Unit</th>
+					                                  <th>Item Name</th>
+					                                  <th>Measure - Unit</th>
                                             <th>Quantity</th>
                                             <th>Total Amount</th>
-					    <th>date</th>
+					                                  <th>date</th>
+                                            <th>Agent</th>
+                                            <th>Customer Name</th>
+                                            <th>Customer Phone</th>
+                                            <th>Cummunity</th>
+                                            <th>Bill Reference</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -135,6 +140,11 @@
 						<td>
 							{{$t->date}}
 						</td>
+            <td>{{$t->agent->name ?? "Null"}}</td>
+            <td>{{$t->customer->name ?? "Null"}}</td>
+            <td>{{$t->customer->phone ?? "Null"}}</td>
+            <td>{{$t->device->community ?? "Null"}}</td>
+            <td>{{$t->ref_id ?? ""}}</td>
 						<?php $i++?>
 					</tr>
 					@endforeach

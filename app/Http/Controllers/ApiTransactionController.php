@@ -56,7 +56,7 @@ class ApiTransactionController extends Controller
                 if (count($trans) > 0) {
                     $res = [
                         'status' => false,
-                        'data' => 'RecordExist',
+                        'data' => 'RECORD_EXIST',
                     ];
                     return response()->json($res);
                 } else {
