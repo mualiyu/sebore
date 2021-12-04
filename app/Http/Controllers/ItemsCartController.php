@@ -141,12 +141,18 @@ class ItemsCartController extends Controller
     public function delete_item($id)
     {
 
-        $res = ItemsCart::where('id', $id)->delete();
+        $i = Item::where('item_cart_id', '=', $id)->delete();
 
-        if ($res) {
-            return back()->with(['success' => 'One Item is Deleted from system']);
+        if ($i) {
+            $res = ItemsCart::where('id', $id)->delete();
+
+            if ($res) {
+                return back()->with(['success' => 'One Item is Deleted from system']);
+            } else {
+                return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+            }
         } else {
-            return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+            return back()->with(['error' => 'Item NOT Deleted from system, Try Again!']);
         }
     }
 }
