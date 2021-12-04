@@ -66,7 +66,7 @@
 				  $t_q = 0;
                     	        foreach ($transactions as $t) {
                     	            $t_amount = $t_amount + $t->amount;
-				    $t_q = $t_q + (int)$t->quantity;
+				    $t_q = $t_q + $t->quantity;
                     	        }
                     	      ?>
                     	      <div class="col-sm-9 text-secondary">
