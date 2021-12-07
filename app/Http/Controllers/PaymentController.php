@@ -353,7 +353,7 @@ class PaymentController extends Controller
                             'amount' => $res->data->transaction->amount,
                             'gateway_code' => $mobile_money->id,
                         ]);
-                        return back()->with('success', 'Successful! Payment to ' . $request->c_name . ' for All transactions, Thank you.');
+                        return back()->with('success', 'Payment to ' . $request->c_name . ' for All transactions is successful, Thank you.');
                     } else {
                         return back()->with('error', $res->error);
                     }
@@ -439,7 +439,7 @@ class PaymentController extends Controller
                         }
                         //transfer to phone end
                     }
-                    return back()->with('success', 'Successful! Payment to ' . $c_names[0] . ' And others, Thank you.');
+                    return back()->with('success', 'Payment to ' . $c_names[0] . ' And others is made successful, Thank you.');
                 } else {
                     return back()->with('error', $ref_t->error);
                 }
