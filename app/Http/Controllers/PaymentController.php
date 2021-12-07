@@ -273,7 +273,7 @@ class PaymentController extends Controller
                     $res = json_decode($response);
 
                     if ($res->success == true) {
-                        $customer = Customer::where('uuid', $request->customerId)->get();
+                        $customer = Customer::where('id', $request->customerId)->get();
 
                         $payments = Payment::create([
                             'from_id' => Auth::user()->organization_id,
