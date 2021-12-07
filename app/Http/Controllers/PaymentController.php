@@ -107,10 +107,13 @@ class PaymentController extends Controller
 
         if (count($request->cus) == 1) {
             $customer = Customer::find($request->cus[0]);
+            // return $customer->id;
+            $transactions = Transaction::where('customer_id', '=', $customer->id)
+                ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
+                // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+                ->get();
 
-            $transactions = Transaction::where('customer_id', '=', $customer->id)->whereBetween('created_at', [$from . '00:00:00', $to . '23:59:59'])->get();
-            // dd($transactions);
-
+            // return $transactions;
             if (count($transactions) > 0) {
                 return view('payment.transactions', compact('transactions', 'customer'));
             } else {
@@ -160,7 +163,10 @@ class PaymentController extends Controller
 
                 $customer = Customer::find($c);
 
-                $transactions = Transaction::where('customer_id', '=', $customer->id)->whereBetween('created_at', [$from . '00:00:00', $to . '23:59:59'])->get();
+                $transactions = Transaction::where('customer_id', '=', $customer->id)
+                    ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
+                    // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+                    ->get();
                 // dd($transactions);
 
                 if (count($transactions) > 0) {

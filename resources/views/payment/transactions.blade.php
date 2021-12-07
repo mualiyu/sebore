@@ -62,7 +62,7 @@
 					    <?php $i = count($transactions); $t_amount = 0;?>
 				        @foreach ($transactions as $t)
 					<?php
-					$t_amount = (float)$t_amount + (float)$t->amount/100;
+					$t_amount = (float)$t_amount + (float)$t->amount;
 
           $item = \App\Models\Item::find($t->item_id);
 
@@ -81,8 +81,8 @@
 					?>
 					<tr>
 						<th scope="row">{{$i}}</th>
-						<td>{{$t->item->name}}</td>
-						<td>{{$t->item->measure}} - {{$t->item->unit}}</td>
+						<td>{{$t->item->item_cart->name ?? "Null"}}</td>
+						<td>{{$t->item->item_cart->measure ?? "Null"}} - {{$t->item->item_cart->unit ?? "Null"}}</td>
 						<td>{{$t->quantity}}</td>
 						<td>{{$t->amount}}</td>
 						<td>
@@ -93,11 +93,11 @@
                                 @csrf 
                                 <input type="hidden" name="customerNum" value="{{$t->customer->phone}}">
                                 <input type="hidden" name="customerId" value="{{$t->customer->id}}">
-                                <input type="hidden" name="i_name" value="{{$t->item->name}}">
+                                <input type="hidden" name="i_name" value="{{$t->item->item_cart->name  ?? "Null"}}">
                                 <input type="hidden" name="amount" value="{{$t->amount}}">
                             </form>
 							              <a  onclick="
-                           	 if(confirm('Are you sure You want to Pay only for - ({{ $t->item->name }}) ? ')){
+                           	 if(confirm('Are you sure You want to Pay only for - ({{ $t->item->item_cart->name ?? 'Null'}}) ? ')){
                            	     document.getElementById('pay-form[{{$i}}]').submit();
                            	 }
                            	     event.preventDefault();"

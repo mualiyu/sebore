@@ -38,7 +38,7 @@
                 </div> --}}
                 {{-- @extends('layouts.flash') --}}
 
-                @if (!empty($transactions))    
+                @if (count($transactions) > 0)    
                 <div class="card shadow" style="width:100%;">
                   <div class="card-body">  
 			        <div class="row">
@@ -64,7 +64,8 @@
                       <div class="col-sm-9 text-secondary">
                           <?php $f = explode('-', $from); $from = $f[2]. ' '.$months[(int)$f[1]].', '.$f[0]; ?>
                           <?php $t = explode('-', $to); $to = $t[2].' '.$months[(int)$t[1]].', '.$t[0]; ?>
-                        from {{$from}} to {{$to}}
+                        {{-- from {{$from}} to {{$to}} --}}
+                        Today
                         <div id="small"></div>
                       </div>
                     </div>
@@ -117,16 +118,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer" style="background: {{$card1 ?? ''}};">
-                                <div class="row align-items-center">
-                                    <div class="col-9">
-                                        <p class="text-white m-b-0">% Open</p>
-                                    </div>
-                                    <div class="col-3 text-right">
-                                        <i class="fa fa-line-chart text-white f-16"></i>
+                            <a href="{{url('/users')}}">
+                                <div class="card-footer" style="background: {{$card1 ?? ''}};">
+                                    <div class="row align-items-center">
+                                        <div class="col-9">
+                                            <p class="text-white m-b-0">% Open</p>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <i class="fa fa-line-chart text-white f-16"></i>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col-xl-4 col-md-6">
@@ -143,6 +146,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <a href="{{url('/agents')}}">
                             <div class="card-footer" style="background: {{$card2 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
@@ -153,6 +157,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col-xl-4 col-md-6">
@@ -169,6 +174,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <a href="{{url('/devices')}}">
                             <div class="card-footer" style="background: {{$card3 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
@@ -179,6 +185,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
 
@@ -196,6 +203,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card-footer" style="background: {{$card3 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
@@ -222,6 +230,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <a href="{{url('/customers')}}">
                             <div class="card-footer" style="background: {{$card2 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
@@ -232,6 +241,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col-xl-4 col-md-6">
@@ -248,6 +258,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <a href="{{url('/items')}}">
                             <div class="card-footer" style="background: {{$card1 ?? ''}};">
                                 <div class="row align-items-center">
                                     <div class="col-9">
@@ -258,6 +269,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
 

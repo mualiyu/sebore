@@ -6,6 +6,7 @@ use App\Models\Organization;
 use App\Models\PaymentGateway;
 use App\Models\Plan;
 use App\Models\PlanDetail;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,6 +107,7 @@ class HomeController extends Controller
 
         $transactions = [];
         $org = Auth::user()->organization;
+        $transactions = Transaction::where('org_id', '=', $org->id)->whereBetween('date', [$from . '-00-00-01', $to . '-23-59-59'])->get();
 
         if ($org->theme) {
             if ($org->theme == 1) {
@@ -131,7 +133,7 @@ class HomeController extends Controller
             $card3 = 'rgb(91, 41, 41)';
         }
 
-        return view('home', compact('transactions', 'card1', 'card2', 'card3'));
+        return view('home', compact('transactions', 'card1', 'card2', 'card3', 'from', 'to', 'months'));
     }
 
     public function show_profile()
