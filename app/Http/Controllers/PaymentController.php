@@ -97,11 +97,13 @@ class PaymentController extends Controller
         $d = explode(' - ', $request->daterange);
 
         $f = explode('/', $d[0]);
-        $from = $f[2] . '-' . $f[1] . '-' . $f[0];
+        $from = $f[2] . '-' . $f[0] . '-' . $f[1];
         // . ' 00:00:00';
         $t = explode('/', $d[1]);
-        $to = $t[2] . '-' . $t[1] . '-' . $t[0];
+        $to = $t[2] . '-' . $t[0] . '-' . $t[1];
         // . ' 23:59:59';
+
+        // return $from . "    v    " . $to;
 
         // dd($request->cus);
 
@@ -109,7 +111,7 @@ class PaymentController extends Controller
             $customer = Customer::find($request->cus[0]);
             // return $customer->id;
             $transactions = Transaction::where('customer_id', '=', $customer->id)
-                ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
+                ->whereBetween('date', [$from . '-00-00-01', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();
 
@@ -164,7 +166,7 @@ class PaymentController extends Controller
                 $customer = Customer::find($c);
 
                 $transactions = Transaction::where('customer_id', '=', $customer->id)
-                    ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
+                    ->whereBetween('date', [$from . '-00-00-01', $to . '-23-59-59'])
                     // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                     ->get();
                 // dd($transactions);
