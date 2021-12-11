@@ -274,6 +274,75 @@
                     </div>
 
                 </div>
+
+                {{-- Payment history  --}}
+                <?php 
+                $tr = \App\Models\Transaction::where(['org_id' => Auth::user()->organization_id, 'p_status' => 1])->orderBy('updated_at', 'desc')->get();
+                ?>
+                @if (count($tr)>0)
+                    
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Payments History</h5>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                <li><i class="fa fa-window-maximize full-card"></i></li>
+                                <li><i class="fa fa-minus minimize-card"></i></li>
+                                <li><i class="fa fa-refresh reload-card"></i></li>
+                                <li><i class="fa fa-trash close-card"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-block table-border-style">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Customer name</th>
+                                        <th>Customer phone</th>
+                                        <th>Amount</th>
+                                        <th>Item name</th>
+                                        <th>Measure-Unit</th>
+                                        <th>Quantity</th>
+                                        <th>Time</th>
+                                        <th>Agent</th>
+                                        <th>Cummunity</th>
+                                        <th>Status</th>
+                                        <th>Bill Reference</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    <?php $i = 1;?>
+                    @foreach ($tr as $t)
+            <?php $item = \App\Models\Item::find($t->item_id); ?>
+            
+                <tr>
+                    <th scope="row">{{$i}}</th>
+                    <td>{{$t->customer->name ?? "Null"}}</td>
+                    <td>{{$t->customer->phone ?? "Null"}}</td>
+                    <td>{{$t->amount}}</td>
+                    <td>{{$item->item_cart->name ?? "Null"}}</td>
+                    <td>{{$item->item_cart->measure ?? "Null"}} - {{$item->item_cart->unit ?? "Null"}}</td>
+                    <td>{{$t->quantity}}</td>
+                    <td>{{$t->updated_at}}</td>
+                    <td>{{$t->agent->name ?? "Null"}}</td>
+                    <td>{{$t->device->community ?? "Null"}}</td>
+                    <td><span style="color: red;">{{$t->p_status==0 ? "Failed":""  ?? ""}}</span> <span style="color: green;">{{$t->p_status==1 ? "Successful":""  ?? ""}}</span></td>
+                    <td>{{$t->ref_id ?? ""}}</td>
+        
+                    <?php $i++?>
+                </tr>
+                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                
             </div>
         </div>
     </div>

@@ -124,6 +124,7 @@
                                             <th>Customer Name</th>
                                             <th>Customer Phone</th>
                                             <th>Cummunity</th>
+                                            <th>Status</th>
                                             <th>Bill Reference</th>
                                         </tr>
                                     </thead>
@@ -144,6 +145,7 @@
             <td>{{$t->customer->name ?? "Null"}}</td>
             <td>{{$t->customer->phone ?? "Null"}}</td>
             <td>{{$t->device->community ?? "Null"}}</td>
+            <td><span style="color: red;">{{$t->p_status==0 ? "Not Paid":""  ?? ""}}</span> <span style="color: green;">{{$t->p_status==1 ? "Paid":""  ?? ""}}</span></td>
             <td>{{$t->ref_id ?? ""}}</td>
 						<?php $i++?>
 					</tr>

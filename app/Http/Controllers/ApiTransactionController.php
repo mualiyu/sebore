@@ -71,6 +71,11 @@ class ApiTransactionController extends Controller
                         'date' => $request->date,
                         'amount' => $request->amount,
                         'ref_id' => $request->ref_id,
+                        'p_status' => 0,
+                    ]);
+                    Transaction::where('id', '=', $transaction->id)->update([
+                        'ref_id' => $request->ref_id,
+                        'p_status' => 0,
                     ]);
 
                     if ($transaction) {

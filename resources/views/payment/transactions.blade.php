@@ -59,10 +59,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($transactions); $t_amount = 0;?>
+					    <?php $i = count($transactions); $t_amount = 0; $t_array = []; ?>
 				        @foreach ($transactions as $t)
 					<?php
 					$t_amount = (float)$t_amount + (float)$t->amount;
+
+          // array_push($t_array, $t->id);
 
           $item = \App\Models\Item::find($t->item_id);
 
@@ -95,6 +97,7 @@
                                 <input type="hidden" name="customerId" value="{{$t->customer->id}}">
                                 <input type="hidden" name="i_name" value="{{$t->item->item_cart->name  ?? "Null"}}">
                                 <input type="hidden" name="amount" value="{{$t->amount}}">
+                                <input type="hidden" name="transaction" value="{{$t->id}}">
                             </form>
 							              <a  onclick="
                            	 if(confirm('Are you sure You want to Pay only for - ({{ $t->item->item_cart->name ?? 'Null'}}) ? ')){
@@ -161,6 +164,9 @@
                                       <input type="hidden" name="c_name" value="{{$customer->name}}">
                                        <input type="hidden" name="c_customerId" value="{{$customer->id}}">
                                       <input type="hidden" name="t_amount" value="{{$t_amount}}">
+                                      @foreach ($transactions as $t)
+                                      <input type="hidden" name="transactions[]" value="{{$t->id}}">
+                                      @endforeach
                                   </form>
                                 	<a  onclick="
                            		 if(confirm('Are you sure You want to Pay All Transactions ? ')){

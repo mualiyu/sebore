@@ -110,7 +110,7 @@ class PaymentController extends Controller
         if (count($request->cus) == 1) {
             $customer = Customer::find($request->cus[0]);
             // return $customer->id;
-            $transactions = Transaction::where('customer_id', '=', $customer->id)
+            $transactions = Transaction::where(['customer_id' => $customer->id, 'p_status' => 0])
                 ->whereBetween('date', [$from . '-00-00-01', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();
@@ -119,7 +119,7 @@ class PaymentController extends Controller
             if (count($transactions) > 0) {
                 return view('payment.transactions', compact('transactions', 'customer'));
             } else {
-                return back()->with('error', 'No Transaction for this Customer, Or Within the range.');
+                return back()->with('error', 'No Available or Unpaid Transaction at the moment for this Customer, Or Within the range.');
             }
             // $hash = hash(
             //     'sha512',
@@ -165,7 +165,8 @@ class PaymentController extends Controller
 
                 $customer = Customer::find($c);
 
-                $transactions = Transaction::where('customer_id', '=', $customer->id)
+                $transactions = Transaction::where(['customer_id' => $customer->id, 'p_status' => 0])
+                    // where('customer_id', '=', $customer->id)
                     ->whereBetween('date', [$from . '-00-00-01', $to . '-23-59-59'])
                     // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                     ->get();
@@ -182,7 +183,7 @@ class PaymentController extends Controller
 
                     // return view('payment.transactions', compact('transactions', 'customer'));
                 } else {
-                    return back()->with('error', 'No Transaction for ' . $customer->name . ', Or Within the range.');
+                    return back()->with('error', 'No Available or Unpaid Transaction at the moment for ' . $customer->name . ', Or Within the range.');
                 }
 
                 // $hash = hash(
@@ -281,8 +282,11 @@ class PaymentController extends Controller
                             'status' => true,
                             'type' => 'Transaction payment from ' . Auth::user()->organization->name . ' to ' . $customer[0]->name,
                             'ref_num' => $res->data->transaction->reference,
-                            'amount' => $res->data->transaction->amount,
+                            'amount' => $request->amount,
                             'gateway_code' => $mobile_money->id,
+                        ]);
+                        $transaction = Transaction::where('id', '=', $request->transaction)->update([
+                            'p_status' => 1,
                         ]);
                         return back()->with('success', 'Payment for ' . $request->i_name . ' is Successful! Thank you.');
                     } else {
@@ -304,7 +308,6 @@ class PaymentController extends Controller
     // py for all transaction but one customer
     public function pay_all_tran_p_c(Request $request)
     {
-
 
         $gateway = PaymentGateway::where('org_id', '=', Auth::user()->organization_id)->get();
 
@@ -350,9 +353,15 @@ class PaymentController extends Controller
                             'status' => true,
                             'type' => 'Transaction payment from ' . Auth::user()->organization->name . ' to ' . $customer[0]->name,
                             'ref_num' => $res->data->transaction->reference,
-                            'amount' => $res->data->transaction->amount,
+                            'amount' => $request->t_amount,
                             'gateway_code' => $mobile_money->id,
                         ]);
+
+                        foreach ($request->transactions as $t) {
+                            $transaction = Transaction::where('id', '=', $t)->update([
+                                'p_status' => 1,
+                            ]);
+                        }
                         return back()->with('success', 'Payment to ' . $request->c_name . ' for All transactions is successful, Thank you.');
                     } else {
                         return back()->with('error', $res->error);
@@ -373,7 +382,7 @@ class PaymentController extends Controller
 
     public function pay_all_tran_p_c_bulk(Request $request)
     {
-
+        // return $request->all();
 
         $gateway = PaymentGateway::where('org_id', '=', Auth::user()->organization_id)->get();
 
@@ -405,6 +414,7 @@ class PaymentController extends Controller
                         array_push($c_names, $customer->name);
 
                         $amount = $request->amount[$i];
+                        $trans = json_decode($request->transactions[$i]);
 
                         $new = substr($customer->phone, -10);
                         $num = '234' . $new;
@@ -433,6 +443,11 @@ class PaymentController extends Controller
                                 'amount' => $res->data->transaction->amount,
                                 'gateway_code' => $mobile_money->id,
                             ]);
+                            foreach ($trans as $t) {
+                                Transaction::where('id', '=', $t)->update([
+                                    'p_status' => 1,
+                                ]);
+                            }
                             // return back()->with('success', 'Successful! Payment to ' . $request->c_name . ' for All transactions, Thank you.');
                         } else {
                             return back()->with('error', $res->error);

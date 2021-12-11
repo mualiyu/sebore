@@ -98,6 +98,9 @@
                                 <input type="hidden" name="c_name" value="{{$customer->name}}">
                                 <input type="hidden" name="c_customerId" value="{{$customer->id}}">
                                 <input type="hidden" name="t_amount" value="{{$ts_amount}}">
+                                @foreach ($d['transactions'] as $t)
+                                <input type="hidden" name="transactions[]" value="{{$t->id}}">
+                                @endforeach
                             </form>
                                 <a  onclick="
                            	 if(confirm('Are you sure You want to Pay only one Customer? ')){
@@ -165,9 +168,12 @@
                                       <?php  
                                         // $q_amount = 0;
 					                    $ts_amount = 0.00;
+                                        $t_array = [];
 					                    foreach ($d['transactions'] as $t) {
 					                    	// $q_amount = $q_amount + (float)$t->quantity;
 					                    	$ts_amount = $ts_amount + (float)$t->amount;
+                                            array_push($t_array, $t->id);
+                                            echo '<input type="hidden" name="transactions['.$d["customer_id"].']" value="'.json_encode($t_array).'">';
 					                    }
                                       ?>
                                         <input type="hidden" name="amount[{{$d['customer_id']}}]" value="{{$ts_amount}}">
