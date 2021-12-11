@@ -19,15 +19,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('/testt', function () {
-    $ts = Transaction::all();
-
-    foreach ($ts as $t) {
-        Transaction::where('id', '=', $t->id)->update([
-            'p_status' => 0,
-        ]);
-    }
-});
 
 Auth::routes();
 
