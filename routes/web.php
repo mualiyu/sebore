@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/home');
+});
+
+
+Route::get('/testt', function () {
+    $ts = Transaction::all();
+
+    foreach ($ts as $t) {
+        $t->update([
+            'p_status' => 0,
+        ]);
+    }
 });
 
 Auth::routes();
