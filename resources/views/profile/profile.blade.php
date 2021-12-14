@@ -89,6 +89,54 @@ $(document).ready(function () {
             // end of ajax call
         });
 
+
+
+        // eddit gate way
+        $('#submit_e_g').on('click',function() {
+            var query = $('#gateway_e_form').serialize(); 
+            // console.log(query);
+            $.ajax({
+               
+                url:"{{ route('add_update_gateway_details') }}",
+          
+                type:"GET",
+               
+                data:query,
+
+                beforeSend: function() // Do the following before sending the request
+                {
+                  //Upload progress
+                  $('#card_eyowo').addClass("card-load");
+                  $('#card_eyowo').append('<div class="card-loader"><i class="fa fa-spinner rotate-refresh"></div>');
+                },
+
+               
+                success:function (data) {
+                     $('#card_eyowo').children(".card-loader").remove();
+                     $('#card_eyowo').removeClass("card-load");
+                    //  $('#loader').hide();
+                  
+                      if (data['error']) {
+                          $('#error_p').css('display', 'block');
+                          $('#error_c').html(data['error']);
+                      }else{
+                          $('input[name="otp_gateway"]').val(data['info']['gateway']);
+                          $('input[name="otp_client_id"]').val(data['info']['client_id']);
+                        //   $('input[name="otp_name"]').val(data['info']['name']);
+                          $('input[name="otp_eyowo_c_id"]').val(data['val_info']['id']);
+                          $('input[name="otp_eyowo_c_mobile"]').val(data['val_info']['mobile']);
+
+                          $('#success_p').css('display', 'block');
+                          $('#success_c').html(data['success']);
+                          $('#modal_otp').css('display', 'block');
+                          $('#modal_gt').css('display', 'none');
+                      }
+		    // console.log(data['info']['name']);
+                }
+            })
+            // end of ajax call
+        });
+
 });
 </script>
 @endsection
@@ -258,7 +306,7 @@ $(document).ready(function () {
                                                 <input class="form-control" value="{{$p_gateway[0]->client_id ?? ''}}" name="client_id">
                                             </div>
                                             @foreach ($p_gateway as $p_g)
-                                            <div class="form-group"><button class="btn btn-primary btn-sm" type="button" id="submit_e_g" >Edit&nbsp;Gateway</button></div>
+                                            <div class="form-group"><button class="btn btn-primary btn-sm" type="button" onclick="$('#modal_gt').css('display', 'block');" >Edit&nbsp;Gateway</button></div>
                                             @endforeach
 
                                             <div class="form-group"><button <?php foreach ($p_gateway as $p_g) {if($p_g->id > 0){ echo'style="display:none;"';}} ?> class="btn btn-primary btn-sm" type="button" id="submit_g" >Save&nbsp;Gateway</button></div>
@@ -360,6 +408,53 @@ $(document).ready(function () {
     </div>
 
 
+
+     {{-- modal for Edit Paymrnt get way --}}
+    <div class="modal lx" style="display: none;" id="modal_gt" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Change Gateway</h5>
+            <button type="button" class="close" onclick="document.getElementById('modal_gt').style.display = 'none';" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-success alert-block" id="success_p" style="display: none;"> 
+                <button type="button" class="close" onclick="document.getElementById('error_p').style.display = 'none';">×</button>
+                <strong id="success_c"></strong>
+            </div>
+            <form method="" id="gateway_e_form">
+                                             
+			    @csrf
+                <div class="form-group"><label for="gateway"><strong>Select Gateway</strong></label>
+                    <select class="form-control" name="gateway" id="gateway">
+                        @foreach ($p_gateway as $p_g)
+                        <option value="{{$mobile_money->id}}">{{$mobile_money->name}}</option>
+                        @endforeach
+                        {{-- @if ($p_gateway[0]->id > 0)
+                        @endif --}}
+                        @foreach ($mobile_moneys as $m)
+                            <option value="{{$m->id}}">{{$m->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+			    <div class="form-group">
+                    <label for="city"><strong>Wallet Id <small>(Eg. phone)</small></strong></label>
+                    <input class="form-control" value="{{$p_gateway[0]->client_id ?? ''}}" name="client_id">
+                </div>
+                @foreach ($p_gateway as $p_g)
+                    <div class="form-group"><button class="btn btn-primary btn-sm" type="button" id="submit_e_g" >Edit&nbsp;Gateway</button></div>
+                @endforeach
+                {{-- <div class="form-group"><button <?php foreach ($p_gateway as $p_g) {if($p_g->id > 0){ echo'style="display:none;"';}} ?> class="btn btn-primary btn-sm" type="button" id="submit_g" >Save&nbsp;Gateway</button></div> --}}
+                
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
 
 </div>
 @endsection

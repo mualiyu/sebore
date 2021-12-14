@@ -123,12 +123,23 @@ class PaymentGatewayController extends Controller
 
         if ($verify_otp->success == true) {
 
-            $payment_gateway = PaymentGateway::create([
-                'org_id' => Auth::user()->organization_id,
-                'gateway_code' => $request->otp_gateway,
-                'client_id' => $request->otp_eyowo_c_mobile,
-                'token' => $verify_otp->data->refreshToken,
-            ]);
+            $pg = PaymentGateway::where('org_id', '=', Auth::user()->organization_id)->get();
+            if (count($pg) > 0) {
+                $payment_gateway = PaymentGateway::where('org_id', '=', Auth::user()->organization_id)->update([
+                    'org_id' => Auth::user()->organization_id,
+                    'gateway_code' => $request->otp_gateway,
+                    'client_id' => $request->otp_eyowo_c_mobile,
+                    'token' => $verify_otp->data->refreshToken,
+                ]);
+            } else {
+                $payment_gateway = PaymentGateway::create([
+                    'org_id' => Auth::user()->organization_id,
+                    'gateway_code' => $request->otp_gateway,
+                    'client_id' => $request->otp_eyowo_c_mobile,
+                    'token' => $verify_otp->data->refreshToken,
+                ]);
+            }
+
             return back()->with('success', 'Eyowo says, ' . $verify_otp->message);
             // dd($verify_otp);
         } else {
