@@ -1,21 +1,21 @@
-@extends('layouts.index')
+@extends('layouts.Aindex')
 @section('content')
 <div class="page-header">
     <div class="page-block">
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Edit Farmer</h5>
+                    <h5 class="m-b-10">Edit Customer</h5>
                 </div>
             </div>
             <div class="col-md-4">
                 <ul class="breadcrumb-title">
                     <li class="breadcrumb-item">
-                        <a href="{{route('home')}}"> <i class="fa fa-home"></i> </a>
+                        <a href="{{route('agent_dashboard')}}"> <i class="fa fa-home"></i> </a>
                     </li>
                     <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#!">Edit Farmers</a>
+                    <li class="breadcrumb-item"><a href="#!">Edit Customer</a>
                     </li>
                 </ul>
             </div>
@@ -35,11 +35,11 @@
                     <div class="col-sm-12">
 			    <div class="card">
                               <div class="card-header">
-                                  <h5>edit Farmers</h5>
+                                  <h5>Edit Customer</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material" method="POST" action="{{route('update_customer', ['id'=>$customer->id])}}">
+                                  <form class="form-material" method="POST" action="{{route('agent_update_customer', ['id'=>$customer->id])}}">
 					@csrf
 					{{-- <input type="hidden" name="agent" value="{{$agent->id}}"> --}}
                                       <div class="form-group form-default">

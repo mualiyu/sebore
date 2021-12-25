@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Customer;
 use App\Models\Agent;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -24,64 +25,46 @@ class CustomersImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        // $ex = explode(' ', $row['date']);
-        // $ex1 = explode('/', $ex[0]);
-        // $day = '20' . $ex1[2] . '-' . $ex1[1] . '-' . $ex1[0];
-        // $time = $ex[1] . ':00';
-        // $date = $day . " " . $time;
-
-        // $x = str_replace(',', '', $row['amount']);
-
         $new = substr($row['phone'], -10);
         $num = '0' . $new;
 
         $agent = Agent::find($this->id);
 
-        $customer = Customer::create([
-            'name' => $row['name'],
-            'email' => $row['email'],
-            'phone' => $num,
-            'state' => $row['state'],
-            'country' => $row['country'],
-            'address' => $row['address'],
-            'lga' => $row['lga'],
-            'agent_id' => $this->id,
-            'org_id' => Auth::user()->organization_id,
-        ]);
+        $cus = Customer::where('phone', '=', $num)->get();
 
-        Customer::where('id', '=', $customer->id)->update([
-            'agent_id' => $this->id,
-            'org_id' => Auth::user()->organization_id,
-        ]);
+        if (count($cus) > 0) {
+            $a_c = DB::table('agent_customer')->where(['agent_id' => $agent->id, 'customer_id' => $cus[0]->id])->get();
+            if (count($a_c) > 0) {
+            } else {
+                $agent_customer = DB::table('agent_customer')->insert([
+                    'agent_id' => $agent->id,
+                    'customer_id' => $cus[0]->id
+                ]);
+            }
+            return $cus[0];
+        } else {
+            $customer = Customer::create([
+                'name' => $row['name'],
+                'email' => $row['email'],
+                'phone' => $num,
+                'state' => $row['state'],
+                'country' => $row['country'],
+                'address' => $row['address'],
+                'lga' => $row['lga'],
+                'agent_id' => $agent->id,
+                'org_id' => $agent->org_id,
+            ]);
 
-        // //Api
-        // $hash = hash(
-        //     'sha512',
-        //     $row['name'] .
-        //         $agent->phone .
-        //         $num .
-        //         $num
-        // );
+            Customer::where('id', '=', $customer->id)->update([
+                'org_id' => Auth::user()->organization_id,
+            ]);
+            $agent_customer = DB::table('agent_customer')->insert([
+                'agent_id' => $agent->id,
+                'customer_id' => $customer->id
+            ]);
 
-        // $url = 'https://api.ajisaqsolutions.com/api/customer/add?apiUser=' .
-        //     config('app.apiUser') . '&apiKey=' .
-        //     config('app.apiKey') . '&hash=' .
-        //     $hash .  '&id=' .
-        //     $customer->phone .  '&name=' .
-        //     $row['name'] . '&agentId=' .
-        //     $agent->phone . '&phone=' .
-        //     $num . '&code=' .
-        //     $num;
-
-        // try {
-        //     $response = Http::post($url);
-        //     $res = json_decode($response);
-        // } catch (\Throwable $th) {
-        //     // return back()->with(['error' => 'Sorry, An error was encountered. Come back later!']);
-        // }
-        // //End api
-
-        return $customer;
+            return $customer;
+        }
     }
 
     public function headingRow(): int

@@ -85,7 +85,7 @@
                                                                 ->generate($c->phone)) !!}" />
                                             </td>
 					                    	<td>
-                                                <form method="POST" id="delete-form[{{$i}}]" action="{{route('remove_customer_from_agent',['c_id'=>$c->id, 'a_id'=>$agent->id])}}">
+                                                <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_customer',['id'=>$c->id])}}">
                                                     <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
                                                     @csrf 
                                                     <a  onclick="

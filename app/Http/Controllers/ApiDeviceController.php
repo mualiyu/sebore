@@ -70,7 +70,6 @@ class ApiDeviceController extends Controller
                         $cat = Category::find($item->category_id);
 
                         array_push($category[$cat->name], $item);
-                        // $category[$cat->name] = $item;
                     }
 
                     $data = [
@@ -78,19 +77,11 @@ class ApiDeviceController extends Controller
                         'items' => $category
                     ];
 
-                    // array_push($device, $category);
-
                     $res = [
                         'status' => true,
                         'data' => $data
                     ];
                     return response()->json($res);
-
-                    // $res = [
-                    //     'status' => true,
-                    //     'data' => $device
-                    // ];
-                    // return response()->json($res);
                 } else {
                     $res = [
                         'status' => false,
@@ -163,9 +154,9 @@ class ApiDeviceController extends Controller
                     $items = Item::where('device_id', '=', $device[0]->id)->get();
 
                     foreach ($items as $i) {
+
                         $i->item_cart->id = $i->id;
                         $item = $i->item_cart;
-                        // $item->id = $i->id;
 
                         if ($item->with_q == 1) {
                             $item->with_q = true;
@@ -178,19 +169,15 @@ class ApiDeviceController extends Controller
                             $item->with_p = false;
                         }
 
-
                         $cat = Category::find($item->category_id);
 
                         array_push($category[$cat->name], $item);
-                        // $category[$cat->name] = $item;
                     }
 
                     $data = [
                         'device' => $device[0],
                         'items' => $category
                     ];
-
-                    // array_push($device, $category);
 
                     $res = [
                         'status' => true,

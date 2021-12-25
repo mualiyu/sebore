@@ -10,6 +10,7 @@ use App\Models\Plan;
 use App\Models\PlanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -114,10 +115,13 @@ class AgentController extends Controller
                     ]);
 
                     Customer::where('id', '=', $customer->id)->update([
-                        'agent_id' => $agent->id,
+                        // 'agent_id' => $agent->id,
                         'org_id' => Auth::user()->organization_id,
                     ]);
-
+                    $agent_customer = DB::table('agent_customer')->insert([
+                        'agent_id' => $agent->id,
+                        'customer_id' => $customer->id
+                    ]);
                     return redirect('/agents')->with(['success' => $agent->name . ' is Created to system as Agent and Customer']);
                 } else {
                     return back()->with('error', "Sorry, Agent not created, Try again!");

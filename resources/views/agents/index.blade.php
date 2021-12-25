@@ -70,7 +70,7 @@
 						<td>{{$a->role->name}}</td>
 						<td>
 						  <a href="{{route('show_single_agent', ['id'=>$a->id])}}" class="btn btn-success">Open</a>
-						  <a href="{{url('/agent/'.$a->id.'/customers')}}" class="btn btn-primary">View Farmers</a>
+						  <a href="{{url('/agents/'.$a->id.'/customers')}}" class="btn btn-primary">View Farmers</a>
 						</td>
 						<?php $i--?>
 					</tr>

@@ -40,6 +40,11 @@ class Organization extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function agents(): HasMany
+    {
+        return $this->hasMany(Agent::class);
+    }
+
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class);

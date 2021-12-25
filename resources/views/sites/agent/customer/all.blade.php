@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.Aindex')
 
 @section('content')
 <div class="page-header">
@@ -6,17 +6,17 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h6 class="m-b-10">{{$agent->name}} Farmers</h6>
+                    <h5 class="m-b-10"> Customers</h5>
                 </div>
             </div>
             <div class="col-md-4">
                 <ul class="breadcrumb-title">
                     <li class="breadcrumb-item">
-                        <a href="{{route('home')}}"> <i class="fa fa-home"></i> </a>
+                        <a href="{{route('agent_dashboard')}}"> <i class="fa fa-home"></i> </a>
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Farmers</a>
+                    <li class="breadcrumb-item"><a href="#">Customers</a>
                     </li>
                 </ul>
             </div>
@@ -24,22 +24,21 @@
     </div>
 </div>
 <!-- Page-header end -->
+<!-- Page-header end -->
 
 <div class="pcoded-inner-content">
     <div class="main-body">
         <div class="page-wrapper">
             <div class="page-body">
-		     @include('layouts.flash')
-                <!-- Basic table card start -->
-                <a href="{{route('show_agents')}}" style="right:0;" class="btn btn-primary">Back</a>&nbsp;&nbsp;&nbsp;
-                <button class="btn btn-success"  data-toggle="modal" onclick="$('#modal').css('display', 'block')" data-target="#staticBackdrop"><i class=""></i> Upload</button>&nbsp;&nbsp;&nbsp;
-		        <a href="{{route('show_add_customer', ['id'=> $agent->id])}}" style="right:0;" class="btn btn-primary">Add New Farmers</a>&nbsp;&nbsp;&nbsp;
-                <a class=" btn btn-success" href="{{route('export_customers_pdf', ['username'=>$agent->username])}}" >Export Customers QrCode</a>
-                
-                <br>
+		     @include(' layouts.flash ')
+                {{-- <!-- Basic table card start -->
+                <a href="{{route(' show_agents ')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp; --}}
+		<a href="{{route('agent_show_add_customer')}}" style="right:0;" class="btn btn-primary">Add New Customer</a>
+        <button class="btn btn-success"  data-toggle="modal" onclick="$('#modal').css('display', 'block')" data-target="#staticBackdrop"><i class=""></i> Upload</button>&nbsp;&nbsp;&nbsp;
+        <br>
                     <div class="card">
                         <div class="card-header">
-                            <h5>Farmers</h5>
+                            <h5>Customer</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -50,6 +49,7 @@
                                 </ul>
                             </div>
                         </div>
+                        
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
                                 <table class="table">
@@ -67,47 +67,47 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-					                    <?php $i = count($customers); ?>
-				                        @foreach ($customers as $c)
-					                    <tr>
-					                    	<th scope="row">{{$i}}</th>
-					                    	<td>{{$c->name}}</td>
-					                    	<td>{{$c->email}}</td>
-					                    	<td>{{$c->phone}}</td>
-					                    	<td>{{$c->address}}</td>
-					                    	<td>{{$c->lga}}</td>
-					                    	<td>{{$c->state}}</td>
-                                            <td>
-                                                <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
-                                                                // ->merge('assets/images/logo.png', 0.3, true)
-                                                                ->errorCorrection('H')
-                                                                ->size(100)
-                                                                ->generate($c->phone)) !!}" />
-                                            </td>
-					                    	<td>
-                                                <form method="POST" id="delete-form[{{$i}}]" action="{{route('remove_customer_from_agent',['c_id'=>$c->id, 'a_id'=>$agent->id])}}">
-                                                    <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
-                                                    @csrf 
-                                                    <a  onclick="
-                                                        if(confirm('Are you sure You want to Delete this Customer -( {{$c->name}} )? ')){
-                                                            document.getElementById('delete-form[{{$i}}]').submit();
-                                                        }
-                                                            event.preventDefault();"
-                                                        class="btn btn-warning" 
-                                                        style="color: black; background:red;">
-                                                        Delete
-                                                    </a>
-                                                </form>
-					                    	</td>
-					                    	<?php $i--?>
-					                    </tr>
-					                    @endforeach
+                                        <?php $customers = $agent->customers; ?>
+					    <?php $i = count($customers); ?>
+				        @foreach ($customers as $c)
+					<tr>
+						<th scope="row">{{$i}}</th>
+						<td>{{$c->name}}</td>
+						<td>{{$c->email}}</td>
+						<td>{{$c->phone}}</td>
+						<td>{{$c->address}}</td>
+						<td>{{$c->lga}}</td>
+						<td>{{$c->state}}</td>
+                        <td>
+                            <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
+                                            // ->merge('assets/images/logo.png', 0.3, true)
+                                            ->errorCorrection('H')
+                                            ->size(100)
+                                            ->generate($c->phone)) !!}" />
+                        </td>
+						<td>
+                           	<form method="POST" id="delete-form[{{$i}}]" action="{{route('agent_delete_customer',['id'=>$c->id])}}">
+                           	    {{-- <a href="{{route('show_edit_customer', ['c_id'=>$c->id])}}" class="btn btn-primary">Edit</a> --}}
+                           	    @csrf 
+                           	    <a  onclick="
+                           	        if(confirm('Are you sure You want to Delete this Customer - ({{ $c->name }}) ? ')){
+                           	            document.getElementById('delete-form[{{$i}}]').submit();
+                           	        }
+                           	            event.preventDefault();"
+                           	        class="btn btn-warning" 
+                           	        style="color: black; background:red;">
+                           	        Delete
+                           	    </a>
+                           	</form>
+						</td>
+						<?php $i--?>
+					</tr>
+					@endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-
 
                     <div class="modal " style="display: none; with:80%;" id="modal" data-backdrop="static" data-keyboard="false" tabindex="1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       <div class="modal-dialog modal-lg modal-scrollable" style="width:100%;">
@@ -118,25 +118,25 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form action="{{route('import_customers')}}" method="POST" enctype="multipart/form-data">
+                            <form action="{{route('agent_import_customers')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
                                     <input name="file" class="form-control" required onchange="Upload()" accept=".csv" id="fileUpload" type="file" placeholder="choose file" />
-                                    <div class="input-group-prepend">
-                                      <input name="submit" class="btn btn-success" id="submit" type="submit" aria-describedby="nameHelp" value="Upload" />
-                                    </div>
+                                    
                                 </div>
-                                 <div class="input-group">
-                                    <?php $agents = \App\Models\Agent::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
-						                <select class="form-control"  disabled>
-                                           <option value="">{{$agent->name}}</option>
+                                <div class="input-group">
+                                   {{-- <label for="">Agents</label> --}}
+						                <select name="agent" class="form-control"  required>
+                                           <option value="{{$agent->id}}">{{$agent->name}}</option>
                                            <hr>
-						              	 @foreach ($agents as $a)    
-						              	 <option value="{{$a->id}}">{{$a->name}}</option>
-						              	 @endforeach
 						                </select>
+                                        @error('agent')
+                                                <Span style="color: red;">{{$message}}</Span>
+                                          @enderror
                                 </div>
-                                <input type="hidden" name="agent" value="{{$agent->id}}">
+                                <div class="input-group">
+                                      <input name="submit" class="btn btn-success" id="submit" type="submit" aria-describedby="nameHelp" value="Upload" />
+                                </div>
                                 <br><br>
                                 <div class="row">
                                     <div id="dvCSV" class="table-responsive">
@@ -145,7 +145,7 @@
                             </form>
                           </div>
                           <div class="modal-footer">
-                            <a class="btn btn-warning" href="{{route('download_sample')}}">
+                            <a class="btn btn-warning" href="{{route('agent_download_sample')}}">
                              Download csv Sample
                             </a>
                           </div>

@@ -19,6 +19,9 @@ Route::get('/', function () {
 });
 
 
+// 
+// **** MAIN ADMIN ROUTES (START) ****
+// 
 
 Auth::routes();
 
@@ -40,7 +43,7 @@ Route::post('/change_user_role/{id}', [App\Http\Controllers\HomeController::clas
 
 //Agents
 Route::get('/agents', [App\Http\Controllers\AgentController::class, 'show_agents'])->name('show_agents');
-Route::get('/agent/{id}', [App\Http\Controllers\AgentController::class, 'show_single_agent'])->name('show_single_agent');
+Route::get('/agents/{id}', [App\Http\Controllers\AgentController::class, 'show_single_agent'])->name('show_single_agent');
 Route::get('/create_agent', [App\Http\Controllers\AgentController::class, 'show_add_agent'])->name('show_add_agent');
 Route::post('/create_agent', [App\Http\Controllers\AgentController::class, 'create_agent'])->name('create_agent');
 Route::post('/update_agent/{id}', [App\Http\Controllers\AgentController::class, 'update_agent'])->name('update_agent');
@@ -84,16 +87,19 @@ Route::post('/delete_item/{id}', [App\Http\Controllers\ItemsCartController::clas
 // Route::post('/create_category', [App\Http\Controllers\ItemController::class, 'create_category'])->name('create_category');
 
 //customers
-Route::get('/agent/{id}/customers', [App\Http\Controllers\CustomerController::class, 'show_customers'])->name('show_customers');
+Route::get('/agents/{id}/customers', [App\Http\Controllers\CustomerController::class, 'show_customers'])->name('show_customers');
 Route::get('/customers', [App\Http\Controllers\CustomerController::class, 'show_all_customers'])->name('show_all_customers');
 Route::get('/create_customer/{id}', [App\Http\Controllers\CustomerController::class, 'show_add_customer'])->name('show_add_customer');
 Route::get('/create_customer', [App\Http\Controllers\CustomerController::class, 'show_add_direct_customer'])->name('show_add_direct_customer');
-Route::get('/customer/{a_id}/edit/{c_id}', [App\Http\Controllers\CustomerController::class, 'show_edit_customer'])->name('show_edit_customer');
+Route::get('/customer/edit/{c_id}', [App\Http\Controllers\CustomerController::class, 'show_edit_customer'])->name('show_edit_customer');
 Route::post('/create_customer', [App\Http\Controllers\CustomerController::class, 'create_customer'])->name('create_customer');
 Route::post('/update_customer/{id}', [App\Http\Controllers\CustomerController::class, 'update_customer'])->name('update_customer');
+Route::post('/add_customer_to_agent', [App\Http\Controllers\CustomerController::class, 'add_customer_to_agent'])->name('add_customer_to_agent');
 Route::post('/delete_customer/{id}', [App\Http\Controllers\CustomerController::class, 'delete_customer'])->name('delete_customer');
+Route::post('/delete_customer/{c_id}/agent/{a_id}', [App\Http\Controllers\CustomerController::class, 'remove_customer_from_agent'])->name('remove_customer_from_agent');
 Route::post('/importcustomers/bulk', [App\Http\Controllers\CustomerController::class, 'import_customers'])->name('import_customers');
 Route::get('/download_customers/sample', [App\Http\Controllers\CustomerController::class, 'download_sample'])->name('download_sample');
+Route::get('/check_customer', [App\Http\Controllers\CustomerController::class, 'check_customer_by_phone'])->name('check_customer_by_phone');
 
 
 //Payments route 
@@ -104,12 +110,6 @@ Route::post('/pay/all/transaction', [App\Http\Controllers\PaymentController::cla
 Route::post('/pay/all/customers', [App\Http\Controllers\PaymentController::class, 'pay_all_tran_p_c_bulk'])->name('pay_all_tran_p_c_bulk');
 Route::get('/customer_name_search_p', [App\Http\Controllers\PaymentController::class, 'customer_search'])->name('customer_p');
 
-//api test route 
-// Route::get('/test', [App\Http\Controllers\testController::class, 'index'])->name('index');
-Route::get('test', fn () => phpinfo());
-// Route::get('/test/apii', [App\Http\Controllers\testController::class, 'insert']);
-
-
 
 //gateway details
 Route::get('/profile/gateway/opt/eyowo', [App\Http\Controllers\PaymentGatewayController::class, 'add_update_gateway_details'])->name('add_update_gateway_details');
@@ -117,7 +117,7 @@ Route::get('/profile/gateway/opt/eyowo', [App\Http\Controllers\PaymentGatewayCon
 Route::post('/otp_e', [App\Http\Controllers\PaymentGatewayController::class, 'verify_otp_eyowo'])->name('verify_otp_eyowo');
 
 
-//api transactions route 
+// Tansactions route 
 Route::get('/transactions', [App\Http\Controllers\transactionController::class, 'index'])->name('show_transactions');
 Route::post('/transactions', [App\Http\Controllers\transactionController::class, 'get_transaction_list'])->name('get_transaction_list');
 Route::get('/data_search_t', [App\Http\Controllers\transactionController::class, 'search_data_t'])->name('search_data_t');
@@ -133,3 +133,42 @@ Route::get('/plan/callback', [App\Http\Controllers\PlanController::class, 'payme
 
 // Pdf route
 Route::get('/pdf/agent/{username}/customers', [App\Http\Controllers\PdfController::class, 'get_customers'])->name('export_customers_pdf');
+
+// 
+// **** MAIN ADMIN ROUTES (END) ****
+// 
+
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+// \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+// |||||||||||||||||||||||MUKTAR USMAN ALIYU (mualiyuoox@gmail.com)||||||||||||||||||||||||||||||
+// /////////////////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////////////////
+
+// 
+// **** AGENTS ROUTES (START) ****
+// 
+Route::get('/agent/dashboard', [App\Http\Controllers\Agents\HomeController::class, 'index'])->name('agent_dashboard');
+// Agent Auth 
+Route::post('/agent/login', [App\Http\Controllers\Agents\AuthController::class, 'login'])->name('agent_dashboard_login');
+// Agent Profile
+Route::get('/agent/profile', [App\Http\Controllers\Agents\HomeController::class, 'show_agent_profile'])->name('agent_show_agent_profile');
+Route::post('/agent/update_agent/{id}', [App\Http\Controllers\Agents\HomeController::class, 'update_agent'])->name('agent_update_agent');
+// agent CUstomers
+Route::get('/agent/dashboard/customers', [App\Http\Controllers\Agents\CustomerController::class, 'index'])->name('agent_show_customers');
+Route::get('/agent/dashboard/customer/add', [App\Http\Controllers\Agents\CustomerController::class, 'show_add_customer'])->name('agent_show_add_customer');
+Route::post('/agent/dashboard/customer/add', [App\Http\Controllers\Agents\CustomerController::class, 'create_customer'])->name('agent_create_customer');
+// Route::post('/agent/dashboard/update_customer/{id}', [App\Http\Controllers\Agents\CustomerController::class, 'update_customer'])->name('agent_update_customer');
+Route::post('/agent/dashboard/add_customer_to_agent', [App\Http\Controllers\Agents\CustomerController::class, 'add_customer_to_agent'])->name('agent_add_customer_to_agent');
+Route::post('/agent/dashboard/delete_customer/{id}', [App\Http\Controllers\Agents\CustomerController::class, 'delete_customer'])->name('agent_delete_customer');
+Route::get('/agent/download_customers/sample', [App\Http\Controllers\Agents\CustomerController::class, 'download_sample'])->name('agent_download_sample');
+Route::get('/agent/dashboard/check_customer', [App\Http\Controllers\Agents\CustomerController::class, 'check_customer_by_phone'])->name('agent_check_customer_by_phone');
+Route::post('/agent/importcustomers/bulk', [App\Http\Controllers\Agents\CustomerController::class, 'import_customers'])->name('agent_import_customers');
+// Agent transaction
+Route::get('/agent/dashboard/transactions', [App\Http\Controllers\Agents\TransactionController::class, 'index'])->name('agent_show_transactions');
+Route::post('/agent/dashboard/transactions', [App\Http\Controllers\Agents\TransactionController::class, 'get_transaction_list'])->name('agent_get_transaction_list');
+Route::get('/agent/dashboard/data_search_t', [App\Http\Controllers\Agents\TransactionController::class, 'search_data_t'])->name('agent_search_data_t');
+
+
+// 
+// **** AGENTS ROUTES (END) ****
+// 

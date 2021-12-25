@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Agents;
 
+use App\Http\Controllers\Controller;
+use App\Imports\CustomersImport;
 use App\Models\Agent;
 use App\Models\Customer;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\CustomersImport;
 use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\PlanDetail;
-use PHPExcelReader\SpreadsheetReader as Reader;
-use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -26,41 +23,30 @@ class CustomerController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('AgentAuth');
     }
 
-    public function show_customers($id)
+    public function index()
     {
-        $agent = Agent::find($id);
+        $a = session('Agent');
 
-        $customers = $agent->customers;
-        // $customers = Customer::where('agent_id', '=', $id)->orderBy('created_at', 'desc')->get();
+        $agent = Agent::where('id', '=', $a->id)->with('customers')->get();
+        $agent = $agent[0];
 
-        return view('customers.index', compact('customers', 'agent'));
+        return view('sites.agent.customer.all', compact('agent'));
     }
 
-    public function show_all_customers()
+    public function show_add_customer()
     {
-        $customers = Customer::where('org_id', '=', Auth::user()->organization_id)->orderBy('created_at', 'desc')->get();
+        $agent = session('Agent');
 
-        return view('customers.all', compact('customers'));
-    }
-
-    public function show_add_customer($id)
-    {
-        $agent = Agent::find($id);
-        return view('customers.add_customer', compact('agent'));
-    }
-
-    public function show_add_direct_customer()
-    {
-        $agent = null;
-        return view('customers.add_customer', compact('agent'));
+        return view('sites.agent.customer.add_customer', compact('agent'));
     }
 
     public function create_customer(Request $request)
     {
-        $org = Organization::find(Auth::user()->organization_id);
+        $agent = session('Agent');
+        $org = Organization::find($agent->org_id);
         // return $request->all();
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
@@ -102,7 +88,7 @@ class CustomerController extends Controller
                 ]);
 
                 Customer::where('id', '=', $customer->id)->update([
-                    'org_id' => Auth::user()->organization_id,
+                    'org_id' => $org->id,
                 ]);
 
                 $agent_customer = DB::table('agent_customer')->insert([
@@ -110,9 +96,9 @@ class CustomerController extends Controller
                     'customer_id' => $customer->id
                 ]);
 
-                return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is created to system']);
+                return redirect()->route('agent_show_customers')->with(['success' => $customer->name . ' is created to system']);
             } else {
-                return back()->with('error', "Sorry, You have reached the maximum number of Customers allowed for your Plan. Upgrade to enjoy more of ATS services");
+                return back()->with('error', "Sorry, You have reached the maximum number of Customers allowed for your Plan. Contact Your admin for upgrade");
             }
         } else {
             return back()->with('error', "You don't have any active plan, Subscribe and try again.");
@@ -121,80 +107,13 @@ class CustomerController extends Controller
 
     public function delete_customer($id)
     {
-        $res = Customer::where('id', $id)->delete();
+        $res = DB::table('agent_customer')->where(['customer_id' => $id, 'agent_id' => session('Agent')->id])->delete();
+
         if ($res) {
-            $a_c = DB::table('agent_customer')->where('customer_id', $id)->delete();
             return back()->with(['success' => 'One Customer is Deleted from system']);
         } else {
             return back()->with(['error' => 'Customer NOT Deleted from system. Try Again!']);
         }
-    }
-
-    public function remove_customer_from_agent($c_id, $a_id)
-    {
-        $res = DB::table('agent_customer')->where(['customer_id' => $c_id, 'agent_id' => $a_id])->delete();
-
-        if ($res) {
-            return back()->with(['success' => 'One Customer is removed from system']);
-        } else {
-            return back()->with(['error' => 'Customer NOT Deleted from system. Try Again!']);
-        }
-    }
-
-    public function show_edit_customer($c_id)
-    {
-        // $agent = Agent::find($a_id);
-        $customer = Customer::find($c_id);
-        // dd($customer);
-
-        return view('customers.edit', compact('customer'));
-    }
-
-
-    public function update_customer(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:customers'],
-            'lga' => ['required', 'string', 'max:255'],
-            'state' => ['required', 'string', 'max:255'],
-            'country' => ['required', 'string', 'max:255'],
-        ]);
-
-        if ($validator->fails()) {
-            return back()->with('error', "Update fail. Make sure all field's are correct, And Try again!")->withInput();
-        }
-
-        $customer = Customer::where('id', '=', $id)->update([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'phone' => $request['phone'],
-            'gps' => $request['gps'],
-            'state' => $request['state'],
-            'country' => $request['country'],
-            'address' => $request['address'],
-            'lga' => $request['lga'],
-        ]);
-
-        return back()->with(['success' => 'Customer is Updated Successfully']);
-    }
-
-    public function import_customers(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            "file" => "required",
-        ]);
-
-        if ($validator->fails()) {
-            return back()->with(['error' => 'Make sure you upload a csv file'])->withInput();
-        }
-
-        $id = $request->agent;
-        Excel::import(new CustomersImport($id), $request->file('file'));
-
-        return back()->with(['success' => "Customers uploaded Successful"]);
     }
 
     public function download_sample()
@@ -244,13 +163,13 @@ class CustomerController extends Controller
             if ($customer) {
                 $a_c = DB::table('agent_customer')->where(['agent_id' => $agent->id, 'customer_id' => $customer->id])->get();
                 if (count($a_c) > 0) {
-                    return back()->with('error', "Customer is Already Added To This Agent.");
+                    return back()->with('error', "Customer is Already Added.");
                 } else {
                     $agent_customer = DB::table('agent_customer')->insert([
                         'agent_id' => $agent->id,
                         'customer_id' => $customer->id
                     ]);
-                    return redirect()->route('show_customers', ['id' => $request['agent']])->with(['success' => $customer->name . ' is added to ' . $agent->name]);
+                    return redirect()->route('agent_show_customers')->with(['success' => $customer->name . ' is added to ' . $agent->name]);
                 }
             } else {
                 return back()->with('error', 'Customer Not found');
@@ -258,5 +177,21 @@ class CustomerController extends Controller
         } else {
             return back()->with('error', 'Agent Not found');
         }
+    }
+
+    public function import_customers(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "file" => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with(['error' => 'Make sure you upload a csv file'])->withInput();
+        }
+
+        $id = $request->agent;
+        Excel::import(new CustomersImport($id), $request->file('file'));
+
+        return back()->with(['success' => "Customers uploaded Successful"]);
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.Aindex')
 
 @section('content')
 <div class="page-header">
@@ -12,7 +12,7 @@
             <div class="col-md-4">
                 <ul class="breadcrumb-title">
                     <li class="breadcrumb-item">
-                        <a href="{{route('home')}}"> <i class="fa fa-home"></i> </a>
+                        <a href="{{route('agent_dashboard')}}"> <i class="fa fa-home"></i> </a>
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
@@ -38,7 +38,7 @@
                 <div class="row">
                          <div class="card shadow " style="width: 100%;">
                             <div class="card-header ">
-                                <p class="text-primary m-0 font-weight-bold">{{Auth::user()->organization()->get()[0]->name}} > {{Auth::user()->name}} > {{$agent->name}}</p>
+                                <p class="text-primary m-0 font-weight-bold">{{$agent->name}}</p>
                             </div>
                          </div>
                 </div>
@@ -52,8 +52,8 @@
                                            
                                           </div>
                                         </div><br><br>
-                                        <form  method="POST" action="{{route('update_agent', ['id'=>$agent->id])}}">
-						@csrf
+                                        <form  method="POST" action="{{route('agent_update_agent', ['id'=>$agent->id])}}">
+						                                @csrf
                                             <div class="form-row">
                                                 <div class="col">
                                                     <div class="form-group"><label for="username"><strong>Name</strong></label><input class="form-control" type="text" placeholder="Name" name="name" value="{{$agent->name}}"></div>
@@ -62,27 +62,27 @@
                                                     <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" placeholder="user@example.com" value="{{$agent->email}}" name="email"></div>
                                                 </div>
                                             </div>
-					    <div class="form-row">
+					                                  <div class="form-row">
                                                 <div class="col">
                                                     <div class="form-group"><label for="first_name"><strong>Username</strong></label><input value="{{$agent->username}}" class="form-control" type="text" placeholder="Username" name="username"></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group"><label for="last_name"><strong>Address</strong></label>
-							<input class="form-control" value="{{$agent->address}}" type="text" placeholder="Address" name="address">
-						</div>
+						                                    	<input class="form-control" value="{{$agent->address}}" type="text" placeholder="Address" name="address">
+						                                    </div>
                                                 </div>
                                             </div>
-					    <div class="form-row">
+					                                  <div class="form-row">
                                                 <div class="col">
                                                     <div class="form-group"><label for="first_name"><strong>LGA</strong></label><input value="{{$agent->lga}}" class="form-control" type="text" placeholder="lga" name="lga"></div>
                                                 </div>
-						<div class="col">
+						                                <div class="col">
                                                     <div class="form-group"><label for="first_name"><strong>State</strong></label><input value="{{$agent->state}}" class="form-control" type="text" placeholder="state" name="state"></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group"><label for="last_name"><strong>Country</strong></label>
-							<input class="form-control" value="{{$agent->country}}" type="text" placeholder="Nigeria" name="country">
-						</div>
+						                                    	<input class="form-control" value="{{$agent->country}}" type="text" placeholder="Nigeria" name="country">
+						                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
@@ -91,16 +91,16 @@
                                                 </div>
 						
                                                 <div class="col">
-                                                    <div class="form-group"><label for="last_name"><strong>Role</strong></label>
-							{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
-							<select name="role" id="" class="form-control">
-								<option value="{{$agent->role->id ?? ''}}">{{$agent->role->name ?? ''}}</option>
-                <?php $roles = \App\Models\AgentRole::all(); ?>
-                    @foreach ($roles as $r)
-                    <option value="{{$r->id}}">{{$r->name}}</option>
-                    @endforeach
-							</select>
-						</div>
+                                                  <div class="form-group"><label for="last_name"><strong>Role</strong></label>
+						                                      	{{-- <input class="form-control" type="text" placeholder="Doe" name=""> --}}
+						                                      	<select name="role" id="" class="form-control">
+						                                      		<option value="{{$agent->role->id ?? ''}}">{{$agent->role->name ?? ''}}</option>
+                                                      <?php $roles = \App\Models\AgentRole::where('org_id', '=', $agent->org_id); ?>
+                                                          @foreach ($roles as $r)
+                                                          <option value="{{$r->id}}">{{$r->name}}</option>
+                                                          @endforeach
+						                                      	</select>
+						                                      </div>
                                                 </div>
                                             </div>
                                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
@@ -199,7 +199,6 @@
                 </div>
 
                 <div class="row" >
-                    <?php $customers = \App\Models\Customer::where('agent_id', '=', $agent->id)->get(); ?>
                     <div class="card" style="width: 100%;">
                         <div class="card-header">
                             <h5>Customer's</h5>
@@ -221,50 +220,52 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Email</th>
-					    <th>Phone</th>
-					    <th>Address</th>
-					    <th>LGA</th>
-					    <th>Sate</th>
-              <th>Qr Code</th>
-					    <th>Action</th>
+					                                  <th>Phone</th>
+					                                  <th>Address</th>
+					                                  <th>LGA</th>
+					                                  <th>Sate</th>
+                                            <th>Qr Code</th>
+					                                  <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-					    <?php $i = count($customers); ?>
-				        @foreach ($agent->customers as $c)
-					<tr>
-						<th scope="row">{{$i}}</th>
-						<td>{{$c->name}}</td>
-						<td>{{$c->email}}</td>
-						<td>{{$c->phone}}</td>
-						<td>{{$c->address}}</td>
-						<td>{{$c->lga}}</td>
-						<td>{{$c->state}}</td>
-            <td>
-                <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
-                                // ->merge('assets/images/logo.png', 0.3, true)
-                                ->errorCorrection('H')
-                                ->size(100)
-                                ->generate($c->phone)) !!}" />
-            </td>
-						<td>
-                            <form method="POST" id="delete-form[{{$i}}]" action="{{route('remove_customer_from_agent',['c_id'=>$c->id, 'a_id'=>$agent->id])}}">
-                                <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
-                                @csrf 
-                                <a  onclick="
-                                    if(confirm('Are you sure You want to Delete this Customer -( {{$c->name}} )? ')){
-                                        document.getElementById('delete-form[{{$i}}]').submit();
-                                    }
-                                        event.preventDefault();"
-                                    class="btn btn-warning" 
-                                    style="color: black">
-                                    Delete
-                                </a>
-                            </form>
-						</td>
-						<?php $i--?>
-					</tr>
-					@endforeach
+					                          <?php 
+                                      $customers = $agent->customers;
+                                      $i = count($customers); ?>
+				                              @foreach ($agent->customers as $c)
+					                            <tr>
+					                            	<th scope="row">{{$i}}</th>
+					                            	<td>{{$c->name}}</td>
+					                            	<td>{{$c->email}}</td>
+					                            	<td>{{$c->phone}}</td>
+					                            	<td>{{$c->address}}</td>
+					                            	<td>{{$c->lga}}</td>
+					                            	<td>{{$c->state}}</td>
+                                        <td>
+                                            <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
+                                                            // ->merge('assets/images/logo.png', 0.3, true)
+                                                            ->errorCorrection('H')
+                                                            ->size(100)
+                                                            ->generate($c->phone)) !!}" />
+                                        </td>
+					                            	<td>
+                                          <form method="POST" id="delete-form[{{$i}}]" action="{{route('agent_delete_customer',['id'=>$c->id])}}">
+                                              {{-- <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a> --}}
+                                              @csrf 
+                                              <a  onclick="
+                                                  if(confirm('Are you sure You want to Delete this Customer -( {{$c->name}} )? ')){
+                                                      document.getElementById('delete-form[{{$i}}]').submit();
+                                                  }
+                                                      event.preventDefault();"
+                                                  class="btn btn-warning" 
+                                                  style="color: black">
+                                                  Delete
+                                              </a>
+                                          </form>
+					                            	</td>
+					                            	<?php $i--?>
+					                            </tr>
+					                            @endforeach
                                     </tbody>
                                 </table>
                             </div>

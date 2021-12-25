@@ -16,8 +16,9 @@ class PdfController extends Controller
 
         if (count($agent) > 0) {
             # code...
-            $customers = Customer::where('agent_id', '=', $agent[0]->id)->get();
+            // $customers = Customer::where('agent_id', '=', $agent[0]->id)->get();
             $agent = $agent[0];
+            $customers = $agent->customers;
 
             $pdf = PDF::loadView('pdf.customer _qrcode', compact('agent', 'customers'))->setPaper('a4');
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Agent extends Model
@@ -31,15 +32,20 @@ class Agent extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function org(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'org_id');
+    }
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(AgentRole::class, 'agent_role_id');
     }
 
     //hasmany agents
-    public function customers(): HasMany
+    public function customers(): BelongsToMany
     {
-        return $this->hasMany(Customer::class);
+        return $this->belongsToMany(Customer::class);
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.Aindex')
 
 @section('content')
 <div class="page-header">
@@ -6,17 +6,17 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Create Farmers<!--Customer--> {{ $agent != null ? ' - '.$agent->name : ' '}} </h5>
+                    <h5 class="m-b-10">Create Customer {{ $agent != null ? ' - '.$agent->name : ' '}} </h5>
                 </div>
             </div>
             <div class="col-md-4">
                 <ul class="breadcrumb-title">
                     <li class="breadcrumb-item">
-                        <a href="{{route('home')}}"> <i class="fa fa-home"></i> </a>
+                        <a href="{{route('agent_dashboard')}}"> <i class="fa fa-home"></i> </a>
                     </li>
                     <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#!">Create Farmers</a>
+                    <li class="breadcrumb-item"><a href="#!">Create Customer</a>
                     </li>
                 </ul>
             </div>
@@ -38,9 +38,9 @@
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material">
-				        	        @csrf
-				                    <div class="form-group form-default">
+                                  <div class="form-material">
+				        	                  @csrf
+				                              <div class="form-group form-default">
                                           <input type="number" id="c_phone" name="c_phone" value="{{old('phone')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
                                           <label class="float-label">Phone</label>
@@ -51,7 +51,7 @@
                                       {{-- <div class="form-group form-default">
                                           <input type="submit" class="btn btn-primary" value="Register" id="">
                                       </div> --}}
-                                  </form>
+                                    </div>
                               </div>
                             </div>
 		                </div>
@@ -64,7 +64,7 @@
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material" method="POST" action="{{route('create_customer')}}">
+                                  <form class="form-material" method="POST" action="{{route('agent_create_customer')}}">
 					                    @csrf
 					
                                       <div class="form-group form-default">
@@ -83,17 +83,19 @@
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
                                       </div>
-				                    <div class="form-group form-default">
-                                        <input type="hidden" id="phone" name="phone"required="">
-                                          <input type="number" id="phone_d" disabled value="{{old('phone')}}" class="form-control" required="">
-                                          <span class="form-bar"></span>
-                                          <label class="label">Phone</label>
-                                          @error('phone')
-                                                <Span style="color: red;">{{$message}}</Span>
-                                          @enderror
-                                      </div>
                                       <div class="row">
-                                          <div class="col-sm-8">
+                                        <div class="col-sm 6">
+                                          <div class="form-group form-default">
+                                            <input type="hidden" id="phone" name="phone"required="">
+                                              <input type="number" id="phone_d" disabled value="{{old('phone')}}" class="form-control" required="">
+                                              <span class="form-bar"></span>
+                                              <label class="label">Phone</label>
+                                              @error('phone')
+                                                    <Span style="color: red;">{{$message}}</Span>
+                                              @enderror
+                                          </div>
+                                        </div>
+                                          <div class="col-sm-6">
                                             <div class="form-group form-default">
                                                 <input type="text" name="address" value="{{old('address')}}" class="form-control" required="">
                                                 <span class="form-bar"></span>
@@ -103,26 +105,7 @@
                                                 @enderror
                                             </div>
                                           </div>
-                                          <div class="col-sm-4">
-                                              <?php $agents = \App\Models\Agent::where('org_id', '=', Auth::user()->organization_id)->get(); ?>
-
-                                              <div class="form-group">
-						                          <select name="agent" class="form-control"  required>
-                                                      @if ($agent != null)
-                                                      <option value="{{$agent->id}}">{{$agent->name}}</option>
-                                                      @endif
-						                        	 @foreach ($agents as $a)    
-						                        	 <option value="{{$a->id}}">{{$a->name}}</option>
-						                        	 @endforeach
-						                          </select>
-						                          <span class="form-bar"></span>
-						                          <label class="float-label">Agent</label>
-                                                  @error('agent')
-                                                          <Span style="color: red;">{{$message}}</Span>
-                                                    @enderror
-						                      </div>
-                                            {{-- <input type="hidden" name="agent" value="{{$agent->id}}"> --}}
-                                          </div>
+                                          <input type="hidden" name="agent" value="{{$agent->id}}">
                                       </div>
 				      <div class="row">
                           <div class="col-sm-4">
@@ -225,25 +208,11 @@
                             <br>
                             <hr>
                             <br>
-                            <form action="{{route('add_customer_to_agent')}}" class="form-material" method="POST">
+                            <form action="{{route('agent_add_customer_to_agent')}}" class="form-material" method="POST">
                                 @csrf
                             <div class="row">
                               <div class="col-sm-5">
-                                    <div class="form-group">
-						                <select name="agent" class="form-control"  required>
-                                            @if ($agent != null)
-                                            <option value="{{$agent->id}}">{{$agent->name}}</option>
-                                            @endif
-						              	    @foreach ($agents as $a)    
-						              	    <option value="{{$a->id}}">{{$a->name}}</option>
-						              	    @endforeach
-						                </select>
-						                <span class="form-bar"></span>
-						                <label class="float-label">Agent</label>
-                                        @error('agent')
-                                                <Span style="color: red;">{{$message}}</Span>
-                                          @enderror
-						            </div>
+                                    <input type="hidden" name="agent" value="{{$agent->id}}">
                                     <input type="hidden" name="customer" id="c_a_id">
                                 </div>
                                 <div class="col-sm-3">
@@ -269,7 +238,7 @@
             let query = $('#c_phone').val(); 
 	    if (query.length == 11) {
             	$.ajax({
-            	    url:"{{ route('check_customer_by_phone') }}",
+            	    url:"{{ route('agent_check_customer_by_phone') }}",
             	    type:"GET",
             	    data:{'cus':query},
 		
