@@ -67,7 +67,7 @@ class TransactionController extends Controller
         // if load type is set to all
         if ($request->request_type == "all") {
 
-            $transactions = Transaction::where(['org_id' => $agent->org_id, 'agent_id' => $agent->id])->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])->get();
+            $transactions = Transaction::where(['org_id' => $agent->org_id, 'agent_id' => $agent->id])->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])->orderBy('date', 'desc')->get();
             // return $transactions;
             if ($transactions) {
 
@@ -92,6 +92,7 @@ class TransactionController extends Controller
             $transactions = Transaction::where(['customer_id' => $customer->id, 'agent_id' => $agent->id])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+                ->orderBy('date', 'desc')
                 ->get();
 
             if ($transactions) {
