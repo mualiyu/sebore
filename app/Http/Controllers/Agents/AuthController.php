@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Agents;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agent;
-use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +13,7 @@ class AuthController extends Controller
 {
     //
 
-    public function login(Request $request, Closure $next)
+    public function login(Request $request)
     {
 
         $request->validate([
