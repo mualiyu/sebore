@@ -61,33 +61,41 @@ class ApiTransactionController extends Controller
                     return response()->json($res);
                 } else {
 
-                    $transaction = Transaction::create([
-                        'org_id' => $device->org_id,
-                        'agent_id' => $request->agent_id,
-                        'device_id' => $request->device_id,
-                        'item_id' => $request->item_id,
-                        'customer_id' => $customer[0]->id,
-                        'quantity' => $request->quantity,
-                        'date' => $request->date,
-                        'amount' => $request->amount,
-                        'ref_id' => $request->ref_id,
-                        'p_status' => 0,
-                    ]);
-                    Transaction::where('id', '=', $transaction->id)->update([
-                        'ref_id' => $request->ref_id,
-                        'p_status' => 0,
-                    ]);
+                    if (count($customer) > 0) {
+                        $transaction = Transaction::create([
+                            'org_id' => $device->org_id,
+                            'agent_id' => $request->agent_id,
+                            'device_id' => $request->device_id,
+                            'item_id' => $request->item_id,
+                            'customer_id' => $customer[0]->id,
+                            'quantity' => $request->quantity,
+                            'date' => $request->date,
+                            'amount' => $request->amount,
+                            'ref_id' => $request->ref_id,
+                            'p_status' => 0,
+                        ]);
+                        Transaction::where('id', '=', $transaction->id)->update([
+                            'ref_id' => $request->ref_id,
+                            'p_status' => 0,
+                        ]);
 
-                    if ($transaction) {
-                        $res = [
-                            'status' => true,
-                            'data' => $transaction
-                        ];
-                        return response()->json($res);
+                        if ($transaction) {
+                            $res = [
+                                'status' => true,
+                                'data' => $transaction
+                            ];
+                            return response()->json($res);
+                        } else {
+                            $res = [
+                                'status' => false,
+                                'data' => 'Fail to store transaction'
+                            ];
+                            return response()->json($res);
+                        }
                     } else {
                         $res = [
                             'status' => false,
-                            'data' => 'Fail to store transaction'
+                            'data' => 'CUSTOMER_NOT_EXIST(' . $request->customer_phone . ')'
                         ];
                         return response()->json($res);
                     }
