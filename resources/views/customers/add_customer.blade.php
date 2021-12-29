@@ -38,8 +38,7 @@
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material">
-				        	        @csrf
+                                  <div class="form-material">
 				                    <div class="form-group form-default">
                                           <input type="number" id="c_phone" name="c_phone" value="{{old('phone')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
@@ -51,7 +50,7 @@
                                       {{-- <div class="form-group form-default">
                                           <input type="submit" class="btn btn-primary" value="Register" id="">
                                       </div> --}}
-                                  </form>
+                                    </div>
                               </div>
                             </div>
 		                </div>
