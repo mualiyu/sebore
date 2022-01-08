@@ -16,7 +16,7 @@ class UpdateTransactionsAmount extends Seeder
      */
     public function run()
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::where('org_id', '=', 7)->get();
 
         foreach ($transactions as $t) {
             $item = Item::find($t->item_id);
