@@ -17,7 +17,7 @@ class ApiStockController extends Controller
             'api_key' => 'required',
             'org_id' => 'required',
             'issuer' => 'required',
-            // 'collector' => 'nullable',
+            'collector' => 'required',
             'amount' => 'required',
             'status' => 'nullable',
         ]);
@@ -37,13 +37,17 @@ class ApiStockController extends Controller
                 $stock = Stock::create([
                     'org_id' => $request->org_id,
                     'issuer' => $request->issuer,
+                    'collector' => $request->collector,
                     'amount' => $request->amount,
                     'status' => $request->status,
 
                 ]);
+                Stock::where('id', '=', $stock->id)->update([
+                    'collector' => $request->collector,
+                ]);
 
                 if ($stock) {
-                    $s = Stock::where('id', '=', $stock->id)->with("issuer")->get();
+                    $s = Stock::where('id', '=', $stock->id)->with("issuer")->with("collector")->get();
                     $res = [
                         'status' => true,
                         'data' => $s[0],
