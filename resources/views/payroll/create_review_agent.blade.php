@@ -153,7 +153,9 @@
 				        @foreach ($c_ss as $customer)
 					<?php 
 					$cus = \App\Models\Customer::find($customer);
-					$trans = \App\Models\Transaction::where(["customer_id"=>$customer, "agent_id"=> $agent->id, "org_id"=>Auth::user()->organization_id, "p_status"=>0])->get(); 
+					$trans = \App\Models\Transaction::where(["customer_id"=>$customer, "agent_id"=> $agent->id, "org_id"=>Auth::user()->organization_id, "p_status"=>0])
+	                ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
+                  ->get(); 
 					$c_t_amount = 0;
 					$c_t_quantity = 0;
 					foreach ($trans as $t) {

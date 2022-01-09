@@ -66,23 +66,23 @@
                                 {{$device->community}}
                               </div>
                             </div>
-			    <div class="row">
+			                    <div class="row">
                     	      <div class="col-sm-3">
                     	        <h6 class="mb-0" style="float: right;">Total Amount is:</h6>
                     	      </div>
                     	      <?php
                     	      $t_amount = 0;
-				  $t_q = 0;
+				                    $t_q = 0;
                     	        foreach ($transactions as $t) {
                     	            $t_amount = $t_amount + $t->amount;
-				    $t_q = $t_q + $t->quantity;
+				                          $t_q = $t_q + $t->quantity;
                     	        }
                     	      ?>
                     	      <div class="col-sm-9 text-secondary">
                     	        {{$t_amount}} NGN
                     	      </div>
                     	    </div>
-			    <div class="row">
+			                    <div class="row">
                               <div class="col-sm-3">
                                 <h6 class="mb-0" style="float: right;"> Quantities in Payroll is: </h6>
                               </div>
@@ -152,7 +152,9 @@
 				        @foreach ($c_ss as $customer)
 					<?php 
 					$cus = \App\Models\Customer::find($customer);
-					$trans = \App\Models\Transaction::where(["customer_id"=>$customer, "device_id"=> $device->id, "org_id"=>Auth::user()->organization_id, "p_status"=>0])->get(); 
+					$trans = \App\Models\Transaction::where(["customer_id"=>$customer, "device_id"=> $device->id, "org_id"=>Auth::user()->organization_id, "p_status"=>0])
+                  ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
+                  ->get(); 
 					$c_t_amount = 0;
 					$c_t_quantity = 0;
 					foreach ($trans as $t) {
