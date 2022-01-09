@@ -59,4 +59,9 @@ class Organization extends Model
     {
         return $this->hasMany(PlanDetail::class);
     }
+
+    public function stock(): HasMany
+    {
+        return $this->hasMany(Stock::class);
+    }
 }

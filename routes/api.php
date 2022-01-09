@@ -33,3 +33,8 @@ Route::post('/customer/create', [App\Http\Controllers\ApiCustomerController::cla
 
 Route::get('/get_api_by_name', [App\Http\Controllers\ApiApiController::class, 'get_by_name']);
 Route::post('/new_api_user', [App\Http\Controllers\ApiApiController::class, 'create']);
+
+
+Route::post('/stock/create', [App\Http\Controllers\ApiStockController::class, 'create']);
+Route::post('/stock/update', [App\Http\Controllers\ApiStockController::class, 'update']);
+Route::get('/stock/get_stock', [App\Http\Controllers\ApiStockController::class, 'get_stock']);

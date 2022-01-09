@@ -111,6 +111,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/icon/font-awesome/css/font-awesome.min.css')}}">
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/jquery.mCustomScrollbar.css')}}">
 
     @yield('style')
@@ -451,8 +452,15 @@ if ($organization[0]->logo) {
                                 </a>
                             </li>
                             <li class="">
+                                <a href="{{route('payroll_index')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="fas fa-money-bill-wave"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Payrolls</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="">
                                 <a href="{{route('show_payment')}}" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-micon"><i class="fas fa-dollar-sign"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Payment</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>

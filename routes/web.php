@@ -134,6 +134,14 @@ Route::get('/plan/callback', [App\Http\Controllers\PlanController::class, 'payme
 // Pdf route
 Route::get('/pdf/agent/{username}/customers', [App\Http\Controllers\PdfController::class, 'get_customers'])->name('export_customers_pdf');
 
+// Payrolls
+Route::get('/payroll', [App\Http\Controllers\PayrollController::class, 'index'])->name('payroll_index');
+Route::get('/payroll/{ref_id}/info', [App\Http\Controllers\PayrollController::class, 'get_payroll_by_ref_id'])->name('payroll_by_ref_id');
+Route::get('/payroll/create', [App\Http\Controllers\PayrollController::class, 'show_create'])->name('payroll_show_create');
+Route::post('/payroll/create', [App\Http\Controllers\PayrollController::class, 'show_review'])->name('payroll_create_review');
+Route::post('/payroll/store', [App\Http\Controllers\PayrollController::class, 'store_payroll'])->name('payroll_store');
+Route::post('/payroll/{ref_id}/delete', [App\Http\Controllers\PayrollController::class, 'delete'])->name('payroll_delete');
+Route::post('/payroll/{ref_id}/make_payment', [App\Http\Controllers\PayrollController::class, 'payroll_make_payment'])->name('payroll_make_payment');
 // 
 // **** MAIN ADMIN ROUTES (END) ****
 // 
