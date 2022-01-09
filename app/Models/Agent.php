@@ -23,7 +23,7 @@ class Agent extends Model
         'state',
         'country',
         'gps',
-        'role',
+        'agent_role_id',
         'user'
     ];
 

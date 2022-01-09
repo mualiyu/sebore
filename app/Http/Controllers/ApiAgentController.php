@@ -181,4 +181,64 @@ class ApiAgentController extends Controller
             return response()->json($res);
         }
     }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function get_agent_by_role(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'api_user' => 'required',
+            'api_key' => 'required',
+            'org_id' => 'required',
+            'role_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $res = [
+                'status' => false,
+                'data' => $validator->errors(),
+            ];
+            return response()->json($res);
+        }
+
+        $api = Api::where('api_user', '=', $request->api_user)->get();
+
+        if (count($api) > 0) {
+            if ($api[0]->api_key == $request->api_key) {
+
+                $agents = Agent::where(['org_id' => $request->org_id, 'agent_role_id' => $request->role_id])->with("role")->get();
+                if (count($agents)) {
+
+                    $res = [
+                        'status' => true,
+                        'data' => $agents,
+                    ];
+                    return response()->json($res);
+                } else {
+                    $res = [
+                        'status' => false,
+                        'data' => 'Agents Not Found in This Role',
+                    ];
+                    return response()->json($res);
+                }
+            } else {
+                $res = [
+                    'status' => false,
+                    'data' => 'API_KEY Not correct'
+                ];
+                return response()->json($res);
+            }
+        } else {
+            $res = [
+                'status' => false,
+                'data' => 'API_USER Not Found'
+            ];
+            return response()->json($res);
+        }
+    }
 }
