@@ -4,6 +4,8 @@ $con = mysqli_connect('127.0.0.1', 'root', '', 'sebore');
 if (!$con) {
 	echo "DB connection failed";
 }
+$time = date("Ymd");
+$timer = date("Y/m/d");
 
 if (isset($_POST['update_t'])) {
 	$ref = $_POST['ref_id'];
@@ -29,13 +31,13 @@ if (isset($_POST['update_t'])) {
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 	<script>
 		var testV = 1;
-		var pass1 = prompt('Please Enter Your Password', ' ');
+		var pass1 = prompt('Please Enter Your Password  \nDate: <?php echo $timer; ?>', '');
 		while (testV < 3) {
 			if (!pass1) {
 				alert('Invalid Password');
 				history.go(-1)
 			};
-			if (pass1.toLowerCase() == "@201117") {
+			if (pass1.toLowerCase() == "<?php echo $time; ?>") {
 				alert('You Got it Right! Click Ok To Enter....');
 				// window.open('protectpage.html');
 				break;
@@ -49,25 +51,25 @@ if (isset($_POST['update_t'])) {
 		// Diseble inspect
 		document.addEventListener('keydown', function() {
 			if (event.keyCode == 123) {
-				alert("You Can not Do This!");
+				alert("You Can not Do This! 1");
 				return false;
 			} else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
-				alert("You Can not Do This!");
+				alert("You Can not Do This! 2");
 				return false;
 			} else if (event.ctrlKey && event.keyCode == 85) {
-				alert("You Can not Do This!");
+				alert("You Can not Do This!3");
 				return false;
 			}
 		}, false);
 
 		if (document.addEventListener) {
-			document.addEventListener('contextmenu', function(e) {
-				alert("You Can not Do This A!");
-				e.preventDefault();
-			}, false);
+			// document.addEventListener('contextmenu', function(e) {
+			// 	alert("You Can not Do This! 4");
+			// 	e.preventDefault();
+			// }, false);
 		} else {
 			document.attachEvent('oncontextmenu', function() {
-				alert("You Can not Do This B!");
+				alert("You Can not Do This! 5");
 				window.event.returnValue = false;
 			});
 		}
@@ -157,7 +159,7 @@ if (isset($_POST['update_t'])) {
 					<hr />
 					<div class="container">
 						<label for="ref_id"><strong>Ref_id</strong></label>
-						<input type="text" disabled placeholder="Enter ref_id">
+						<input type="text" disabled placeholder="Enter ref_id" value="<?php echo $row['ref_id']; ?>">
 						<input type="hidden" value="<?php echo $row['ref_id']; ?>" name="ref_id" required>
 					</div>
 					<hr />
