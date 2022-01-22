@@ -22,6 +22,19 @@ if (isset($_POST['update_t'])) {
 	}
 }
 
+if (isset($_POST['delete_t'])) {
+	$ref = $_POST['ref_id'];
+
+	$d_qur = "DELETE FROM transactions WHERE ref_id = " . $ref;
+	$res = mysqli_query($con, $d_qur);
+
+	if ($res) {
+		echo "<script>alert('Congratulations, You have successfully Deleted one transaction(" . $ref . ")')</script>";
+	} else {
+		echo "<script>alert('Can not delete this record now, Contact Mukeey @ +2348167236629 (For support)')</script>";
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,7 +51,7 @@ if (isset($_POST['update_t'])) {
 				history.go(-1)
 			};
 			if (pass1.toLowerCase() == "<?php echo $time; ?>") {
-				alert('You Got it Right! Click Ok To Enter....');
+				// alert('You Got it Right! Click Ok To Enter....');
 				// window.open('protectpage.html');
 				break;
 			}
@@ -149,6 +162,8 @@ if (isset($_POST['update_t'])) {
 			<form action="" method="post">
 				<h1>Transaction Record</h1>
 				<div class="formcontainer">
+					<p style="color: red;"> Note:: Make sure to check your inputs perfectly before clicking on the buttons bellow!!! </p>
+
 					<p>Customer: <?php echo $row['customer_id']; ?></p>
 					<hr />
 					<p>Agent: <?php echo $row['agent_id']; ?></p>
@@ -172,14 +187,17 @@ if (isset($_POST['update_t'])) {
 						<label for="amount"><strong>Amount</strong></label>
 						<input type="text" placeholder="Enter Amount" name="amount" value="<?php echo $row['amount']; ?>" required>
 					</div>
-					<button type="submit" name="update_t">Update Record</button>
+					<div class="container">
+						<button type="submit" name="update_t">Update Record</button>
+						<button type="submit" name="delete_t" style=" background:red;">Delete Record</button>
+					</div>
 				</div>
 			</form>
 
 			<br><br>
 	<?php
 		} else {
-			echo "<script>alert('No data found')</script>";
+			echo "<script>alert('Transaction with ref_id( " . $ref . " ) not found!!!')</script>";
 		}
 	}
 	?>
