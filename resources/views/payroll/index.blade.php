@@ -52,7 +52,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Tag</th>
-					    <th>Ref_id</th>
+                                            <th>By Name</th>
+					                <th>Ref_id</th>
                                             <th>Date - Time</th>
 					    <th>Status</th>
 					    <th>Action</th>
@@ -65,10 +66,28 @@
 					<?php $payrolls = \App\Models\Payroll::where("ref_id", '=', $p)->get();
                     $tag = $payrolls[0]->tag;
 			        $tag = explode("(", $tag);
+                    $tag_id = explode(')', $tag[1]);
+
                      ?>
 					<tr>
 						<th scope="row">{{$i}}</th>
 						<td>{{$tag[0]}}</td>
+                        <td>
+                            <?php 
+                                if ($tag[0] == 'Device') {
+                                    $data = \App\Models\Device::where("id", '=', $tag_id[0])->get();
+                                    echo $data[0]->community;
+                                }
+                                if ($tag[0] == 'Agent') {
+                                    $data = \App\Models\Agent::where("id", '=', $tag_id[0])->get();
+                                    echo $data[0]->name;
+                                }
+                                if ($tag[0] == 'Customer') {
+                                    $data = \App\Models\Customer::where("id", '=', $tag_id[0])->get();
+                                    echo $data[0]->name;
+                                }
+                            ?>
+                        </td>
 						<td>{{$p}}</td>
 						<td>{{$payrolls[0]->created_at}}</td>
 						<td>

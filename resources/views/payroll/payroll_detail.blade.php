@@ -68,7 +68,7 @@
                                 <h6 class="mb-0" style="float: right;">Payroll Tag:</h6>
                               </div>
                               <div class="col-sm-9 text-secondary">
-                                {{$payrolls[0]->tag}}
+                                {{$tag[0]}}
                               </div>
                             </div>
                             <div class="row">
