@@ -236,7 +236,7 @@
              
         $('#c_phone').on('keyup',function() {
             let query = $('#c_phone').val(); 
-	    if (query.length == 11) {
+	    if (query.length <= 11) {
             	$.ajax({
             	    url:"{{ route('agent_check_customer_by_phone') }}",
             	    type:"GET",
