@@ -27,6 +27,15 @@ class Agent extends Model
         'user'
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -42,11 +51,19 @@ class Agent extends Model
         return $this->belongsTo(AgentRole::class, 'agent_role_id');
     }
 
-    //hasmany agents
+    //hasmany customers
     public function customers(): BelongsToMany
     {
         return $this->belongsToMany(Customer::class);
     }
+
+
+    //hasmany stores
+    public function stores(): BelongsToMany
+    {
+        return $this->belongsToMany(Store::class);
+    }
+
 
     /**
      * Undocumented function

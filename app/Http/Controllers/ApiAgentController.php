@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent;
 use App\Models\Api;
+use App\Models\Device;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +25,7 @@ class ApiAgentController extends Controller
             'api_key' => 'required',
             'phone_or_username' => 'required',
             'password' => 'required',
+            'device_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -47,31 +49,51 @@ class ApiAgentController extends Controller
                     $agent = Agent::where('username', '=', $user)->get();
                 }
 
-                if (count($agent) > 0) {
+                $device = Device::find($request->device_id);
 
-                    // $p = Hash::make($request->password);
+                if ($device) {
 
-                    // return $p;
-                    if (Hash::check($request->password, $agent[0]->password)) {
-                        # code...
-                        $a = Agent::where('id', '=', $agent[0]->id)->with('customers')->with('role')->get();
-                        $res = [
-                            'status' => true,
-                            'data' => $a[0],
-                        ];
-                        return response()->json($res);
+                    if (count($agent) > 0) {
+
+                        if ($device->org_id == $agent[0]->org_id) {
+                            // $p = Hash::make($request->password);
+
+                            // return $p;
+                            if (Hash::check($request->password, $agent[0]->password)) {
+                                # code...
+                                $a = Agent::where('id', '=', $agent[0]->id)->with('customers')->with('role')->get();
+                                $res = [
+                                    'status' => true,
+                                    'data' => $a[0],
+                                ];
+                                return response()->json($res);
+                            } else {
+                                $res = [
+                                    'status' => false,
+                                    'data' => 'Incorrect Password',
+                                ];
+                                return response()->json($res);
+                            }
+                            # code...
+                        } else {
+                            $res = [
+                                'status' => false,
+                                'data' => 'Sorry Your not from this Organization. Please contact your admin for support',
+                            ];
+                            return response()->json($res);
+                        }
                     } else {
+
                         $res = [
                             'status' => false,
-                            'data' => 'Incorrect Password',
+                            'data' => 'Username or Phone is not valid',
                         ];
                         return response()->json($res);
                     }
                 } else {
-
                     $res = [
                         'status' => false,
-                        'data' => 'Username or Phone is not valid',
+                        'data' => 'Device is not valid, please reset device',
                     ];
                     return response()->json($res);
                 }

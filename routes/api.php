@@ -41,3 +41,8 @@ Route::post('/new_api_user', [App\Http\Controllers\ApiApiController::class, 'cre
 Route::post('/stock/create', [App\Http\Controllers\ApiStockController::class, 'create']);
 Route::post('/stock/update', [App\Http\Controllers\ApiStockController::class, 'update']);
 Route::get('/stock/get_stock', [App\Http\Controllers\ApiStockController::class, 'get_stock']);
+
+Route::get('/store/get_stores', [App\Http\Controllers\ApiStoreController::class, 'get_stores']);
+
+
+Route::get('/sale/get_sales', [App\Http\Controllers\ApiSaleController::class, 'get_sales']);

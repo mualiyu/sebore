@@ -92,6 +92,10 @@ class ItemController extends Controller
                 $device = Device::find($request['device']);
                 $category = Category::find($request['category']);
 
+                $check = Item::where(["item_cart_id" => $request->item, "device_id" => $request->device])->get();
+                if (count($check) > 0) {
+                    return back()->with("error", "Item Already Exist In The Device, Please try another device.");
+                }
                 $item = Item::create([
                     'item_cart_id' => $request['item'],
                     'device_id' => $request['device'],
@@ -106,10 +110,10 @@ class ItemController extends Controller
 
                 return redirect()->route('show_items', ['id' => $request['device']])->with(['success' => $item->item_cart->name . ' is added to system as Item']);
             } else {
-                return back()->with('error', "Sorry, You have reached the maximum number of Items allowed for your Plan. Upgrade to enjoy more of ATS services");
+                return back()->with('error', "Sorry, You have reached the maximum number of Items allowed for your Plan. Upgrade to enjoy more of our services");
             }
         } else {
-            return back()->with('error', "You don't have Any Active plan, Subscribe and try again.");
+            return back()->with('error', "You don't have any active plan, Subscribe and try again.");
         }
 
         // //Api

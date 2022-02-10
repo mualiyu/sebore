@@ -142,9 +142,28 @@ Route::post('/payroll/create', [App\Http\Controllers\PayrollController::class, '
 Route::post('/payroll/store', [App\Http\Controllers\PayrollController::class, 'store_payroll'])->name('payroll_store');
 Route::post('/payroll/{ref_id}/delete', [App\Http\Controllers\PayrollController::class, 'delete'])->name('payroll_delete');
 Route::post('/payroll/{ref_id}/make_payment', [App\Http\Controllers\PayrollController::class, 'payroll_make_payment'])->name('payroll_make_payment');
+
+
+// Sales Route
+Route::get('/store/{id}/sales', [App\Http\Controllers\SaleController::class, 'index'])->name('sale_index');
+Route::get('/store/{id}/sales/add', [App\Http\Controllers\SaleController::class, 'show_add'])->name('sale_show_add');
+Route::post('/store/{id}/sales/add', [App\Http\Controllers\SaleController::class, 'create'])->name('create_sale');
+
+// Stores Route
+Route::get('/store', [App\Http\Controllers\StoreController::class, 'index'])->name('store_index');
+Route::get('/store/create', [App\Http\Controllers\StoreController::class, 'show_create'])->name('store_show_create');
+Route::post('store/create', [App\Http\Controllers\StoreController::class, 'create'])->name("create_store");
+Route::get('/store/{id}/info', [App\Http\Controllers\StoreController::class, 'info'])->name('store_info');
+Route::post('store/{id}/agent/add', [App\Http\Controllers\StoreController::class, 'add_agent'])->name("store_add_agent");
+Route::post('store/{s_id}/agent/{a_id}/remove', [App\Http\Controllers\StoreController::class, 'remove_agent'])->name("store_remove_agent");
+Route::post('store/{id}/item/add', [App\Http\Controllers\StoreController::class, 'add_items'])->name("store_add_items");
+Route::post('store/{s_id}/item/{i_id}/remove', [App\Http\Controllers\StoreController::class, 'remove_item'])->name("store_remove_item");
+Route::post('store/{s_id}/item/{i_id}/update', [App\Http\Controllers\StoreController::class, 'update_item'])->name("store_update_item");
+
 // 
 // **** MAIN ADMIN ROUTES (END) ****
 // 
+
 
 // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

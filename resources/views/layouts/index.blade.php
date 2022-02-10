@@ -458,13 +458,29 @@ if ($organization[0]->logo) {
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li class="">
+                            {{-- <li class="">
                                 <a href="{{route('show_payment')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="fas fa-dollar-sign"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Payment</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
+                            </li> --}}
+                        </ul>
+                        <ul class="pcoded-item pcoded-left-item">
+                             <li class="">
+                                <a href="{{route('store_index')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="fas fa-store-alt" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Stores</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
                             </li>
+                            {{-- <li class="">
+                                <a href="{{route('sale_index')}}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-layout-grid2-alt" aria-hidden="true"></i><b>D</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Sales</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li> --}}
 
                         </ul>
                     

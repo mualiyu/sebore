@@ -14,7 +14,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Add Agent Role</h5>
+                    <h5 class="m-b-10">Create Store</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -24,7 +24,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#!">Add Agent Role</a>
+                    <li class="breadcrumb-item"><a href="#!">Create Stores</a>
                     </li>
                 </ul>
             </div>
@@ -45,11 +45,11 @@
                     <div class="col-sm-12">
 			            <div class="card">
                               <div class="card-header">
-                                  <h5>Create Agent</h5>
+                                  <h5>Create Store</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material" method="POST" action="{{route('store_agent_role')}}">
+                                  <form class="form-material" method="POST" action="{{route('create_store')}}">
 					                @csrf
 					                {{-- <input type="hidden" name="device" value="{{$device->id}}"> --}}
                                       <div class="form-group form-default">
@@ -61,37 +61,16 @@
                                           @enderror
                                       </div>
                                       <div class="form-group form-default">
-                                          <select name="type"  class="form-control">
-                                            <option>Select</option>
-                                            <option value="agent">Regular agent</option>
-                                            <option value="marketer">Marketer</option>
-                                            <option value="store">Store agent</option>
-                                            <option value="" disabled>nill</option>
-                                            <option value="" disabled>nill</option>
-                                            <option value="" disabled>nill</option>
-                                          </select>
-                                          {{-- <input type="text" name="type" value="{{old('type')}}" class="form-control"> --}}
+                                          <input type="text" name="location" value="{{old('location')}}" class="form-control">
                                           <span class="form-bar"></span>
-                                          <label class="float-label">Type</label>
-                                          @error('type')
+                                          <label class="float-label">Location</label>
+                                          @error('location')
                                                 <Span style="color: red;">{{$message}}</Span>
                                           @enderror
                                       </div>
-                                      <div class="form-group form-default">
-                                          <select name="permission" class="form-control" required>
-                                              <option value="0" disabled>select</option>
-                                              <option value="r">Read Only (customers & items)</option>
-                                              <option value="rw">Read and Write (customers & items)</option>
-                                          </select>    
-                                            <span class="form-bar"></span>
-                                            <label class="float-label">Permission?</label>
-                                            @error('permission')
-                                              <Span style="color: red;">{{$message}}</Span>
-                                            @enderror
-                                            </div>
 				
                                       <div class="form-group form-default">
-                                          <input type="submit" class="btn btn-primary" value="Add Role" id="">
+                                          <input type="submit" class="btn btn-primary" value="Create Store" id="">
                                       </div>
                                   </form>
                               </div>
