@@ -119,6 +119,7 @@
 					                                  <th>Measure - Unit</th>
                                             <th>Quantity</th>
                                             <th>Total Amount</th>
+                                            <th>Transaction Type</th>
 					                                  <th>date</th>
                                             <th>Agent</th>
                                             <th>Customer Name</th>
@@ -138,6 +139,7 @@
 						<td>{{$item->item_cart->measure ?? "Null"}} - {{$item->item_cart->unit ?? "Null"}}</td>
 						<td>{{$t->quantity}}</td>
 						<td>{{$t->amount}}</td>
+            <td>{{$t->type ?? "collection"}}</td>
 						<td>
 							{{$t->date}}
 						</td>

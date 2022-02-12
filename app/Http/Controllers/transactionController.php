@@ -90,7 +90,7 @@ class transactionController extends Controller
             }
             $customer = Customer::find($request->data_d);
 
-            $transactions = Transaction::where('customer_id', '=', $customer->id)
+            $transactions = Transaction::where(['customer_id' => $customer->id, 'org_id' => Auth::user()->organization_id])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();
@@ -111,7 +111,7 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select Agent.');
             }
             $agent = Agent::find($request->data_d);
-            $transactions = Transaction::where('agent_id', '=', $agent->id)
+            $transactions = Transaction::where(['agent_id' => $agent->id, 'org_id' => Auth::user()->organization_id])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();
@@ -130,7 +130,7 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select a device.');
             }
             $device = Device::find($request->data_d);
-            $transactions = Transaction::where('device_id', '=', $device->id)
+            $transactions = Transaction::where(['device_id' => $device->id, 'org_id' => Auth::user()->organization_id])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();
@@ -149,7 +149,7 @@ class transactionController extends Controller
                 return back()->with('error', 'Make sure you select Item.');
             }
             $item = Item::find($request->data_d);
-            $transactions = Transaction::where('item_id', '=', $item->id)
+            $transactions = Transaction::where(['item_id' => $item->id, 'org_id' => Auth::user()->organization_id])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();

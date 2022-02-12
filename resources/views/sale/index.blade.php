@@ -91,7 +91,7 @@
                             <span style="float: right; color:green; "> {{$payrolls[0]->status==0? "":"Processed"}}</span> --}}
                         </td>
 						<td>
-						  <a href="" class="btn btn-success">Open</a>
+						  <a href="{{route('sale_show_info', ['id'=>$store->id, 'ref_num'=>$sale[0]->ref_num])}}" class="btn btn-success">Open</a>
                           <a  onclick="
                               if(confirm('Are you sure You want to Delete this payroll -()? ')){
                                   document.getElementById('delete-form[{{$i}}]').submit();

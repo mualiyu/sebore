@@ -148,6 +148,7 @@ Route::post('/payroll/{ref_id}/make_payment', [App\Http\Controllers\PayrollContr
 Route::get('/store/{id}/sales', [App\Http\Controllers\SaleController::class, 'index'])->name('sale_index');
 Route::get('/store/{id}/sales/add', [App\Http\Controllers\SaleController::class, 'show_add'])->name('sale_show_add');
 Route::post('/store/{id}/sales/add', [App\Http\Controllers\SaleController::class, 'create'])->name('create_sale');
+Route::get('/store/{id}/sales/{ref_num}/info', [App\Http\Controllers\SaleController::class, 'show_info'])->name('sale_show_info');
 
 // Stores Route
 Route::get('/store', [App\Http\Controllers\StoreController::class, 'index'])->name('store_index');

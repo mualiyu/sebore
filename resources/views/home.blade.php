@@ -316,24 +316,26 @@
                                 <tbody>
                     <?php $i = 1;?>
                     @foreach ($tr as $t)
-            <?php $item = \App\Models\Item::find($t->item_id); ?>
-            
-                <tr>
-                    <th scope="row">{{$i}}</th>
-                    <td>{{$t->customer->name ?? "Null"}}</td>
-                    <td>{{$t->customer->phone ?? "Null"}}</td>
-                    <td>{{$t->amount}}</td>
-                    <td>{{$item->item_cart->name ?? "Null"}}</td>
-                    <td>{{$item->item_cart->measure ?? "Null"}} - {{$item->item_cart->unit ?? "Null"}}</td>
-                    <td>{{$t->quantity}}</td>
-                    <td>{{$t->updated_at}}</td>
-                    <td>{{$t->agent->name ?? "Null"}}</td>
-                    <td>{{$t->device->community ?? "Null"}}</td>
-                    <td><span style="color: red;">{{$t->p_status==0 ? "Failed":""  ?? ""}}</span> <span style="color: green;">{{$t->p_status==1 ? "Successful":""  ?? ""}}</span></td>
-                    <td>{{$t->ref_id ?? ""}}</td>
-        
-                    <?php $i++?>
-                </tr>
+                    @if ($t->type != "sale")       
+                    <?php $item = \App\Models\Item::find($t->item_id); ?>
+                    
+                        <tr>
+                            <th scope="row">{{$i}}</th>
+                            <td>{{$t->customer->name ?? "Null"}}</td>
+                            <td>{{$t->customer->phone ?? "Null"}}</td>
+                            <td>{{$t->amount}}</td>
+                            <td>{{$item->item_cart->name ?? "Null"}}</td>
+                            <td>{{$item->item_cart->measure ?? "Null"}} - {{$item->item_cart->unit ?? "Null"}}</td>
+                            <td>{{$t->quantity}}</td>
+                            <td>{{$t->updated_at}}</td>
+                            <td>{{$t->agent->name ?? "Null"}}</td>
+                            <td>{{$t->device->community ?? "Null"}}</td>
+                            <td><span style="color: red;">{{$t->p_status==0 ? "Failed":""  ?? ""}}</span> <span style="color: green;">{{$t->p_status==1 ? "Successful":""  ?? ""}}</span></td>
+                            <td>{{$t->ref_id ?? ""}}</td>
+                
+                            <?php $i++?>
+                        </tr>
+                    @endif
                 @endforeach
                                 </tbody>
                             </table>

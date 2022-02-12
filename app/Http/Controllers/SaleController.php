@@ -173,11 +173,26 @@ class SaleController extends Controller
 
                 array_push($ee, "(Item: " . $e_item->item_cart->name . ", Error: " . $message . ")");
             }
-            return back()->with("success", "Successful, but some items are not added due to the following " . implode(" ", $ee) . ", Thank you for using our service.");
+            if (count($request->items) > 1) {
+                return back()->with("success", "Successful, but some items are not added due to the following " . implode(" ", $ee) . ", Thank you for using our service.");
+            } else {
+                return back()->with("error", "Error, Item is not added due to the following " . implode(" ", $ee) . ", Thank you for using our service.");
+            }
         } else {
             return back()->with("success", "sales created successfully, Thank you for using our service");
         }
 
         return 0;
+    }
+
+    public function show_info($id, $ref_num)
+    {
+        $sale = Sale::where('ref_num', '=', $ref_num)->get();
+
+        if (count($sale) > 0) {
+            return view("sale.sale_info", compact('sale'));
+        } else {
+            return back()->with('error', "Error, No sale with this number");
+        }
     }
 }

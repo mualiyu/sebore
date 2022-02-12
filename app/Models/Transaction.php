@@ -25,6 +25,7 @@ class Transaction extends Model
         'date',
         'amount',
         'ref_id',
+        'type',
     ];
 
     /**

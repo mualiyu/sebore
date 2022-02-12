@@ -91,7 +91,7 @@ class PayrollController extends Controller
             }
             $customer = Customer::find($request->data_d);
 
-            $transactions = Transaction::where(['customer_id' => $customer->id, 'p_status' => 0])
+            $transactions = Transaction::where(['customer_id' => $customer->id, 'p_status' => 0, 'type' => "collection"])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();
@@ -111,7 +111,7 @@ class PayrollController extends Controller
                 return back()->with('error', 'Make sure you select Agent.');
             }
             $agent = Agent::find($request->data_d);
-            $transactions = Transaction::where(['agent_id' => $agent->id, 'p_status' => 0])
+            $transactions = Transaction::where(['agent_id' => $agent->id, 'p_status' => 0, 'type' => "collection"])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 ->get();
             if ($transactions) {
@@ -129,7 +129,7 @@ class PayrollController extends Controller
                 return back()->with('error', 'Make sure you select a device.');
             }
             $device = Device::find($request->data_d);
-            $transactions = Transaction::where(['device_id' => $device->id, 'p_status' => 0])
+            $transactions = Transaction::where(['device_id' => $device->id, 'p_status' => 0, 'type' => "collection"])
                 ->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])
                 // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                 ->get();
@@ -164,19 +164,19 @@ class PayrollController extends Controller
 
         foreach ($request->customer as $c) {
             if ($tag[0] == "Customer") {
-                $trans = Transaction::where(["org_id" => Auth::user()->organization_id, "customer_id" => $c, "p_status" => 0])
+                $trans = Transaction::where(["org_id" => Auth::user()->organization_id, "customer_id" => $c, "p_status" => 0, 'type' => "collection"])
                     ->whereBetween('date', [$request->from . '-00-00-00', $request->to . '-23-59-59'])
                     // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                     ->get();
             }
             if ($tag[0] == "Agent") {
-                $trans = Transaction::where(["org_id" => Auth::user()->organization_id, "customer_id" => $c, "p_status" => 0, "agent_id" => $tag_data[0]])
+                $trans = Transaction::where(["org_id" => Auth::user()->organization_id, "customer_id" => $c, "p_status" => 0, "agent_id" => $tag_data[0], 'type' => "collection"])
                     ->whereBetween('date', [$request->from . '-00-00-00', $request->to . '-23-59-59'])
                     // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                     ->get();
             }
             if ($tag[0] == "Device") {
-                $trans = Transaction::where(["org_id" => Auth::user()->organization_id, "customer_id" => $c, "p_status" => 0, "device_id" => $tag_data[0]])
+                $trans = Transaction::where(["org_id" => Auth::user()->organization_id, "customer_id" => $c, "p_status" => 0, "device_id" => $tag_data[0], 'type' => "collection"])
                     ->whereBetween('date', [$request->from . '-00-00-00', $request->to . '-23-59-59'])
                     // ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
                     ->get();
@@ -253,7 +253,7 @@ class PayrollController extends Controller
                         $payrolls = Payroll::where(['ref_id' => $ref_id, "customer_id" => $cus])->get();
                         $transactions = [];
                         $a = 0;
-                        $tran = Transaction::where(['p_status' => 0, 'customer_id' => $cus])->get();
+                        $tran = Transaction::where(['p_status' => 0, 'customer_id' => $cus, 'type' => "collection"])->get();
                         foreach ($tran as $tr) {
                             foreach ($payrolls as $p) {
                                 if ($tr->id == $p->transaction_id) {

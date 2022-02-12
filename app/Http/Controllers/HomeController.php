@@ -107,7 +107,7 @@ class HomeController extends Controller
 
         $transactions = [];
         $org = Auth::user()->organization;
-        $transactions = Transaction::where('org_id', '=', $org->id)->whereBetween('date', [$from . '-00-00-01', $to . '-23-59-59'])->get();
+        $transactions = Transaction::where(['org_id' => $org->id, "type" => "collection"])->whereBetween('date', [$from . '-00-00-01', $to . '-23-59-59'])->get();
 
         if ($org->theme) {
             if ($org->theme == 1) {

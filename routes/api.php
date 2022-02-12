@@ -24,6 +24,7 @@ Route::get('/device/get_by_id', [App\Http\Controllers\ApiDeviceController::class
 Route::get('/device/update_code', [App\Http\Controllers\ApiDeviceController::class, 'update_code']);
 
 Route::get('/agent/login', [App\Http\Controllers\ApiAgentController::class, 'login']);
+Route::get('/agent/login_v2', [App\Http\Controllers\ApiAgentController::class, 'login_v2']);
 Route::post('/agent/update_password', [App\Http\Controllers\ApiAgentController::class, 'update_password']);
 Route::get('/agent/get_by_role', [App\Http\Controllers\ApiAgentController::class, 'get_agent_by_role']);
 

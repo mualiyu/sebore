@@ -120,7 +120,7 @@ label {
 								  @if ($a->role->type == "marketer")
 								  <div class="col-md-6 col-lg-4 col-sm-6" onclick="document.getElementById('agent_info').innerHTML = '{{$a->name}}';">
 									  <label>
-									    <input type="radio" name="marketer_id" selected checked class="card-input-element" value="{{$a->id}}" />
+									    <input type="radio" name="marketer_id" class="card-input-element" value="{{$a->id}}" />
 									      <div class="card card-default card-input">
 										<div class="card-header">{{$a->name}}</div>
 										<div class="card-body">
@@ -134,6 +134,11 @@ label {
 								  @endforeach
 							  </div>
                     			      </div>
+						  <div class="modal-footer">
+							<div class="form-group">
+							  <input class="btn btn-primary" id="submit" aria-describedby="nameHelp" value="Ok" onclick="document.getElementById('modal_agent').style.display = 'none';" />
+							</div>
+						  </div>
                     			    </div>
                     			  </div>
                     			</div>
@@ -154,7 +159,7 @@ label {
 								  @if ($a->role->type == "store")
 								  <div class="col-md-6 col-lg-4 col-sm-6" onclick="document.getElementById('store_info').innerHTML = '{{$a->name}}';">
 									  <label>
-									    <input type="radio" name="store_keeper_id" selected checked class="card-input-element" value="{{$a->id}}" />
+									    <input type="radio" name="store_keeper_id" class="card-input-element" value="{{$a->id}}" />
 									      <div class="card card-default card-input">
 										<div class="card-header">{{$a->name}}</div>
 										<div class="card-body">
@@ -168,6 +173,11 @@ label {
 								  @endforeach
 							  </div>
                     			      </div>
+						  <div class="modal-footer">
+							  <div class="form-group">
+								  <input class="btn btn-primary" id="submit" aria-describedby="nameHelp" value="Ok" onclick="document.getElementById('modal_store').style.display = 'none';" />
+							      </div>
+						  </div>
                     			    </div>
                     			  </div>
                     			</div>
@@ -207,6 +217,11 @@ label {
 								  @endforeach
 							  </div>
                     			      </div>
+						  <div class="modal-footer">
+							<div class="form-group">
+                                            		    <input class="btn btn-primary" id="submit" aria-describedby="nameHelp" value="Ok" onclick="document.getElementById('modal_item').style.display = 'none';" />
+                                            		</div>
+						  </div>
 						</div>
                     			  </div>
                     			</div>

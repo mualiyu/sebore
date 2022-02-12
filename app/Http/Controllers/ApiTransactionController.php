@@ -35,7 +35,7 @@ class ApiTransactionController extends Controller
             'quantity' => 'required',
             'date' => 'required',
             'amount' => 'required',
-            'type' => 'required'
+            'type' => 'nullable'
         ]);
 
         if ($validator->fails()) {
