@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,3 +48,8 @@ Route::get('/store/get_stores', [App\Http\Controllers\ApiStoreController::class,
 
 
 Route::get('/sale/get_sales', [App\Http\Controllers\ApiSaleController::class, 'get_sales']);
+
+
+Route::get('/test/t', function () {
+    Transaction::query()->update(['type' => "collection"]);
+});
