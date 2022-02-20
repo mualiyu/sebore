@@ -2,12 +2,27 @@
 
 {{-- @section('style')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-@endsection
-
-@section('script')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 @endsection --}}
 
+@section('script')
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script> --}}
+    <script>
+    function showUploadImage(src,target) {
+        const fr = new FileReader();
+        fr.onload = function(e) {  target.src = this.result;  };
+
+        src.addEventListener("change", function() {
+          fr.readAsDataURL(src.files[0]);
+        });
+      }
+
+      function imageQ(s,t) {
+        var src = document.getElementById(s);
+        var target = document.getElementById(t);
+        showUploadImage(src,target);
+      }
+</script>
+@endsection
 @section('content')
 <div class="page-header">
     <div class="page-block">
@@ -42,15 +57,37 @@
 		    <a href="{{url('/items')}}" style="right:0;" class="btn btn-primary">Back</a>&nbsp;&nbsp;&nbsp;
 		    <button type="button" class="btn btn-primary" onclick="document.getElementById('modal').style.display = 'block';"><i class="">+</i> Add New Category</button>
         <br>
+        <form class="form-material" method="POST" action="{{route('update_item_cart', $item->id)}}" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-sm-12">
+                <div class="col-md-4">
+				 <div class="card mb-3">
+					<?php 
+					if ($item->image) {
+						$pic = $item->image;
+					}else {
+						$pic = url("storage/item/pic/default.jpg");
+					}
+					?>
+                         	   <div class="card-body text-center shadow"><img id="addimage" class="rounded-circle mb-5 mt-6" src="{{$pic}}" width="160" height="160">
+					                {{-- <form action="{{route('update_org_pic', ['id'=>$organization->id])}}" method="POST" enctype="multipart/form-data"> --}}
+					                	<div class="row">
+					                		@csrf
+					                		<div class="col-md-12">
+					                			{{-- <input type="file" class="form-control" name="file"> --}}
+					                			 <input class="form-control" type="file" id="addIsrc" onclick="imageQ('addIsrc','addimage');" name="image" value="default_category.png">
+					                		</div>
+					                	</div>
+					                {{-- </form> --}}
+                         	   </div>
+                </div>
+			</div>
+            <div class="col-md-8">
 			    <div class="card">
                               <div class="card-header">
                                   <h5>Edit Item</h5>
                                   <!--<span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>-->
                               </div>
                               <div class="card-block">
-                                  <form class="form-material" method="POST" action="{{route('update_item_cart', $item->id)}}">
 					@csrf
 					{{-- <input type="hidden" name="device" value="{{$device->id}}"> --}}
                                       <div class="form-group form-default">
@@ -124,18 +161,15 @@
 						</div>
 					</div>
 				      </div>
-
-				      
-
-                                      <div class="form-group form-default">
-                                          <input type="submit" class="btn btn-primary" value="Edit Item" id="">
-                                      </div>
-                                  </form>
-                              </div>
-                            </div>
+                          <div class="form-group form-default">
+                              <input type="submit" class="btn btn-primary" value="Edit Item" id="">
+                          </div>
+                        </div>
+                    </div>
 		    </div>
-                </div>
-            </div>
+        </div>
+    </form>
+    </div>
         </div>
     </div>
     <!-- Modal -->

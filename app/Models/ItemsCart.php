@@ -20,6 +20,7 @@ class ItemsCart extends Model
         'with_p',
         'device_id',
         'category_id',
+        'image',
     ];
 
     public function category(): BelongsTo

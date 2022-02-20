@@ -56,6 +56,7 @@ class ItemsCartController extends Controller
             'with_q' => ['required', 'int', 'max:255'],
             'with_p' => ['required', 'int', 'max:255'],
             'category' => ['required', 'string', 'max:255'],
+            "image" => "image|mimes:jpeg,jpg,png,gif|max:9000",
         ]);
 
         if ($validator->fails()) {
@@ -72,6 +73,21 @@ class ItemsCartController extends Controller
 
             if (count($items) < $plan->no_items) {
 
+                if ($request->hasFile("image")) {
+                    $imageNameWExt = $request->file("image")->getClientOriginalName();
+                    $imageName = pathinfo($imageNameWExt, PATHINFO_FILENAME);
+                    $imageExt = $request->file("image")->getClientOriginalExtension();
+
+                    $imageNameToStore = $imageName . "_" . time() . "." . $imageExt;
+
+                    $request->file("image")->storeAs("public/item/pic", $imageNameToStore);
+                    $image_url = url('/storage/item/pic/' . $imageNameToStore);
+                } else {
+                    // $imageNameToStore = $user[0]->picture;
+                    $image_url = url('/storage/item/pic/default.jpg');
+                    // return back()->with('error', 'Item Image not Uploaded. Try again!');
+                }
+
                 $category = Category::find($request['category']);
 
                 $item = ItemsCart::create([
@@ -81,12 +97,14 @@ class ItemsCartController extends Controller
                     'code' => $request['code'],
                     'with_q' => $request['with_q'],
                     'with_p' => $request['with_p'],
+                    'image' => $image_url,
                 ]);
 
                 ItemsCart::where('id', '=', $item->id)->update([
                     'category_id' => $request['category'],
                     // 'device_id' => $request['device'],
                     'org_id' => Auth::user()->organization_id,
+                    'image' => $image_url,
                 ]);
 
                 return redirect()->route('show_all_items')->with(['success' => $item->name . ' is added to system as Item']);
@@ -121,6 +139,29 @@ class ItemsCartController extends Controller
             return back()->with('error', 'Item not Updated. Try again!');
         }
 
+        $i = ItemsCart::find($id);
+
+        if ($request->hasFile("image")) {
+            $imageNameWExt = $request->file("image")->getClientOriginalName();
+            $imageName = pathinfo($imageNameWExt, PATHINFO_FILENAME);
+            $imageExt = $request->file("image")->getClientOriginalExtension();
+
+            $imageNameToStore = $imageName . "_" . time() . "." . $imageExt;
+
+            $request->file("image")->storeAs("public/item/pic", $imageNameToStore);
+            $image_url = url('/storage/item/pic/' . $imageNameToStore);
+        } else {
+            // $imageNameToStore = $user[0]->picture;
+            if ($i->image) {
+                # code...
+                $image_url = $i->image;
+            } else {
+                $image_url = url('/storage/item/pic/default.jpg');
+            }
+            // return back()->with('error', 'Item Image not Uploaded. Try again!');
+        }
+
+
         $item = ItemsCart::where('id', '=', $id)->update([
             'name' => $request['name'],
             'measure' => $request['measure'],
@@ -128,11 +169,13 @@ class ItemsCartController extends Controller
             'code' => $request['code'],
             'with_q' => $request['with_q'],
             'with_p' => $request['with_p'],
+            'image' => $image_url,
         ]);
 
 
         ItemsCart::where('id', '=', $id)->update([
             'category_id' => $request['category'],
+            'image' => $image_url,
         ]);
 
         return back()->with(['success' => 'Item is Updated successfully']);
@@ -144,7 +187,7 @@ class ItemsCartController extends Controller
         $i = Item::where('item_cart_id', '=', $id)->delete();
 
         if ($i) {
-            $res = ItemsCart::where('id', $id)->delete();
+            $res = ItemsCart::where('id', '=', $id)->delete();
 
             if ($res) {
                 return back()->with(['success' => 'One Item is Deleted from system']);
@@ -152,7 +195,14 @@ class ItemsCartController extends Controller
                 return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
             }
         } else {
-            return back()->with(['error' => 'Item NOT Deleted from system, Try Again!']);
+            $res = ItemsCart::where('id', '=', $id)->delete();
+
+            if ($res) {
+                return back()->with(['success' => 'One Item is Deleted from system']);
+            } else {
+                return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+            }
         }
+        return back()->with(['error' => 'Item NOT Deleted from system, Try Again!']);
     }
 }

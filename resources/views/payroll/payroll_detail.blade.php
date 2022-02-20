@@ -181,11 +181,13 @@
 
 					$c_t_amount = 0;
 					$c_t_quantity = 0;
+          $num_of_trans = 1;
 					foreach ($trans as $t) {
 						foreach ($payrolls as $p) {
 							if ($t->id == $p->transaction_id) {
 								$c_t_amount = $c_t_amount + $t->amount;
 								$c_t_quantity = $c_t_quantity + $t->quantity;
+                $num_of_trans++;
 						    	}
         					}
 					}
@@ -197,7 +199,7 @@
 						<td>{{$cus->phone ?? "Null"}}</td>
 						<td>{{$c_t_amount}}</td>
 						<td>{{$c_t_quantity}}</td>
-						<td>{{count($trans)}}</td>
+						<td>{{$num_of_trans}}</td>
 						<?php $i++?>
 					</tr>
 					@endforeach

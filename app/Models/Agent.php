@@ -24,7 +24,8 @@ class Agent extends Model
         'country',
         'gps',
         'agent_role_id',
-        'user'
+        'user',
+        'wallet',
     ];
 
     /**

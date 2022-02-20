@@ -34,6 +34,8 @@ Route::get('/agent_role/get_by_org', [App\Http\Controllers\ApiAgentRoleControlle
 Route::get('/item/get_by_device', [App\Http\Controllers\ApiItemController::class, 'get_by_device']);
 
 Route::get('/customer/get_by_agent', [App\Http\Controllers\ApiCustomerController::class, 'get_by_agent']);
+Route::get('/customer/check_by_phone', [App\Http\Controllers\ApiCustomerController::class, 'check_by_phone']);
+Route::post('/customer/to/agent', [App\Http\Controllers\ApiCustomerController::class, 'add_customer_to_agent']);
 Route::post('/customer/create', [App\Http\Controllers\ApiCustomerController::class, 'create']);
 
 Route::get('/get_api_by_name', [App\Http\Controllers\ApiApiController::class, 'get_by_name']);
