@@ -40,6 +40,8 @@ class ApiSaleController extends Controller
                     foreach ($sales as $s) {
                         # code...
                         $item_cart = $s->item->item_cart;
+                        $item_cart->sale_amount = $s->amount;
+                        $item_cart->sale_quantity = $s->quantity;
                     }
 
                     if (count($sales) > 0) {
