@@ -133,6 +133,7 @@ class ApiDeviceController extends Controller
         $api = Api::where('api_user', '=', $request->api_user)->get();
         if (count($api) > 0) {
             if ($api[0]->api_key == $request->api_key) {
+                $d = Device::where('device_id', '=', $request->device_id)->get();
 
                 $d_u = Device::where('device_id', '=', $request->device_id)->update([
                     'device_id' => $request->device_code
@@ -140,7 +141,7 @@ class ApiDeviceController extends Controller
 
                 if ($d_u) {
 
-                    $device = Device::where('device_id', '=', $request->device_code)->with('org')->get();
+                    $device = Device::where('id', '=', $d[0]->id)->with('org')->get();
                     $device[0]->org->logo = url('/storage/pic') . '/' . $device[0]->org->logo;
 
                     $org_cat = Category::where('org_id', '=', $device[0]->org_id)->get();
