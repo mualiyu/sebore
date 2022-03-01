@@ -42,6 +42,18 @@ class ApiSaleController extends Controller
                         $item_cart = $s->item->item_cart;
                         $item_cart->sale_amount = $s->amount;
                         $item_cart->sale_quantity = $s->quantity;
+
+                        if ($item_cart->with_q == 1) {
+                            $item_cart->with_q = true;
+                        } else {
+                            $item_cart->with_q = false;
+                        }
+
+                        if ($item_cart->with_p == 1) {
+                            $item_cart->with_p = true;
+                        } else {
+                            $item_cart->with_p = false;
+                        }
                     }
 
                     if (count($sales) > 0) {

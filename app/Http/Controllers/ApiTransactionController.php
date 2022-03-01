@@ -79,6 +79,7 @@ class ApiTransactionController extends Controller
                             $sale_amount -= $request->amount;
                             $sale_quantity -= $request->quantity;
 
+
                             // // store detail
                             // $store = Store::find($sale[0]->store_id);
                             // $store_amount = $store->total_amount;
@@ -130,6 +131,7 @@ class ApiTransactionController extends Controller
                                     'data' => $transaction
                                 ];
                                 return response()->json($res);
+                                // return $transaction;
                             } else {
                                 $res = [
                                     'status' => false,
