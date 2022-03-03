@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransactionExport;
 use App\Models\Agent;
 use App\Models\Category;
 use App\Models\Customer;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class transactionController extends Controller
 {
@@ -309,5 +311,28 @@ class transactionController extends Controller
             }
             // return '';
         }
+    }
+
+    public function export_transaction()
+    {
+        return Excel::download(new TransactionExport, 'Transaction_' . now() . '.xlsx');
+    }
+
+    public function test()
+    {
+        $transactions = Transaction::all();
+
+        // return $transactions;
+
+        $tt = [];
+
+        $cus = Customer::all();
+        // return $cus;
+        foreach ($transactions as $t) {
+            $t->customer;
+            array_push($tt, $t->customer);
+        }
+
+        return response()->json($tt);
     }
 }

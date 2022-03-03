@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\AgentRole;
 use App\Models\Api;
 use App\Models\Device;
 use Illuminate\Http\Request;
@@ -154,6 +155,7 @@ class ApiAgentController extends Controller
                             if (Hash::check($request->password, $agent[0]->password)) {
                                 # code...
                                 $a = Agent::where('id', '=', $agent[0]->id)->with('customers')->with('role')->get();
+
                                 $res = [
                                     'status' => true,
                                     'data' => $a[0],

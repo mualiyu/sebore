@@ -30,6 +30,7 @@ Route::post('/agent/update_password', [App\Http\Controllers\ApiAgentController::
 Route::get('/agent/get_by_role', [App\Http\Controllers\ApiAgentController::class, 'get_agent_by_role']);
 
 Route::get('/agent_role/get_by_org', [App\Http\Controllers\ApiAgentRoleController::class, 'get_role']);
+Route::get('/agent/get_marketers_by_org', [App\Http\Controllers\ApiAgentRoleController::class, 'get_marketers_by_org']);
 
 Route::get('/item/get_by_device', [App\Http\Controllers\ApiItemController::class, 'get_by_device']);
 
@@ -47,9 +48,11 @@ Route::post('/stock/update', [App\Http\Controllers\ApiStockController::class, 'u
 Route::get('/stock/get_stock', [App\Http\Controllers\ApiStockController::class, 'get_stock']);
 
 Route::get('/store/get_stores', [App\Http\Controllers\ApiStoreController::class, 'get_stores']);
+Route::post('/store/add/item', [App\Http\Controllers\ApiStoreController::class, 'add_item']);
 
 
 Route::get('/sale/get_sales', [App\Http\Controllers\ApiSaleController::class, 'get_sales']);
+Route::post('/sale/create_sales', [App\Http\Controllers\ApiSaleController::class, 'create_sales']);
 
 
 Route::get('/test/t', function () {

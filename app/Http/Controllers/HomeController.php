@@ -34,7 +34,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $plan = PlanDetail::where('org_id', '=', Auth::user()->organization_id)->orderBy('id', 'desc')->first();
         if ($plan) {
             if ($plan->status != 1) {
