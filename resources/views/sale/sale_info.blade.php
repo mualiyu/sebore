@@ -202,54 +202,69 @@ label {
 					<thead>
 					    <tr>
                                             <th>#</th>
-					    <th>Item Name</th>
-					    <th>Measure - Unit</th>
-                                            <th>Quantity</th>
-                                            <th>Total Amount</th>
-                                            <th>Transaction Type</th>
-					    <th>date</th>
-                                            <th>Agent</th>
                                             <th>Customer Name</th>
                                             <th>Customer Phone</th>
+					    <th>Item</th>
+                                            <th>Total Amount</th>
+                                            <th>Transaction Method</th>
+					    <th>Payment Amount</th>
+					    <th>Out-standing Balance</th>
+					    <th>date</th>
+                                            <th>Agent</th>
                                             <th>Cummunity</th>
-                                            <th>Status</th>
                                             <th>Bill Reference</th>
+                                            <th>Status</th>
                                         </tr>
 					</thead>
 					<tbody>
-						<?php $i = 1;
-						$transactions = App\Models\Transaction::where(['agent_id' => $sale[0]->marketer_id, 'type'=>"sale", 'org_id' => Auth::user()->organization_id])
-                						->whereBetween('date', [$sale[0]->from . '-00-00-00', $sale[0]->to . '-23-59-59'])
-                						// ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
-                						->get();
-						?>
+					@if ($t_ss)
+					<?php $i = 1; ?>
+					    
+					@foreach ($t_ss as $t)
+					<?php
+					// $transactions = App\Models\Transaction::where(['agent_id' => $sale[0]->marketer_id, 'type'=>"sale", 'org_id' => Auth::user()->organization_id])
+                			// 		->whereBetween('date', [$sale[0]->from . '-00-00-00', $sale[0]->to . '-23-59-59'])
+                			// 		// ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+                			// 		->get();
+					$transactions = App\Models\SaleTransaction::where(['ref_id' => $t, 'org_id' => Auth::user()->organization_id])
+                					// ->whereBetween('date', [$sale[0]->from . '-00-00-00', $sale[0]->to . '-23-59-59'])
+                					// ->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+                					->get();
+							// dd($transactions);
+					?>
+					@if (count($transactions) > 0)  
+					    <tr>
+						    <th scope="row">{{$i}}</th>
+						    <td>{{$transactions[0]->customer->name ?? "Null"}}</td>
+						    <td>{{$transactions[0]->customer->phone ?? "Null"}}</td>
+						    <td>
+							    <?php $amm = 0;?>
+							    @foreach ($transactions as $t)
+							    <?php $item = \App\Models\Item::find($t->item_id); ?>
+								    {{$item->item_cart->name ?? "Null"}}, 
+								    <?php $amm += $t->amount;  ?>
+							    @endforeach
+						    </td>
+						    <td>{{"NG ".$amm}}</td>
+							<td>{{$transactions[0]->type ?? "Cash"}}</td>
+							<td>{{"NG ".$transactions[0]->paid_amount ?? "NG 0"}}</td>
+							<td> <span style="color:red;">{{"NG -".$transactions[0]->dept_amount ?? "NG -0"}}</span></td>
+						    <td>{{$transactions[0]->date ?? 'nill'}}</td>
+							<td>{{$transactions[0]->agent->name ?? "Null"}}</td>
+							<td>{{$transactions[0]->device->community ?? "Null"}}</td>
+							<td>{{$transactions[0]->ref_id ?? ""}}</td>
+							<td><span style="color: red;">{{$transactions[0]->status==0 ? "Payment not recieved":""  ?? ""}}</span> <span style="color: green;">{{$transactions[0]->status==1 ? "Payment Recieved":""  ?? ""}}</span></td>
+						    <?php $i++?>
+					    </tr>
+					@endif
 
-				        @foreach ($transactions as $t)
-					<?php $item = \App\Models\Item::find($t->item_id); ?>
-					<tr>
-						<th scope="row">{{$i}}</th>
-						<td>{{$item->item_cart->name ?? "Null"}}</td>
-						<td>{{$item->item_cart->measure ?? "Null"}} - {{$item->item_cart->unit ?? "Null"}}</td>
-						<td>{{$t->quantity}}</td>
-						<td>{{$t->amount}}</td>
-            					<td>{{$t->type ?? "collection"}}</td>
-						<td>
-							{{$t->date}}
-						</td>
-            					<td>{{$t->agent->name ?? "Null"}}</td>
-            					<td>{{$t->customer->name ?? "Null"}}</td>
-            					<td>{{$t->customer->phone ?? "Null"}}</td>
-            					<td>{{$t->device->community ?? "Null"}}</td>
-            					<td><span style="color: red;">{{$t->p_status==0 ? "Not Confirmed":""  ?? ""}}</span> <span style="color: green;">{{$t->p_status==1 ? "Confirmed":""  ?? ""}}</span></td>
-            					<td>{{$t->ref_id ?? ""}}</td>
-						<?php $i++?>
-					</tr>
 					@endforeach
-					    @if (count($transactions) == 0)
-						<tr>
-							<td colspan="13" style="text-align: center"> No Transaction yet...</td>
-						</tr>
-					    @endif
+					@endif
+					@if (count($t_ss) == 0)
+					    <tr>
+						    <td colspan="13" style="text-align: center"> No Transaction yet...</td>
+					    </tr>
+					@endif
 					</tbody>
 				    </table>
 				</div>

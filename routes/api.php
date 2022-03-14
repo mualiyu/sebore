@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/transaction/create', [App\Http\Controllers\ApiTransactionController::class, 'create']);
+Route::post('/sale/transaction/create', [App\Http\Controllers\ApiSaleTransactionController::class, 'create']);
 
 Route::get('/device/get_by_id', [App\Http\Controllers\ApiDeviceController::class, 'show']);
 Route::get('/device/update_code', [App\Http\Controllers\ApiDeviceController::class, 'update_code']);

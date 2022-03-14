@@ -69,4 +69,14 @@ class Organization extends Model
     {
         return $this->hasMany(store::class);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return HasMany
+     */
+    public function sale_transactions(): HasMany
+    {
+        return $this->hasMany(SaleTransaction::class);
+    }
 }

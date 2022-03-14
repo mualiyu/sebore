@@ -7,7 +7,9 @@ use App\Models\Item;
 use App\Models\ItemInStore;
 use App\Models\Organization;
 use App\Models\Sale;
+use App\Models\SaleTransaction;
 use App\Models\Store;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -189,8 +191,16 @@ class SaleController extends Controller
     {
         $sale = Sale::where('ref_num', '=', $ref_num)->get();
 
+        $tran = SaleTransaction::where(['agent_id' => $sale[0]->marketer_id])->get();
+        $arr = [];
+        foreach ($tran as $t) {
+            array_push($arr, $t->ref_id);
+        }
+        $t_s = array_unique($arr);
+        $t_ss = array_reverse($t_s);
+
         if (count($sale) > 0) {
-            return view("sale.sale_info", compact('sale'));
+            return view("sale.sale_info", compact('sale', 't_ss'));
         } else {
             return back()->with('error', "Error, No sale with this number");
         }

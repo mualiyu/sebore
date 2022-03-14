@@ -45,4 +45,14 @@ class Device extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return HasMany
+     */
+    public function sale_transactions(): HasMany
+    {
+        return $this->hasMany(SaleTransaction::class);
+    }
 }

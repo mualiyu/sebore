@@ -37,4 +37,14 @@ class Item extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return HasMany
+     */
+    public function sale_transactions(): HasMany
+    {
+        return $this->hasMany(SaleTransaction::class);
+    }
 }
