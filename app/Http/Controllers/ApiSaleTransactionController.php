@@ -74,69 +74,86 @@ class ApiSaleTransactionController extends Controller
                     // if ($request->type == "sale") {
                     // sale detail
                     $sale = Sale::where(['item_id' => $request->item_id, 'marketer_id' => $agent->id])->get();
-                    $sale_amount = $sale[0]->amount;
-                    $sale_quantity = $sale[0]->quantity;
 
-                    // new sale detail
-                    $sale_amount -= $request->amount;
-                    $sale_quantity -= $request->quantity;
+                    if ($sale[0]->quantity >= $request->quantity) {
+                        $sale_amount = $sale[0]->amount;
+                        $sale_quantity = $sale[0]->quantity;
+
+                        // new sale detail
+                        $sale_amount -= $request->amount;
+                        $sale_quantity -= $request->quantity;
 
 
-                    // // store detail
-                    // $store = Store::find($sale[0]->store_id);
-                    // $store_amount = $store->total_amount;
-                    // $store_items = $store->total_num_of_items;
+                        // // store detail
+                        // $store = Store::find($sale[0]->store_id);
+                        // $store_amount = $store->total_amount;
+                        // $store_items = $store->total_num_of_items;
 
-                    // // new store data
-                    // $store_amount -= $request->amount;
-                    // $store_items -= $request->quantity;
+                        // // new store data
+                        // $store_amount -= $request->amount;
+                        // $store_items -= $request->quantity;
 
-                    // agent wallet 
-                    $wallet = $agent->wallet;
-                    // new wallet
-                    $wallet -= $request->amount;
+                        // agent wallet 
+                        $wallet = $agent->wallet;
+                        // new wallet
+                        $wallet -= $request->amount;
 
-                    // create transaction for sale
-                    $transaction = SaleTransaction::create([
-                        'org_id' => $device->org_id,
-                        'agent_id' => $request->agent_id,
-                        'device_id' => $request->device_id,
-                        'item_id' => $request->item_id,
-                        'customer_id' => $customer[0]->id,
-                        'quantity' => $request->quantity,
-                        'date' => $request->date,
-                        'amount' => $request->amount,
-                        'paid_amount' => $request->paid_amount,
-                        'dept_amount' => $request->dept_amount,
-                        'ref_id' => $request->ref_id,
-                        'type' => $request->type,
-                        'status' => 0,
-                    ]);
-                    SaleTransaction::where('id', '=', $transaction->id)->update([
-                        'ref_id' => $request->ref_id,
-                        'status' => 0,
-                        'type' => $request->type,
-
-                    ]);
-
-                    if ($transaction) {
-                        $update_sale = Sale::where("id", "=", $sale[0]->id)->update([
-                            "amount" => $sale_amount,
-                            "quantity" => $sale_quantity,
+                        // create transaction for sale
+                        $transaction = SaleTransaction::create([
+                            'org_id' => $device->org_id,
+                            'agent_id' => $request->agent_id,
+                            'device_id' => $request->device_id,
+                            'item_id' => $request->item_id,
+                            'customer_id' => $customer[0]->id,
+                            'quantity' => $request->quantity,
+                            'date' => $request->date,
+                            'amount' => $request->amount,
+                            'paid_amount' => $request->paid_amount,
+                            'dept_amount' => $request->dept_amount,
+                            'ref_id' => $request->ref_id,
+                            'type' => $request->type,
+                            'status' => 0,
                         ]);
-                        $update_agent_wallet = Agent::where('id', '=', $agent->id)->update([
-                            'wallet' => $wallet,
+                        SaleTransaction::where('id', '=', $transaction->id)->update([
+                            'ref_id' => $request->ref_id,
+                            'status' => 0,
+                            'type' => $request->type,
+
                         ]);
-                        $res = [
-                            'status' => true,
-                            'data' => $transaction
-                        ];
-                        return response()->json($res);
-                        // return $transaction;
+
+                        if ($transaction) {
+                            $update_sale = Sale::where("id", "=", $sale[0]->id)->update([
+                                "amount" => $sale_amount,
+                                "quantity" => $sale_quantity,
+                            ]);
+                            $update_agent_wallet = Agent::where('id', '=', $agent->id)->update([
+                                'wallet' => $wallet,
+                            ]);
+
+                            // update sale status
+                            $ne_sale = Sale::where("id", "=", $sale[0]->id)->get();
+                            if ($ne_sale[0]->quantity <= 0) {
+                                Sale::where("id", "=", $sale[0]->id)->update([
+                                    "status" => 1,
+                                ]);
+                            }
+                            $res = [
+                                'status' => true,
+                                'data' => $transaction
+                            ];
+                            return response()->json($res);
+                            // return $transaction;
+                        } else {
+                            $res = [
+                                'status' => false,
+                                'data' => 'Fail to create transaction'
+                            ];
+                            return response()->json($res);
+                        }
                     } else {
                         $res = [
                             'status' => false,
-                            'data' => 'Fail to create transaction'
+                            'data' => 'Items remaining in your hand are not upto the number you are trying to sell '
                         ];
                         return response()->json($res);
                     }

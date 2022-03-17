@@ -194,4 +194,130 @@ class ApiStoreController extends Controller
             return response()->json($res);
         }
     }
+
+
+    public function update_item(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'api_user' => 'required',
+            'api_key' => 'required',
+            'store_id' => 'required',
+            'item_id' => 'required',
+            'quantity' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $res = [
+                'status' => false,
+                'data' => $validator->errors(),
+            ];
+            return response()->json($res);
+        }
+
+        $api = Api::where('api_user', '=', $request->api_user)->get();
+
+        if (count($api) > 0) {
+            if ($api[0]->api_key == $request->api_key) {
+
+                // $org = Organization::find(Auth::user()->organization_id);
+                $store = Store::find($request->store_id);
+
+                if ($store) {
+                    $item = Item::find($request->item_id);
+                    if ($item) {
+
+                        $item_in_store = ItemInStore::where(['store_id' => $request->store_id, 'item_id' => $request->item_id])->get();
+
+                        if (count($item_in_store) > 0) {
+                            $item_in_store = $item_in_store[0];
+
+                            $store_total_amount = $store->total_amount;
+                            $store_total_num_of_items = $store->total_num_of_items;
+
+                            // remove item data from store data
+                            $store_total_amount -= $item_in_store->amount;
+                            $store_total_num_of_items -= $item_in_store->quantity;
+
+                            // new ItemInStore data
+                            $new_quantity = $request->quantity;
+                            $new_amount = $item_in_store->item->item_cart->measure * $new_quantity;
+
+                            // Update ItemInStore with new data
+                            $update_item_in_store = ItemInStore::where(['store_id' => $request->store_id, 'item_id' => $request->item_id])->update([
+                                "amount" => $new_amount,
+                                "quantity" => $new_quantity,
+                            ]);
+
+                            if ($update_item_in_store) {
+                                $new_item_in_store = ItemInStore::where(['store_id' => $request->store_id, 'item_id' => $request->item_id])->get();
+                                $new_item_in_store = $new_item_in_store[0];
+
+                                $store_total_amount += $new_item_in_store->amount;
+                                $store_total_num_of_items += $new_item_in_store->quantity;
+
+                                // update Store with the new data
+                                $new_store = Store::where("id", '=', $request->store_id)->update([
+                                    "total_num_of_items" => $store_total_num_of_items,
+                                    "total_amount" => $store_total_amount,
+                                ]);
+
+                                if ($new_store) {
+                                    $res = [
+                                        'status' => true,
+                                        'data' => "" . $new_item_in_store->item->item_cart->name . " quantity is updated to " . $request->quantity . ", Thank you.",
+                                    ];
+                                    return response()->json($res);
+                                    // return back()->with("success", "Item(" . $new_item_in_store->item->item_cart->name . ") is Updated successfully.");
+                                } else {
+                                    $res = [
+                                        'status' => false,
+                                        'data' => "Item(" . $new_item_in_store->item->item_cart->name . ") is Not Updated, Try again after some time.",
+                                    ];
+                                    return response()->json($res);
+                                    // return back()->with("error", "Item(" . $new_item_in_store->item->item_cart->name . ") is Not Updated, Try again after some time.");
+                                }
+                            } else {
+                                $res = [
+                                    'status' => false,
+                                    'data' => "Item(" . $item_in_store->item->item_cart->name . ") is not updated, Try again after some time.",
+                                ];
+                                return response()->json($res);
+                                // return back()->with("error", "Item(" . $item_in_store->item->item_cart->name . ") is not updated, Try again after some time.");
+                            }
+                        } else {
+                            $res = [
+                                'status' => false,
+                                'data' => 'Item does not exist withing this store.',
+                            ];
+                            return response()->json($res);
+                        }
+                    } else {
+                        $res = [
+                            'status' => false,
+                            'data' => 'Item does not exist.',
+                        ];
+                        return response()->json($res);
+                    }
+                } else {
+                    $res = [
+                        'status' => false,
+                        'data' => 'Store does not exist.',
+                    ];
+                    return response()->json($res);
+                }
+            } else {
+                $res = [
+                    'status' => false,
+                    'data' => 'API_KEY Not correct'
+                ];
+                return response()->json($res);
+            }
+        } else {
+            $res = [
+                'status' => false,
+                'data' => 'API_USER Not Found'
+            ];
+            return response()->json($res);
+        }
+    }
 }
