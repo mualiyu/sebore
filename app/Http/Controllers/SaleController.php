@@ -190,17 +190,21 @@ class SaleController extends Controller
     public function show_info($id, $ref_num)
     {
         $sale = Sale::where('ref_num', '=', $ref_num)->get();
-
-        $tran = SaleTransaction::where(['agent_id' => $sale[0]->marketer_id, 'sale_ref_num' => $sale[0]->ref_num])->get();
-        $arr = [];
-        foreach ($tran as $t) {
-            array_push($arr, $t->ref_id);
-        }
-        $t_s = array_unique($arr);
-        $t_ss = array_reverse($t_s);
-
         if (count($sale) > 0) {
-            return view("sale.sale_info", compact('sale', 't_ss'));
+            # code...
+            $tran = SaleTransaction::where(['agent_id' => $sale[0]->marketer_id, 'sale_ref_num' => $sale[0]->ref_num])->get();
+            $arr = [];
+            foreach ($tran as $t) {
+                array_push($arr, $t->ref_id);
+            }
+            $t_s = array_unique($arr);
+            $t_ss = array_reverse($t_s);
+
+            if (count($sale) > 0) {
+                return view("sale.sale_info", compact('sale', 't_ss'));
+            } else {
+                return back()->with('error', "Error, No sale with this number");
+            }
         } else {
             return back()->with('error', "Error, No sale with this number");
         }
