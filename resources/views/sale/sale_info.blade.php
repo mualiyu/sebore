@@ -30,7 +30,7 @@ label {
 	background: rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
 }
-    </style>
+    </style> 
   <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=06277e66b6318' async='true'></script> 
   @endsection
 
