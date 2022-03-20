@@ -93,7 +93,7 @@
 						<td>
 						  <a href="{{route('sale_show_info', ['id'=>$store->id, 'ref_num'=>$sale[0]->ref_num])}}" class="btn btn-success">Open</a>
                           <a  onclick="
-                              if(confirm('Are you sure You want to Delete this payroll -()? ')){
+                              if(confirm('Did you want to delete sale({{$sale[0]->ref_num}})? \nTransactions that are under this sale will also be deleted. \n\nAre you sure about this???')){
                                   document.getElementById('delete-form[{{$i}}]').submit();
                               }
                                   event.preventDefault();"
@@ -101,8 +101,9 @@
                               style="color: black; background:red;">
                               Delete
                           </a>
-                          <form method="POST" id="delete-form[{{$i}}]" action="">
+                          <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_sale')}}">
                                 @csrf 
+                                <input type="hidden" value="{{$sale[0]->ref_num}}" name="ref_num">
                             </form>
 						</td>
 						<?php $i++;?>

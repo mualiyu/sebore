@@ -149,6 +149,9 @@ Route::get('/store/{id}/sales', [App\Http\Controllers\SaleController::class, 'in
 Route::get('/store/{id}/sales/add', [App\Http\Controllers\SaleController::class, 'show_add'])->name('sale_show_add');
 Route::post('/store/{id}/sales/add', [App\Http\Controllers\SaleController::class, 'create'])->name('create_sale');
 Route::get('/store/{id}/sales/{ref_num}/info', [App\Http\Controllers\SaleController::class, 'show_info'])->name('sale_show_info');
+Route::post('/store/delete/sale', [App\Http\Controllers\SaleController::class, 'delete_sale'])->name('delete_sale');
+Route::post('/store/update/sale/transaction/status', [App\Http\Controllers\SaleTransactionController::class, 'update_status'])->name('update_sale_transaction_status');
+Route::post('/store/update/sale/transaction/outstanding', [App\Http\Controllers\SaleTransactionController::class, 'update_outstanding'])->name('update_sale_transaction_outstanding');
 
 // Stores Route
 Route::get('/store', [App\Http\Controllers\StoreController::class, 'index'])->name('store_index');

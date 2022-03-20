@@ -113,11 +113,13 @@ class ApiSaleTransactionController extends Controller
                             'ref_id' => $request->ref_id,
                             'type' => $request->type,
                             'status' => 0,
+                            'sale_ref_num' => $sale[0]->ref_num,
                         ]);
                         SaleTransaction::where('id', '=', $transaction->id)->update([
                             'ref_id' => $request->ref_id,
                             'status' => 0,
                             'type' => $request->type,
+                            'sale_ref_num' => $sale[0]->ref_num,
 
                         ]);
 

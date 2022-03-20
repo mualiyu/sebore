@@ -26,7 +26,15 @@ label {
 .card-input-element:checked + .card-input {
      box-shadow: 0 0 1px 1px #2ecc71;
 }
+#table_row:hover{
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+}
     </style>
+  <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=06277e66b6318' async='true'></script> 
+  @endsection
+
+@section('script')
 @endsection
 
 @section('content')
@@ -64,13 +72,15 @@ label {
 				<div class="card shadow" style="width:100%;">
 				    <div class="card-body">  
 				      <div class="row">
-					<div class="col-sm-3">
-					  <h5 class="mb-0" style="float: right;">Sale Info</h5>
+					<div class="col-sm-6">
+					  <h5 class="mb-0" style="float: left; marging-left:20px;">Sale Info</h5>
 					</div>
 					<div class="col-sm-3"></div>
-					<div class="col-sm-3"></div>
 					<div class="col-sm-3">
-						<a href="#" onclick="history.back();" style="float: right" class="btn btn-primary">Sales</a>
+						{{-- <a href="#" onclick="history.back();" style="float: right" class="btn btn-primary">Sales</a> --}}
+						@if ($sale[0]->status == 1)
+						<button disabled="disabled" class="btn btn-secondary">Expired</button>
+						@endif
 					</div>
 				      </div>
 				      <hr>
@@ -198,7 +208,7 @@ label {
 			    </div>
 			    <div class="card-block table-border-style">
 				<div class="table-responsive">
-				    <table class="table">
+				    <table class="table" id="ttyy">
 					<thead>
 					    <tr>
                                             <th>#</th>
@@ -208,7 +218,7 @@ label {
                                             <th>Total Amount</th>
                                             <th>Transaction Method</th>
 					    <th>Payment Amount</th>
-					    <th>Out-standing Balance</th>
+					    <th>Outstanding Balance</th>
 					    <th>date</th>
                                             <th>Agent</th>
                                             <th>Cummunity</th>
@@ -233,7 +243,7 @@ label {
 							// dd($transactions);
 					?>
 					@if (count($transactions) > 0)  
-					    <tr>
+					    <tr style="cursor: pointer;" id="table_row" onclick="document.getElementById('modal[{{$i}}]').style.display = 'block';">
 						    <th scope="row">{{$i}}</th>
 						    <td>{{$transactions[0]->customer->name ?? "Null"}}</td>
 						    <td>{{$transactions[0]->customer->phone ?? "Null"}}</td>
@@ -241,7 +251,7 @@ label {
 							    <?php $amm = 0;?>
 							    @foreach ($transactions as $t)
 							    <?php $item = \App\Models\Item::find($t->item_id); ?>
-								    {{$item->item_cart->name ?? "Null"}}, 
+								    {{$item->item_cart->name ?? "Null"}},<br> 
 								    <?php $amm += $t->amount;  ?>
 							    @endforeach
 						    </td>
@@ -254,10 +264,115 @@ label {
 							<td>{{$transactions[0]->device->community ?? "Null"}}</td>
 							<td>{{$transactions[0]->ref_id ?? ""}}</td>
 							<td><span style="color: red;">{{$transactions[0]->status==0 ? "Payment not recieved":""  ?? ""}}</span> <span style="color: green;">{{$transactions[0]->status==1 ? "Payment Recieved":""  ?? ""}}</span></td>
-						    <?php $i++?>
-					    </tr>
+						    
+						    	<td>
+								    
+							</td>
+						</tr>
+						{{-- <a class="" onclick="document.getElementById('modal').style.display = 'block';"><i>+</i> Open</a>  --}}
+						<div class="modal" style="display: none;" id="modal[{{$i}}]" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						  <div class="modal-dialog modal-lg modal-scrollable">
+						    <div class="modal-content">
+						      <div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel">Transaction detail</h5>
+							
+							<button type="button" class="close" onclick="document.getElementById('modal[{{$i}}]').style.display = 'none';" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						      </div>
+						      <div class="modal-body">
+							<div class="card" style="width: 100%;">
+                    			<div class="card-body">
+                                        
+                                            <div class="form-row">
+                                                <div class="col">
+                                                    <div class="form-group"><label for="username"><strong>Customer Name</strong></label>
+							<span disabled class="form-control" >{{$transactions[0]->customer->name ?? "Null"}}</span></div>
+                                                </div>
+						<div class="col">
+                                                    <div class="form-group"><label for="username"><strong>Customer phone</strong></label>
+							<span disabled class="form-control" >{{$transactions[0]->customer->phone ?? "Null"}}</span></div>
+                                                </div>
+						@if ($transactions[0]->status == 0)
+						<div class="col">
+							<div class="from-group">
+								<label for=""></label>
+								<form method="POST" action="{{route('update_sale_transaction_status')}}">
+									@csrf
+									<input type="hidden" value="{{$transactions[0]->ref_id}}" name="ref_id">
+									<button type="submit" class="btn btn-success btn-md"  style="width:100%;">
+									  Confirm payment
+									</button>
+								</form>
+							</div>
+						</div>
+						@else
+						<div class="col">
+							<div class="from-group">
+								<label for=""></label>
+								<button type="button" class="btn btn-secondary btn-md" disabled  style="width:100%;">
+								  Payment confirmed
+								</button>
+							</div>
+						</div>
+						@endif
+                                            </div>
+					    <div class="form-row">
+                                                <div class="col">
+                                                    <div class="form-group"><label for="username"><strong> Items</strong></label>
+							<span dsabled class="form-control" >
+							@foreach ($transactions as $t)
+							    <?php $item = \App\Models\Item::find($t->item_id); ?>
+								    {{$item->item_cart->name ?? "Null"}} ({{$t->quantity}} PC's),<br>
+							@endforeach
+							</span></div>
+                                                </div>
+						<div class="col">
+                                                    <div class="form-group"><label for="username"><strong>Total Amount</strong></label>
+							<span disabled class="form-control" >{{"NG ".$amm}}</span></div>
+                                                </div>
+						<div class="col">
+                                                    <div class="form-group"><label for="username"><strong>Reference</strong></label>
+							<span disabled class="form-control" >{{$transactions[0]->ref_id}}</span></div>
+                                                </div>
+                                            </div>
+					    <div class="form-row">
+                                                <div class="col">
+                                                    <div class="form-group"><label for="username"><strong>Paid amount</strong></label>
+							<span disabled class="form-control" style="color: green;">{{"NG ".$transactions[0]->paid_amount ?? "NG 0"}}</span></div>
+                                                </div>
+						<div class="col">
+                                                    <div class="form-group"><label for="username"><strong>Outstanding </strong></label>
+							<span disabled class="form-control" style="color: red;" >{{"NG ".$transactions[0]->dept_amount ?? "NG 0"}}</span></div>
+                                                </div>
+						<div class="col">
+							<div class="form-group">
+								<label for="username"><strong><br> </strong></label>
+								<button onclick="document.getElementById('up_d[{{$i}}]').style.display = 'block';" class="btn btn-secondary btn-sm">Update outstanding balance > </div>
+                                                </div>
+                                            </div>
+					    <form  method="POST" action="{{route('update_sale_transaction_outstanding')}}" style="margin: 10px;">
+					     @csrf
+					    <div class="form-row" id="up_d[{{$i}}]" style="display: none; border:solid 1px red;">
+                                                <div class="col px-1">
+							<input type="hidden" value="{{$transactions[0]->ref_id}}" name="ref_id">
+                                                    <div class="form-group"><label for="amount"><strong> How much are you willing to add?</strong></label>
+							<input type="number" class="form-control" value="{{old($amount)}}" name="amount"></div>
+                                                </div>
+						<div class="col">
+							<div class="form-group"><button class="btn btn-primary btn-sm">Update transaction</div>
+                                                </div>
+                                            </div>
+                                            </form>
+                                    </div>
+                                   
+                                </div>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+					<?php $i++?>
 					@endif
-
 					@endforeach
 					@endif
 					@if (count($t_ss) == 0)

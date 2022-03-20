@@ -190,6 +190,9 @@
             background: <?php echo $th;?> /*rgba(90, 30, 30, 0.7)*/;
             color: #fff !important;
         }
+        .modal{
+            background:rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 
@@ -556,6 +559,10 @@ $(document).ready(function() {
   });
 
 })
+
+$(document).ready(function() {
+    $('#table_mm').DataTable();
+} );
 </script>
 
 </body>

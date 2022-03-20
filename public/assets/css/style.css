@@ -13181,7 +13181,7 @@ body
 body
     .pcoded[pcoded-device-type="tablet"][vertical-nav-type="expanded"]
     .pcoded-navbar {
-    position: absolute !important;
+    position: fixed !important;
 }
 body
     .pcoded[pcoded-device-type="phone"][vertical-nav-type="expanded"]

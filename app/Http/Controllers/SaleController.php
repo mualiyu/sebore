@@ -181,7 +181,7 @@ class SaleController extends Controller
                 return back()->with("error", "Error, Item is not added due to the following " . implode(" ", $ee) . ", Thank you for using our service.");
             }
         } else {
-            return back()->with("success", "sales created successfully, Thank you for using our service");
+            return redirect()->route('sale_index', ['id' => $store->id])->with("success", "sales created successfully, Thank you for using our service");
         }
 
         return 0;
@@ -191,7 +191,7 @@ class SaleController extends Controller
     {
         $sale = Sale::where('ref_num', '=', $ref_num)->get();
 
-        $tran = SaleTransaction::where(['agent_id' => $sale[0]->marketer_id])->get();
+        $tran = SaleTransaction::where(['agent_id' => $sale[0]->marketer_id, 'sale_ref_num' => $sale[0]->ref_num])->get();
         $arr = [];
         foreach ($tran as $t) {
             array_push($arr, $t->ref_id);
@@ -203,6 +203,71 @@ class SaleController extends Controller
             return view("sale.sale_info", compact('sale', 't_ss'));
         } else {
             return back()->with('error', "Error, No sale with this number");
+        }
+    }
+
+    public function delete_sale(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ref_num' => ['required'],
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $sales = Sale::where(['ref_num' => $request->ref_num])->get();
+
+        if (count($sales) > 0) {
+            $sale_total_amount = 0;
+
+            foreach ($sales as $sale) {
+                # code...
+                $items_in_store = ItemInStore::where(['store_id' => $sale->store_id, 'item_id' => $sale->item_id])->get();
+                // item in store data
+                $amount_in_store = $items_in_store[0]->amount;
+                $quantity_in_store = $items_in_store[0]->quantity;
+
+                $sale_total_amount += $sale->amount;
+
+                $new_quantity_in_store = $quantity_in_store + $sale->quantity;
+                $new_amount_in_store = $amount_in_store + $sale->amount;
+
+                $update_item_in_store = ItemInStore::where(['store_id' => $sale->store_id, 'item_id' => $sale->item_id])->update([
+                    'quantity' => $new_quantity_in_store,
+                    'amount' => $new_amount_in_store,
+                ]);
+
+                Sale::where("id", "=", $sale->id)->delete();
+            }
+
+            $marketer = Agent::where('id', '=', $sales[0]->marketer_id)->get();
+            $wallet = $marketer[0]->wallet + $sale_total_amount;
+
+            $agent = Agent::where('id', '=', $sales[0]->marketer_id)->update([
+                'wallet' => $wallet,
+            ]);
+
+            // store data
+            $store_total_amount = 0;
+            $store_total_num_of_items = 0;
+
+            // new items in store data
+            $new_items_in_store = ItemInStore::where(['store_id' => $sales[0]->store_id])->get();
+
+            foreach ($new_items_in_store as $i_in_s) {
+                $store_total_amount += $i_in_s->amount;
+                $store_total_num_of_items += $i_in_s->quantity;
+            }
+
+            // update store data
+            $update_store = Store::where(['id' => $sales[0]->store_id])->update([
+                "total_amount" => $store_total_amount,
+                "total_num_of_items" => $store_total_num_of_items,
+            ]);
+
+            return back()->with('success', 'One sale is deleted');
+        } else {
+            return back()->with('error', 'Failed to delete sale, Try again.');
         }
     }
 }
