@@ -176,7 +176,7 @@ label {
 						<td>{{$sale[0]->marketer->name}}</td>
                         			<td>{{$sale[0]->marketer->phone}}</td>
 						<td>{{$sale[0]->marketer->email}}</td>
-						<td>{{"NG ".$amount ?? "0"}}</td>
+						<td>{{"Ng ".$sale[0]->marketer->wallet ?? "0"}}</td>
 						<?php $i++?>
 					</tr>
 					{{-- @endforeach --}}
