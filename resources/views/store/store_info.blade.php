@@ -323,7 +323,7 @@ label {
                         </button>
                       </div>
 		      <?php $items = \App\Models\Item::where("org_id", "=", Auth::user()->organization_id)->get(); $j = 1; ?>
-                      <div class="modal-body" style="height: 600px; overflow-y:scroll;">
+                      <div class="modal-body" style="height: 400px; overflow-y:scroll;">
 			<div class="row">
 			  @foreach ($items as $i)     
 			  <div class="col-md-6 col-lg-4 col-sm-6">
