@@ -25,17 +25,22 @@ class SaleController extends Controller
     public function index($id)
     {
         $store = Store::find($id);
-        $sales = Sale::where(['store_id' => $store->id])->get();
+        if ($store) {
+            # code...
+            $sales = Sale::where(['store_id' => $store->id])->get();
 
-        $arr = [];
-        foreach ($sales as $s) {
-            $no = $s->ref_num;
-            array_push($arr, $no);
+            $arr = [];
+            foreach ($sales as $s) {
+                $no = $s->ref_num;
+                array_push($arr, $no);
+            }
+            $s_s = array_unique($arr);
+            $s_ss = array_reverse($s_s);
+
+            return view("sale.index", compact("store", 's_ss'));
+        } else {
+            return back();
         }
-        $s_s = array_unique($arr);
-        $s_ss = array_reverse($s_s);
-
-        return view("sale.index", compact("store", 's_ss'));
     }
 
     public function show_add($id)
@@ -52,7 +57,11 @@ class SaleController extends Controller
     {
         $org = Organization::find(Auth::user()->organization_id);
         $store = Store::find($id);
-
+        if ($store) {
+            # code...
+        } else {
+            return back()->with('error', 'Store not found');
+        }
         $validator = Validator::make($request->all(), [
             'marketer_id' => ['required'],
             'store_keeper_id' => ['required'],
@@ -65,7 +74,6 @@ class SaleController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-
 
         // date range
         $d = explode(' - ', $request->daterange);
