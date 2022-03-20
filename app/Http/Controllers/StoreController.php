@@ -62,9 +62,13 @@ class StoreController extends Controller
     public function info($id)
     {
         $store = Store::find($id);
-        $items_in_store = ItemInStore::where('store_id', '=', $store->id)->get();
+        if ($store) {
+            $items_in_store = ItemInStore::where('store_id', '=', $store->id)->get();
 
-        return view("store.store_info", compact("store", "items_in_store"));
+            return view("store.store_info", compact("store", "items_in_store"));
+        } else {
+            return back()->with('error', 'Store not found in system');
+        }
     }
 
     public function add_agent(Request $request, $id)
