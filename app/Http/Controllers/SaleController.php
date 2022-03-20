@@ -250,6 +250,7 @@ class SaleController extends Controller
                 ]);
 
                 Sale::where("id", "=", $sale->id)->delete();
+                SaleTransaction::where('sale_ref_num', '=', $sale->ref_num)->delete();
             }
 
             $marketer = Agent::where('id', '=', $sales[0]->marketer_id)->get();
