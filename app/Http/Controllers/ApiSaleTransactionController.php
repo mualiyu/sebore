@@ -93,10 +93,10 @@ class ApiSaleTransactionController extends Controller
                         // $store_amount -= $request->amount;
                         // $store_items -= $request->quantity;
 
-                        // agent wallet 
-                        $wallet = $agent->wallet;
-                        // new wallet
-                        $wallet -= $request->amount;
+                        // // agent wallet 
+                        // $wallet = $agent->wallet;
+                        // // new wallet
+                        // $wallet -= $request->amount;
 
                         // create transaction for sale
                         $transaction = SaleTransaction::create([
@@ -128,6 +128,13 @@ class ApiSaleTransactionController extends Controller
                                 "amount" => $sale_amount,
                                 "quantity" => $sale_quantity,
                             ]);
+
+                            // update agent wallet
+                            $get_sale = Sale::where("ref_num", "=", $sale[0]->ref_num)->get();
+                            $wallet = 0;
+                            foreach ($get_sale as $s) {
+                                $wallet += $s->amount;
+                            }
                             $update_agent_wallet = Agent::where('id', '=', $agent->id)->update([
                                 'wallet' => $wallet,
                             ]);
