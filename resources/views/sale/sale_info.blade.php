@@ -162,6 +162,7 @@ label {
                                             <th>Name</th>
                                             <th>phone</th>
 					    <th>Email</th>
+					    <th>Wallet</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -175,6 +176,7 @@ label {
 						<td>{{$sale[0]->marketer->name}}</td>
                         			<td>{{$sale[0]->marketer->phone}}</td>
 						<td>{{$sale[0]->marketer->email}}</td>
+						<td>{{"Ng ".$sale[0]->marketer->wallet ?? "0"}}</td>
 						<?php $i++?>
 					</tr>
 					{{-- @endforeach --}}
