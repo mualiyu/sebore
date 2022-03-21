@@ -53,8 +53,8 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Location</th>
-					    <th>Total number of items</th>
-					    <th>Actions</th>
+					                        <th>Total number of items</th>
+					                        <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

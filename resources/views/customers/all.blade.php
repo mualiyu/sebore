@@ -52,7 +52,7 @@
                         
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
-                                <table class="table">
+                                <table id="data_table" class="table-sm table-striped table-bordered dt-responsive nowrap " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>

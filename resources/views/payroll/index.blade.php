@@ -47,16 +47,16 @@
                         </div>
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
-                                <table class="table">
+                                <table id="data_table" class="table-sm table-striped table-bordered dt-responsive nowrap " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Tag</th>
                                             <th>By Name</th>
-					                <th>Ref_id</th>
+					                        <th>Ref_id</th>
                                             <th>Date - Time</th>
-					    <th>Status</th>
-					    <th>Action</th>
+					                        <th>Status</th>
+					                        <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
