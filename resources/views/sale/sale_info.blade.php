@@ -31,7 +31,7 @@ label {
 	border-radius: 5px;
 }
     </style> 
-  <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=06277e66b6318' async='true'></script> 
+  {{-- <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=06277e66b6318' async='true'></script>  --}}
   @endsection
 
 @section('script')
