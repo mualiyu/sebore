@@ -31,7 +31,6 @@ label {
 	border-radius: 5px;
 }
     </style> 
-  {{-- <script id='pixel-script-poptin' src='https://cdn.popt.in/pixel.js?id=06277e66b6318' async='true'></script>  --}}
   @endsection
 
 @section('script')
@@ -226,6 +225,7 @@ label {
                                             <th>Cummunity</th>
                                             <th>Bill Reference</th>
                                             <th>Status</th>
+					    <th>Action</th>
                                         </tr>
 					</thead>
 					<tbody>
@@ -245,7 +245,7 @@ label {
 							// dd($transactions);
 					?>
 					@if (count($transactions) > 0)  
-					    <tr style="cursor: pointer;" id="table_row" onclick="document.getElementById('modal[{{$i}}]').style.display = 'block';">
+					    <tr style="cursor: pointer;" id="table_row" >
 						    <th scope="row">{{$i}}</th>
 						    <td>{{$transactions[0]->customer->name ?? "Null"}}</td>
 						    <td>{{$transactions[0]->customer->phone ?? "Null"}}</td>
@@ -268,7 +268,7 @@ label {
 							<td><span style="color: red;">{{$transactions[0]->status==0 ? "Payment not recieved":""  ?? ""}}</span> <span style="color: green;">{{$transactions[0]->status==1 ? "Payment Recieved":""  ?? ""}}</span></td>
 						    
 						    	<td>
-								    
+								<button class="btn btn-primary" onclick="document.getElementById('modal[{{$i}}]').style.display = 'block';">open</button>    
 							</td>
 						</tr>
 						{{-- <a class="" onclick="document.getElementById('modal').style.display = 'block';"><i>+</i> Open</a>  --}}
