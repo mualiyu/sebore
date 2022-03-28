@@ -114,7 +114,7 @@ label {
                     			          <span aria-hidden="true">&times;</span>
                     			        </button>
                     			      </div>
-                    			      <div class="modal-body" style="height: 600px; overflow-y:scroll;">
+                    			      <div class="modal-body" style="height: 400px; overflow-y:scroll;">
 							  <div class="row">
 								  @foreach ($agents as $a)
 								  @if ($a->role->type == "marketer")
@@ -153,7 +153,7 @@ label {
                     			          <span aria-hidden="true">&times;</span>
                     			        </button>
                     			      </div>
-                    			      <div class="modal-body" style="height: 600px; overflow-y:scroll;">
+                    			      <div class="modal-body" style="height: 400px; overflow-y:scroll;">
 							  <div class="row">
 								  @foreach ($agents as $a)
 								  @if ($a->role->type == "store")
@@ -191,7 +191,7 @@ label {
                     			          <span aria-hidden="true">&times;</span>
                     			        </button>
                     			      </div>
-                    			      <div class="modal-body" style="height: 600px; overflow-y:scroll;">
+                    			      <div class="modal-body" style="height: 400px; overflow-y:scroll;">
 							  <div class="row">
 								  <?php $k = 0; ?>
 								  @foreach ($items_in_store as $i)     
