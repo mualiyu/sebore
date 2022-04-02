@@ -78,7 +78,7 @@
                             $amount = 0;
                             $quantity = 0;
                             foreach ($sale as $s) {
-                                echo $s->item->item_cart->name. "(NG-".$s->quantity.", ".$s->amount."Ps), ";
+                                echo $s->item->item_cart->name. "(NG-".$s->amount.", ".$s->quantity."Ps), ";
                                 $amount += $s->amount; 
                                 $quantity += $s->quantity; 
                             }
