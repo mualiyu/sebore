@@ -73,16 +73,17 @@
 						<td>{{$sale[0]->marketer->name}}</td>
                         <td>{{$sale[0]->store->name}}</td>
 						<td>{{$sale[0]->ref_num}}</td>
-						<td>
+						<td><p>
                             <?php
                             $amount = 0;
                             $quantity = 0;
                             foreach ($sale as $s) {
-                                echo $s->item->item_cart->name. ", ";
+                                echo $s->item->item_cart->name. "(NG-".$s->quantity.", ".$s->amount."Ps), ";
                                 $amount += $s->amount; 
                                 $quantity += $s->quantity; 
                             }
                             ?>
+                        </p>
                         </td>
                         <td>{{$quantity}}</td>
                         <td>{{$amount}}</td>

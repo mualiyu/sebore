@@ -439,7 +439,7 @@ if ($organization[0]->logo) {
                             <li class="">
                                 <a href="{{route('show_all_customers')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Farmers</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Customers</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
