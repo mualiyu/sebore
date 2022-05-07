@@ -51,6 +51,7 @@ Route::get('/stock/get_stock', [App\Http\Controllers\ApiStockController::class, 
 Route::get('/store/get_stores', [App\Http\Controllers\ApiStoreController::class, 'get_stores']);
 Route::post('/store/add/item', [App\Http\Controllers\ApiStoreController::class, 'add_item']);
 Route::post('/store/update/item', [App\Http\Controllers\ApiStoreController::class, 'update_item']);
+Route::post('/store/remove/item', [App\Http\Controllers\ApiStoreController::class, 'remove_item']);
 
 Route::get('/sale/get_sales', [App\Http\Controllers\ApiSaleController::class, 'get_sales']);
 Route::post('/sale/create_sales', [App\Http\Controllers\ApiSaleController::class, 'create_sales']);

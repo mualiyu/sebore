@@ -113,7 +113,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/jquery.mCustomScrollbar.css')}}">
-
+     <!-- morris chart -->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/morris.js/css/morris.css')}}">
     
     {{-- cdn --}}
     {{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
@@ -523,7 +524,13 @@ if ($organization[0]->logo) {
 <script src="{{asset('assets/js/pcoded.min.js')}}"></script>
 <script src="{{asset('assets/js/vertical-layout.min.js')}}"></script>
 <script src="{{asset('assets/js/jquery.mCustomScrollbar.concat.min.js')}}"></script>
+
+<!-- Morris Chart js -->
+<script src="{{asset('assets/js/raphael/raphael.min.js')}}"></script>
+<script src="{{asset('assets/js/morris.js/morris.js')}}"></script>
+
 <!-- Custom js -->
+{{-- <script src="{{asset('assets/js/morris-custom-chart.js')}}"></script> --}}
 <script type="text/javascript" src="{{asset('assets/js/script.js')}}"></script>
 
 

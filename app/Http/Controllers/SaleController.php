@@ -254,7 +254,7 @@ class SaleController extends Controller
             }
 
             $marketer = Agent::where('id', '=', $sales[0]->marketer_id)->get();
-            $wallet = $marketer[0]->wallet + $sale_total_amount;
+            $wallet = $marketer[0]->wallet - $sale_total_amount;
 
             $agent = Agent::where('id', '=', $sales[0]->marketer_id)->update([
                 'wallet' => $wallet,

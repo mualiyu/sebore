@@ -50,6 +50,9 @@ class HomeController extends Controller
         $to = $date[0];
         // $from = "2021-08-28";
         // $to = "2021-08-28";
+        // $cur = explode("-", $date[0]);
+        // // $cur[1];
+        // return $cur[1];
 
         $months = array(
             '',

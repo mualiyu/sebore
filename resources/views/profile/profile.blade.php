@@ -239,7 +239,7 @@ $(document).ready(function () {
                                                             <?php $roles = \App\Models\AdminRole::all(); ?>
                                                             @foreach ($roles as $r)
                                                             <option value="{{$r->id}}">{{$r->name}}</option>
-                                                            @endforeach
+                                                            e.style.display == "n                                @endforeach
                                                             {{-- <option value="admin">Admin</option>
                                                             <option value="suppervisor">Suppervisor</option>
                                                             <option value="user">User</option> --}}

@@ -164,6 +164,8 @@ Route::post('store/{id}/item/add', [App\Http\Controllers\StoreController::class,
 Route::post('store/{s_id}/item/{i_id}/remove', [App\Http\Controllers\StoreController::class, 'remove_item'])->name("store_remove_item");
 Route::post('store/{s_id}/item/{i_id}/update', [App\Http\Controllers\StoreController::class, 'update_item'])->name("store_update_item");
 
+// charts route
+Route::get('charts/bar', [App\Http\Controllers\ChartController::class, 'bar'])->name("bar_chart");
 // 
 // **** MAIN ADMIN ROUTES (END) ****
 // 

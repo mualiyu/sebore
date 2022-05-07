@@ -275,6 +275,54 @@
 
                 </div>
 
+                <div class="row">
+                    <!-- Bar Chart start -->
+                    <div class="col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Collections Summary</h5>
+                                {{-- <span>Collections Chart Summary</span> --}}
+                                {{-- <div style="float: right;"> --}}
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li>
+                                            <i class="fa fa-refresh load"  id="loader"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                    <div class="row" style="margin-buttom:0;">
+                                        <div class="col-5">
+                                            <select id="req_type" placehoder="choose cartegory" name="request_type" class="form-control">
+					                        	  {{-- <option value="all">All</option> --}}
+					                        	  <option value="agents">Agents Summary</option>
+					                        	  <option value="customers">Customers Summary</option>
+					                        	  <option value="devices" disabled>Community Summary</option>
+					                        	  {{-- <option value="item">By Item</option> --}}
+					                        </select>
+                                            <label class="float-label px-3">Select Cartegory</label>
+                                        </div>
+                                        <div class="col-5">
+                                            <input name="daterange" required class="form-control" id="range" type="text" >
+                                            <span class="form-bar"></span>
+                                            <label class="float-label">Chooce Range <small>(from - to)</small></label>
+					                        
+                                        </div>
+                                        <div class="col-2">
+                                            <button id="search" class="btn btn-primary btn-sm"> Search </button>
+                                        </div>
+                                    </div>
+                                {{-- </div> --}}
+                            </div>
+                            <div class="card-block">
+                                <div id="chartContainer">
+                                    <p style="text-align: center; margin:0;">Select The Fields Above to Display Summary Charts!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bar Chart Ends -->
+                </div>
+
                 {{-- Payment history  --}}
                 <?php 
                 $tr = \App\Models\Transaction::where(['org_id' => Auth::user()->organization_id, 'p_status' => 1])->orderBy('updated_at', 'desc')->get();
@@ -331,7 +379,7 @@
                             <td>{{$t->agent->name ?? "Null"}}</td>
                             <td>{{$t->device->community ?? "Null"}}</td>
                             <td><span style="color: red;">{{$t->p_status==0 ? "Failed":""  ?? ""}}</span> <span style="color: green;">{{$t->p_status==1 ? "Successful":""  ?? ""}}</span></td>
-                            <td>{{$t->ref_id ?? ""}}</td>
+                            <td>{{$t->ref_id ?? ""}} transaction</td>
                 
                             <?php $i++?>
                         </tr>
@@ -349,4 +397,140 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<?php
+$dataPoints = array( 
+	array("y" => 3373.64, "label" => "Germany" ),
+	array("y" => 2435.94, "label" => "France" ),
+	array("y" => 1842.55, "label" => "China" ),
+	array("y" => 1828.55, "label" => "Russia" ),
+	array("y" => 1039.99, "label" => "Switzerland" ),
+	array("y" => 765.215, "label" => "Japan" ),
+	array("y" => 612.453, "label" => "Netherlands" ),
+    array("y" => 2435.94, "label" => "France" ),
+	array("y" => 1842.55, "label" => "China" ),
+	array("y" => 1828.55, "label" => "Russia" ),
+	array("y" => 1039.99, "label" => "Switzerland" ),
+	array("y" => 765.215, "label" => "Japan" ),
+    array("y" => 2435.94, "label" => "France" ),
+	array("y" => 1842.55, "label" => "China" ),
+	array("y" => 1828.55, "label" => "Russia" ),
+	array("y" => 1039.99, "label" => "Switzerland" ),
+	array("y" => 765.215, "label" => "Japan" ),
+); 
+ ?>
+
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script>
+$(function() {
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#small').html(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
+    }
+    $('input[name="daterange"]' || ' ').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+    cb(start, end);
+});
+
+
+
+
+function query(range, type) {
+    var range = range; 
+    var req_type = type;
+
+    $.ajax({
+        url:"{{ route('bar_chart') }}",
+
+        type:"GET",
+        
+        data:{'range':range, 'req_type':req_type},
+        
+        success:function (data) {  
+
+            console.log(data);
+
+            $("#chartContainer").css('height', '370px');
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light3",
+                title:{
+                    text: data['type']
+                },
+                axisY: {
+                    title: data['detail']+"(in Naira)"
+                },
+                data: [{
+                    type: "column",
+                    yValueFormatString: "#,##0.## Naira",
+                    dataPoints: data['data']
+                }]
+            });
+            
+            console.log(<?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>);
+            
+            chart.render();
+	        
+            // return data;
+        }
+    })
+}
+
+
+
+
+
+$(document).ready(function () {
+            
+	$('#search').on('click', function() {
+        var req_value = $('#req_type option:selected').val();
+
+        var range = $('#range').val();
+        
+        query(range, req_value);
+          
+    	});
+});
+
+// window.onload = function() {
+  
+//     var chart = new CanvasJS.Chart("chartContainer", {
+//     animationEnabled: true,
+//     theme: "light3",
+//     title:{
+//         text: "Agents"
+//     },
+//     axisY: {
+//         title: "Agents summary(in Naira)"
+//     },
+//     data: [{
+//         type: "column",
+//         yValueFormatString: "#,##0.## Naira",
+//         dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+//     }]
+//     });
+
+//     // console.log(<?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>);
+//     chart.render();
+// }
+
+</script>
 @endsection
