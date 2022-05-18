@@ -91,6 +91,39 @@ class ChartController extends Controller
                 ];
                 return $info;
             }
+
+            if ($type == "devices") {
+                $dev = [];
+                foreach ($transactions as $t) {
+                    array_push($dev, $t->device_id);
+                }
+                $devices = array_unique($dev);
+
+                // same for customers
+                $data = [];
+                foreach ($devices as $d) {
+                    $d_transactions = Transaction::where(['org_id' => Auth::user()->organization_id, 'device_id' => $d, 'type' => 'collection'])->whereBetween('date', [$from . '-00-00-00', $to . '-23-59-59'])->get();
+
+                    // return $d_transactions;
+                    $device_name = $d_transactions[0]->device->name;
+                    $amount = 0;
+                    foreach ($d_transactions as $tt) {
+                        $amount += $tt->amount;
+                    }
+                    $ar = array("y" => $amount, "label" =>  $device_name);
+
+                    array_push($data, $ar);
+                }
+
+                // $data = json_encode($data, JSON_NUMERIC_CHECK);
+
+                $info = [
+                    "type" => "Communities",
+                    "detail" => "community summary",
+                    "data" => $data
+                ];
+                return $info;
+            }
         }
         // return $request->all();
     }

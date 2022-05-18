@@ -296,7 +296,7 @@
 					                        	  {{-- <option value="all">All</option> --}}
 					                        	  <option value="agents">Agents Summary</option>
 					                        	  <option value="customers">Customers Summary</option>
-					                        	  <option value="devices" disabled>Community Summary</option>
+					                        	  <option value="devices" >Community Summary</option>
 					                        	  {{-- <option value="item">By Item</option> --}}
 					                        </select>
                                             <label class="float-label px-3">Select Cartegory</label>
@@ -443,6 +443,7 @@ function query(range, type) {
         
         success:function (data) {  
 
+            // console.log(data);
             $("#chartContainer").css('height', '400px');
 
             var chart = new CanvasJS.Chart("chartContainer", {
