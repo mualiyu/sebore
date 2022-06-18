@@ -120,7 +120,7 @@
     {{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
-     
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     {{-- <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script> --}}
     @yield('style')
 
@@ -200,6 +200,16 @@
         }
         .modal{
             background:rgba(0, 0, 0, 0.5);
+        }
+
+
+        /* D3 chart */
+        .bar {
+            fill: {{$card3}};
+        }
+
+        .highlight {
+            fill: {{$tn}};
         }
     </style>
 </head>
@@ -533,6 +543,8 @@ if ($organization[0]->logo) {
 {{-- <script src="{{asset('assets/js/morris-custom-chart.js')}}"></script> --}}
 <script type="text/javascript" src="{{asset('assets/js/script.js')}}"></script>
 
+{{-- D# data presentation --}}
+<script src="{{asset('assets/d3.min.js')}}"></script>
 
 {{-- dtat --}}
 {{-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}

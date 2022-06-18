@@ -18,6 +18,13 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
+// Route::domain('{account}.ats.offline')->group(function () {
+//     Route::get('/{id}', function ($account, $id) {
+//         return $account . " and ". $id;
+//         //
+//     });
+// });
+
 
 // 
 // **** MAIN ADMIN ROUTES (START) ****

@@ -41,12 +41,13 @@ class ChartController extends Controller
                         $amount += $tt->amount;
                     }
 
-                    $arr = [
-                        'y' => $amount,
-                        'label' => $agent_name,
-                    ];
+                    // $arr = [
+                    //     'value' => $amount,
+                    //     'year' => $agent_name,
+                    // ];
 
-                    $ar = array("y" => $amount, "label" =>  $agent_name);
+                    // $ar = array("y" => $amount, "label" =>  $agent_name);
+                    $ar = array("value" => (int)$amount, "year" =>  $agent_name);
 
                     array_push($data, $ar);
                 }

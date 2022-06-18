@@ -277,7 +277,7 @@
 
                 <div class="row">
                     <!-- Bar Chart start -->
-                    <div class="col-md-12 col-lg-12">
+                    <div class="col-md-6 col-lg-6">
                         <div class="card">
                             <div class="card-header">
                                 <h5>Collections Summary</h5>
@@ -320,18 +320,41 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-header" >
+                                <h5 id="bar-head">Chart Summary D3</h5>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li>
+                                            <i class="fa fa-refresh load"  id="loader"></i>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {{-- </div> --}}
+                            </div>
+                            <div class="card-block">
+                                <svg width="100%" id="dd"></svg>
+                                {{-- <div id="chartContainer">
+                                    <p style="text-align: center; margin:0;">Select The Fields Above to Display Summary Charts!</p>
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
                     <!-- Bar Chart Ends -->
                 </div>
 
                 {{-- Payment history  --}}
                 <?php 
-                $tr = \App\Models\Transaction::where(['org_id' => Auth::user()->organization_id, 'p_status' => 1])->orderBy('updated_at', 'desc')->get();
+                $p_to = date('Y-m-d');
+                $p_from = date('Y-m-d', strtotime($p_to. ' - 14 days'));
+                $tr = \App\Models\Transaction::where(['org_id' => Auth::user()->organization_id, 'p_status' => 1])->orderBy('updated_at', 'desc')->whereBetween('date', [$p_from . '-00-00-01', $p_to . '-23-59-59'])->get();
                 ?>
                 @if (count($tr)>0)
                     
                 <div class="card">
                     <div class="card-header">
-                        <h5>Payments History</h5>
+                        <h5>Payments History <small>for two weeks</small></h5>
                         <div class="card-header-right">
                             <ul class="list-unstyled card-option">
                                 <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -444,25 +467,139 @@ function query(range, type) {
         success:function (data) {  
 
             // console.log(data);
-            $("#chartContainer").css('height', '400px');
+            // $("#chartContainer").css('height', '400px');
 
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                theme: "light2",
-                title:{
-                    text: data['type']
-                },
-                axisY: {
-                    title: data['detail']+"(in Naira)"
-                },
-                data: [{
-                    type: "column",
-                    yValueFormatString: "#,##0.## Naira",
-                    dataPoints: data['data']
-                }]
-            });
+            // var chart = new CanvasJS.Chart("chartContainer", {
+            //     animationEnabled: true,
+            //     theme: "light2",
+            //     title:{
+            //         text: data['type']
+            //     },
+            //     axisY: {
+            //         title: data['detail']+"(in Naira)"
+            //     },
+            //     data: [{
+            //         type: "column",
+            //         yValueFormatString: "#,##0.## Naira",
+            //         dataPoints: data['data']
+            //     }]
+            // });
             
-            chart.render();
+            // chart.render();
+
+            // fsddfgfhgjhjkl
+
+        var svg = d3.select("svg"),
+            margin = 300,
+            width = 200,
+            height = 300;
+        // width = svg.attr("width") - margin,
+        // height = svg.attr("height") - margin;
+
+        $('#bar-head').html(data['type']);
+
+    var x = d3.scaleBand().range([0, width]).padding(0.4),
+        y = d3.scaleLinear().range([height, 0]);
+
+    var g = svg.append("g")
+            .attr("transform", "translate(" + 50 + "," + 10 + ")");
+
+    // var json = $.parseJSON(data['data']);
+    var csv = JSON2CSV(data['data']);
+    var blob = new Blob(["\ufeff", csv]);
+    var url = URL.createObjectURL(blob);
+    
+    d3.csv(url, function(error, data) {
+        if (error) {
+            throw error;
+        }
+        // console.log(data);
+
+        x.domain(data.map(function(d) { return d.year; }));
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+        g.append("g")
+         .attr("transform", "translate(0," + height + ")")
+         .call(d3.axisBottom(x))
+         .append("text")
+         .attr("y", height - 120)
+         .attr("x", width - 45)
+         .attr("text-anchor", "end")
+         .attr("stroke", "black")
+         .text(data['type']);
+
+        g.append("g")
+         .call(d3.axisLeft(y).tickFormat(function(d){
+             return "$" + d;
+         }).ticks(10))
+         .append("text")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 6)
+        //  .attr("dy", "-5.1em")
+         .attr("text-anchor", "end")
+         .attr("stroke", "black")
+         .text(data['detail']);
+
+        g.selectAll(".bar")
+         .data(data)
+         .enter().append("rect")
+         .attr("class", "bar")
+         .on("mouseover", onMouseOver) //Add listener for the mouseover event
+         .on("mouseout", onMouseOut)   //Add listener for the mouseout event
+         .attr("x", function(d) { return x(d.year); })
+         .attr("y", function(d) { return y(d.value); })
+         .attr("width", x.bandwidth())
+         .transition()
+         .ease(d3.easeLinear)
+         .duration(1000)
+         .delay(function (d, i) {
+             return i * 50;
+         })
+         .attr("height", function(d) { return height - y(d.value); });
+    });
+    
+    //mouseover event handler function
+    function onMouseOver(d, i) {
+        d3.select(this).attr('class', 'highlight');
+        d3.select(this)
+          .transition()     // adds animation
+          .duration(400)
+          .attr('width', x.bandwidth() + 5)
+          .attr("y", function(d) { return y(d.value) - 10; })
+          .attr("height", function(d) { return height - y(d.value) + 10; });
+
+        g.append("text")
+         .attr('class', 'val') 
+         .attr('x', function() {
+             return x(d.year);
+         })
+         .attr('y', function() {
+             return y(d.value) - 15;
+         })
+         .text(function() {
+             return [ '$' +d.value];  // Value of the text
+         });
+    }
+
+    //mouseout event handler function
+    function onMouseOut(d, i) {
+        // use the text label class to remove label on mouseout
+        d3.select(this).attr('class', 'bar');
+        d3.select(this)
+          .transition()     // adds animation
+          .duration(400)
+          .attr('width', x.bandwidth())
+          .attr("y", function(d) { return y(d.value); })
+          .attr("height", function(d) { return height - y(d.value); });
+
+        d3.selectAll('.val')
+          .remove()
+    }
+
+    $('#dd').css('height', height+50);
+
+    // hrasdfglhlkjh
+
 	        
         }
     })
@@ -470,7 +607,51 @@ function query(range, type) {
 
 
 
+function JSON2CSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    var line = '';
 
+    str +='value,year' + "\r\n";
+
+    if ($("#labels").is(':checked')) {
+        var head = array[0];
+        if ($("#quote").is(':checked')) {
+            for (var index in array[0]) {
+                var value = index + "";
+                line += '"' + value.replace(/"/g, '""') + '",';
+            }
+        } else {
+            for (var index in array[0]) {
+                line += index + ',';
+            }
+        }
+
+        line = line.slice(0, -1);
+        str += line + '\r\n';
+    }
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+
+        if ($("#quote").is(':checked')) {
+            for (var index in array[i]) {
+                var value = array[i][index] + "";
+                line += '"' + value.replace(/"/g, '""') + '",';
+            }
+        } else {
+            for (var index in array[i]) {
+                line += array[i][index] + ',';
+            }
+        }
+
+        line = line.slice(0, -1);
+        
+        str += line + '\r\n';
+    }
+    console.log(str);
+    return str;
+}
 
 $(document).ready(function () {
             
@@ -486,4 +667,114 @@ $(document).ready(function () {
 
 
 </script>
+
+{{-- D3 script --}}
+{{-- <script>
+
+    var svg = d3.select("svg"),
+        margin = 100,
+        width = svg.attr("width") - margin,
+        height = svg.attr("height") - margin;
+
+    svg.append("text")
+       .attr("transform", "translate(100,0)")
+       .attr("x", 50)
+       .attr("y", 50)
+       .attr("font-size", "24px")
+       .text("Customers stock report")
+
+    var x = d3.scaleBand().range([0, width]).padding(0.4),
+        y = d3.scaleLinear().range([height, 0]);
+
+    var g = svg.append("g")
+            .attr("transform", "translate(" + 100 + "," + 100 + ")");
+
+    
+    d3.csv("data.csv", function(error, data) {
+        if (error) {
+            throw error;
+        }
+
+        x.domain(data.map(function(d) { return d.year; }));
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+        g.append("g")
+         .attr("transform", "translate(0," + height + ")")
+         .call(d3.axisBottom(x))
+         .append("text")
+         .attr("y", height - 250)
+         .attr("x", width - 100)
+         .attr("text-anchor", "end")
+         .attr("stroke", "black")
+         .text("Year");
+
+        g.append("g")
+         .call(d3.axisLeft(y).tickFormat(function(d){
+             return "$" + d;
+         }).ticks(10))
+         .append("text")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 6)
+         .attr("dy", "-5.1em")
+         .attr("text-anchor", "end")
+         .attr("stroke", "black")
+         .text("Amount collected");
+
+        g.selectAll(".bar")
+         .data(data)
+         .enter().append("rect")
+         .attr("class", "bar")
+         .on("mouseover", onMouseOver) //Add listener for the mouseover event
+         .on("mouseout", onMouseOut)   //Add listener for the mouseout event
+         .attr("x", function(d) { return x(d.year); })
+         .attr("y", function(d) { return y(d.value); })
+         .attr("width", x.bandwidth())
+         .transition()
+         .ease(d3.easeLinear)
+         .duration(400)
+         .delay(function (d, i) {
+             return i * 50;
+         })
+         .attr("height", function(d) { return height - y(d.value); });
+    });
+    
+    //mouseover event handler function
+    function onMouseOver(d, i) {
+        d3.select(this).attr('class', 'highlight');
+        d3.select(this)
+          .transition()     // adds animation
+          .duration(400)
+          .attr('width', x.bandwidth() + 5)
+          .attr("y", function(d) { return y(d.value) - 10; })
+          .attr("height", function(d) { return height - y(d.value) + 10; });
+
+        g.append("text")
+         .attr('class', 'val') 
+         .attr('x', function() {
+             return x(d.year);
+         })
+         .attr('y', function() {
+             return y(d.value) - 15;
+         })
+         .text(function() {
+             return [ '$' +d.value];  // Value of the text
+         });
+    }
+
+    //mouseout event handler function
+    function onMouseOut(d, i) {
+        // use the text label class to remove label on mouseout
+        d3.select(this).attr('class', 'bar');
+        d3.select(this)
+          .transition()     // adds animation
+          .duration(400)
+          .attr('width', x.bandwidth())
+          .attr("y", function(d) { return y(d.value); })
+          .attr("height", function(d) { return height - y(d.value); });
+
+        d3.selectAll('.val')
+          .remove()
+    }
+
+</script> --}}
 @endsection

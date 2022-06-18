@@ -17,7 +17,7 @@
         "maatwebsite/excel": "^3.1",
         "php-excel-reader/spreadsheet-reader": "dev-master",
         "phpoffice/phpspreadsheet": "^1.18",
-        "simplesoftwareio/simple-qrcode": "^4.2",
+        "simplesoftwareio/simple-qrcode": "~4",
         "unicodeveloper/laravel-paystack": "^1.0"
     },
     "require-dev": {
