@@ -1,5 +1,9 @@
 <?php
 
+$con = mysqli_connect('127.0.0.1', 'root', env('DB_PASSWORD'), 'sebore');
+if (!$con) {
+	echo "DB connection failed";
+}
 $time = date("Ymd");
 $timer = date("Y/m/d");
 
@@ -8,12 +12,10 @@ if (isset($_POST['update_t'])) {
 	$q = $_POST['q'];
 	$amount = $_POST['amount'];
 
-	$tran = \App\Models\Transaction::where("ref_id", "=", $ref)->update([
-		"quantity" => $q,
-		"maount" => $amount,
-	]);
+	$qur = "UPDATE transactions set quantity = " . $q . ", amount = " . $amount . " where ref_id = " . $ref;
+	$res = mysqli_query($con, $qur);
 
-	if ($tran) {
+	if ($res) {
 		echo "<script>alert('Congratulations, You have successfully Updated transaction(" . $ref . ")')</script>";
 	} else {
 		echo "<script>alert('Can not update this record now, Contact Mukeey @ +2348167236629 (For support)')</script>";
@@ -23,8 +25,10 @@ if (isset($_POST['update_t'])) {
 if (isset($_POST['delete_t'])) {
 	$ref = $_POST['ref_id'];
 
-	$tran = \App\Models\Transaction::where("ref_id", "=", $ref)->delete();
-	if ($tran) {
+	$d_qur = "DELETE FROM transactions WHERE ref_id = " . $ref;
+	$res = mysqli_query($con, $d_qur);
+
+	if ($res) {
 		echo "<script>alert('Congratulations, You have successfully Deleted one transaction(" . $ref . ")')</script>";
 	} else {
 		echo "<script>alert('Can not delete this record now, Contact Mukeey @ +2348167236629 (For support)')</script>";
@@ -150,37 +154,38 @@ if (isset($_POST['delete_t'])) {
 		$ref = $_GET['ref_id'];
 
 		// Perform 
-		$tran = \App\Models\Transaction::where("ref_id", "=", $ref)->get();
-		if (count($tran)) {
-			$tran = $tran[0];
+		$query =  "SELECT * FROM transactions WHERE ref_id =" . $ref;
+		$result = mysqli_query($con, $query);
+
+		if ($row = $result->fetch_assoc()) {
 	?>
 			<form action="" method="post">
 				<h1>Transaction Record</h1>
 				<div class="formcontainer">
 					<p style="color: red;"> Note:: Make sure to check your inputs perfectly before clicking on the buttons bellow!!! </p>
 
-					<p>Customer: {{$tran->customer->name}}</p>
+					<p>Customer: <?php echo $row['customer_id']; ?></p>
 					<hr />
-					<p>Agent: {{$tran->agent->name}}</p>
+					<p>Agent: <?php echo $row['agent_id']; ?></p>
 					<hr />
-					<p>Item: {{$tran->item->itm_cart->name}}</p>
+					<p>Item: <?php echo $row['item_id']; ?></p>
 					<hr />
-					<p>Organization: {{$tran->org_id}}</p>
+					<p>Organization: <?php echo $row['org_id']; ?></p>
 					<hr />
 					<div class="container">
 						<label for="ref_id"><strong>Ref_id</strong></label>
-						<input type="text" disabled placeholder="Enter ref_id" value="{{$tran->ref_id}}">
-						<input type="hidden" value="{{$tran->ref_id}}" name="ref_id" required>
+						<input type="text" disabled placeholder="Enter ref_id" value="<?php echo $row['ref_id']; ?>">
+						<input type="hidden" value="<?php echo $row['ref_id']; ?>" name="ref_id" required>
 					</div>
 					<hr />
 					<div class="container">
 						<label for="q"><strong>Quantity</strong></label>
-						<input type="text" placeholder="Enter quantity" value="{{$tran->quantity}}" name="q" required>
+						<input type="text" placeholder="Enter quantity" value="<?php echo $row['quantity']; ?>" name="q" required>
 					</div>
 					<hr />
 					<div class="container">
 						<label for="amount"><strong>Amount</strong></label>
-						<input type="text" placeholder="Enter Amount" name="amount" value="{{$tran->amount}}" required>
+						<input type="text" placeholder="Enter Amount" name="amount" value="<?php echo $row['amount']; ?>" required>
 					</div>
 					<div class="container">
 						<button type="submit" name="update_t">Update Record</button>
