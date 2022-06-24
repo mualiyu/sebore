@@ -18,6 +18,11 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
+
+Route::get('/control', function () {
+    return view("control.control");
+});
+
 // Route::domain('{account}.ats.offline')->group(function () {
 //     Route::get('/{id}', function ($account, $id) {
 //         return $account . " and ". $id;

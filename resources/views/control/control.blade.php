@@ -1,6 +1,6 @@
 <?php
 
-$con = mysqli_connect('127.0.0.1', 'root', '', 'sebore');
+$con = mysqli_connect('127.0.0.1', 'root', '20111755Db', 'sebore');
 if (!$con) {
 	echo "DB connection failed";
 }
