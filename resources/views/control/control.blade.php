@@ -10,7 +10,7 @@ if (isset($_POST['update_t'])) {
 
 	$tran = \App\Models\Transaction::where("ref_id", "=", $ref)->update([
 		"quantity" => $q,
-		"maount" => $amount,
+		"amount" => $amount,
 	]);
 
 	if ($tran) {
@@ -156,6 +156,7 @@ if (isset($_POST['delete_t'])) {
 	?>
 			<form action="" method="post">
 				<h1>Transaction Record</h1>
+				@csrf
 				<div class="formcontainer">
 					<p style="color: red;"> Note:: Make sure to check your inputs perfectly before clicking on the buttons bellow!!! </p>
 
@@ -163,7 +164,7 @@ if (isset($_POST['delete_t'])) {
 					<hr />
 					<p>Agent: {{$tran->agent->name}}</p>
 					<hr />
-					<p>Item: {{$tran->item->itm_cart->name}}</p>
+					<p>Item: {{$tran->item->item_cart->name}}</p>
 					<hr />
 					<p>Organization: {{$tran->org_id}}</p>
 					<hr />
