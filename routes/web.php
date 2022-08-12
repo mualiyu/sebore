@@ -159,6 +159,7 @@ Route::post('/payroll/{ref_id}/delete', [App\Http\Controllers\PayrollController:
 Route::post('/payroll/{ref_id}/make_payment', [App\Http\Controllers\PayrollController::class, 'payroll_make_payment'])->name('payroll_make_payment');
 // Route::get('/payroll/test/transaction', [App\Http\Controllers\transactionController::class, 'export_transaction'])->name('payroll_export_transaction');
 // Route::get('/payroll/test', [App\Http\Controllers\transactionController::class, 'test'])->name('eee');
+
 // Sales Route
 Route::get('/store/{id}/sales', [App\Http\Controllers\SaleController::class, 'index'])->name('sale_index');
 Route::get('/store/{id}/sales/add', [App\Http\Controllers\SaleController::class, 'show_add'])->name('sale_show_add');

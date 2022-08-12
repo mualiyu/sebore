@@ -185,7 +185,6 @@ class ItemsCartController extends Controller
 
     public function delete_item($id)
     {
-
         $item_in_device = Item::where('item_cart_id', '=', $id)->get();
 
         if(count($item_in_device) > 0){
@@ -214,7 +213,7 @@ class ItemsCartController extends Controller
                 if ($res) {
                     return back()->with(['success' => 'One Item is Deleted from system']);
                 } else {
-                    return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+                    return back()->with(['error' => 'Item NOT Deleted from system. Try Againn!']);
                 }
             }
         }
