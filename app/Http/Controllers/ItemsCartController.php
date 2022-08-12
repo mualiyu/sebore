@@ -213,8 +213,16 @@ class ItemsCartController extends Controller
                 if ($res) {
                     return back()->with(['success' => 'One Item is Deleted from system']);
                 } else {
-                    return back()->with(['error' => 'Item NOT Deleted from system. Try Againn!']);
+                    return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
                 }
+            }
+        }else{
+            $res = ItemsCart::where('id', '=', $id)->delete();
+    
+            if ($res) {
+                return back()->with(['success' => 'One Item is Deleted from system']);
+            } else {
+                return back()->with(['error' => 'Item NOT Deleted from system. Try Againn!']);
             }
         }
 
