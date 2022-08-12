@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Device;
 use App\Models\Item;
+use App\Models\ItemInStore;
 use App\Models\ItemsCart;
 use App\Models\Organization;
 use App\Models\Plan;
 use App\Models\PlanDetail;
+use App\Models\Store;
 // use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -184,25 +186,39 @@ class ItemsCartController extends Controller
     public function delete_item($id)
     {
 
-        $i = Item::where('item_cart_id', '=', $id)->delete();
+        $item_in_device = Item::where('item_cart_id', '=', $id)->get();
 
-        if ($i) {
-            $res = ItemsCart::where('id', '=', $id)->delete();
-
-            if ($res) {
-                return back()->with(['success' => 'One Item is Deleted from system']);
-            } else {
-                return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+        if(count($item_in_device) > 0){
+            $state_of_item = false;
+            foreach ($item_in_device as $i_in_d) {
+                $check_item_in_store = ItemInStore::where('item_id', '=', $i_in_d->id)->get();
+                $state_of_item = count($check_item_in_store) > 0 ? true : false;
             }
-        } else {
-            $res = ItemsCart::where('id', '=', $id)->delete();
+            if ($state_of_item) {
+                return back()->with(['error' => "SORRY, Can't delete Item. \nMake sure that the item is not existing in a store."]);
+            }
 
-            if ($res) {
-                return back()->with(['success' => 'One Item is Deleted from system']);
+            $i = Item::where('item_cart_id', '=', $id)->delete();
+    
+            if ($i) {
+                $res = ItemsCart::where('id', '=', $id)->delete();
+    
+                if ($res) {
+                    return back()->with(['success' => 'One Item is Deleted and removed from Device items.']);
+                } else {
+                    return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+                }
             } else {
-                return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+                $res = ItemsCart::where('id', '=', $id)->delete();
+    
+                if ($res) {
+                    return back()->with(['success' => 'One Item is Deleted from system']);
+                } else {
+                    return back()->with(['error' => 'Item NOT Deleted from system. Try Again!']);
+                }
             }
         }
+
         return back()->with(['error' => 'Item NOT Deleted from system, Try Again!']);
     }
 }
