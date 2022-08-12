@@ -307,7 +307,7 @@ if ($organization[0]->logo) {
                     </div>
                     <a href="#">
                         {{-- <img class="img-fluid" src="{{url('assets/images/logo.png')}}" alt="Theme-Logo" /> --}}
-                        <a class="img-fluid">{{$organization[0]->name}} jhsdgh</a>
+                        <a class="img-fluid">{{$organization[0]->name}}</a>
                     </a>
                     <a class="mobile-options waves-effect waves-light">
                         <i class="ti-more"></i>
