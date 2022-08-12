@@ -179,7 +179,7 @@ Route::post('store/{s_id}/agent/{a_id}/remove', [App\Http\Controllers\StoreContr
 Route::post('store/{id}/item/add', [App\Http\Controllers\StoreController::class, 'add_items'])->name("store_add_items");
 Route::post('store/{s_id}/item/{i_id}/remove', [App\Http\Controllers\StoreController::class, 'remove_item'])->name("store_remove_item");
 Route::post('store/{s_id}/item/{i_id}/update', [App\Http\Controllers\StoreController::class, 'update_item'])->name("store_update_item");
-
+Route::post('/store/delete/store', [App\Http\Controllers\StoreController::class, 'delete_store'])->name('delete_store');
 // charts route
 Route::get('charts/bar', [App\Http\Controllers\ChartController::class, 'bar'])->name("bar_chart");
 // 

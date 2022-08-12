@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AgentStore;
 use App\Models\Item;
 use App\Models\ItemInStore;
 use App\Models\Organization;
@@ -248,6 +249,24 @@ class StoreController extends Controller
             }
         } else {
             return back()->with("error", "Item(" . $item_in_store->item->item_cart->name . ") is not updated, Try again after some time.");
+        }
+    }
+
+    public function delete_store(Request $request)
+    {
+        $store = Store::find($request->id);
+        if ($store) {
+            // $agent_store = AgentStore::where('store_id', $store->id)->get();
+
+            $del = Store::where('id', $store->id)->update(['delete_status' => 1]);
+
+            if ($del) {
+                return back()->with("success", "Store(" . $store->name . ") is Deleted successfully.");
+            }else{
+                return back()->with("error", "Failed to delete Store(" . $store->name . ").");
+            }
+        }else{
+            return back()->with("error", "Failed to delete Store.");
         }
     }
 }

@@ -63,25 +63,38 @@
                         
 				        @foreach ($stores as $s)
 					
-					<tr>
+					<tr style="{{$s->delete_status == 1 ? 'background-color: #ddd; cursor: not-allowed;' : ''}}">
 						<th scope="row">{{$i}}</th>
 						<td>{{$s->name}}</td>
                         			<td>{{$s->location}}</td>
 						<td>{{$s->total_num_of_items ?? "Store is empty"}}</td>
 						<td>
-						  <a href="{{route("store_info", ['id'=>$s->id])}}" class="btn btn-success">Show info</a>
-                          <a  onclick="
-                              if(confirm('Are you sure You want to Delete this Store -()? ')){
-                                  document.getElementById('delete-form[{{$i}}]').submit();
+						  <a href="{{route("store_info", ['id'=>$s->id])}}" class="btn btn-success {{$s->delete_status == 1 ? 'disabled' : ''}}" style="{{$s->delete_status == 1 ? 'opacity:0.5; cursor: not-allowed;' : ''}}">Show info</a>
+                          @if ($s->delete_status == 1)   
+                          <a  onclick='
+                              if(confirm("NOTE: This will delete store permanently .\n\nAre you sure You want to Delete this Store -(Name: {{$s->name}})? ")){
+                                //   document.getElementById("delete-formm[{{$i}}]").submit();
                               }
-                                  event.preventDefault();"
+                                  event.preventDefault();'
                               class="btn btn-warning" 
+                              style="color: black; opacity:0.8; background:red;">
+                              Delete permanently
+                          </a>
+                          @else 
+                          <a  onclick='
+                              if(confirm("NOTE: This is soft delete (i.e Temporarily).\n\nAre you sure You want to Delete this Store -(Name: {{$s->name}})? ")){
+                                  document.getElementById("delete-form[{{$i}}]").submit();
+                              }
+                                  event.preventDefault();'
+                              class="btn btn-warning " 
                               style="color: black; background:red;">
                               Delete
                           </a>
-                          <form method="POST" id="delete-form[{{$i}}]" action="">
-                                @csrf 
-                            </form>
+                          <form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_store')}}">
+                                @csrf
+                                <input type="hidden" value="{{$s->id}}" name="id">
+                          </form>
+                          @endif
 						</td>
 						<?php $i--?>
 					</tr>
