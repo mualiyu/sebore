@@ -283,6 +283,7 @@ if ($organization[0]->logo) {
 }else {
     	$pic = "default.jpg";
 }
+
 ?>
 <div id="pcoded" class="pcoded">
     <div class="pcoded-overlay-box"></div>

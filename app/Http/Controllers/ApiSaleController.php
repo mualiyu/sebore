@@ -10,7 +10,7 @@ use App\Models\Sale;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+ 
 class ApiSaleController extends Controller
 {
     public function get_sales(Request $request)
