@@ -523,7 +523,9 @@ if ($organization[0]->logo) {
 </div>
 
 <!-- Required Jquery -->
-    <script type="text/javascript" src="{{url('assets/js/jquery/jquery.min.js')}}"></script>     <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>     <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>     
+    <script type="text/javascript" src="{{url('assets/js/jquery/jquery.min.js')}}"></script>     
+    <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>     
+    <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>     
     <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>
 <!-- waves js -->
 <script src="{{url('assets/pages/waves/js/waves.min.js')}}"></script>
