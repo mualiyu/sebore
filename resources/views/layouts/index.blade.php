@@ -99,22 +99,22 @@
     <meta name="keywords" content="Ticket, ticketing, system">
     <meta name="author" content="Ajisaq" />
     <!-- Favicon icon -->
-    <link rel="icon" href="http://ajisaqsolutions.com/assets/images/logo.png" type="image/x-icon">
+    <link rel="icon" href="{{url('assets/images/logo.png')}}" type="image/x-icon">
     <!-- Google font-->     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
     <!-- Required Fremwork -->
-    <link rel="stylesheet" type="text/css" href="http://ajisaqsolutions.com/assets/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/css/bootstrap/css/bootstrap.min.css')}}">
     <!-- waves.css -->
-    <link rel="stylesheet" href="http://ajisaqsolutions.com/assets/pages/waves/css/waves.min.css" type="text/css" media="all">
+    <link rel="stylesheet" href="{{url('assets/pages/waves/css/waves.min.css" type="text/css')}}" media="all">
     <!-- themify-icons line icon -->
-    <link rel="stylesheet" type="text/css" href="http://ajisaqsolutions.com/assets/icon/themify-icons/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/icon/themify-icons/themify-icons.css')}}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" type="text/css" href="http://ajisaqsolutions.com/assets/icon/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/icon/font-awesome/css/font-awesome.min.css')}}">
     <!-- Style.css -->
-    <link rel="stylesheet" type="text/css" href="http://ajisaqsolutions.com/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/css/style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="http://ajisaqsolutions.com/assets/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/css/jquery.mCustomScrollbar.css')}}">
      <!-- morris chart -->
-    <link rel="stylesheet" type="text/css" href="http://ajisaqsolutions.com/assets/css/morris.js/css/morris.css">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/css/morris.js/css/morris.css')}}">
     
     {{-- cdn --}}
     {{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
@@ -307,7 +307,7 @@ if ($organization[0]->logo) {
                         </div>
                     </div>
                     <a href="#">
-                        {{-- <img class="img-fluid" src="http://ajisaqsolutions.com/assets/images/logo.png')}}" alt="Theme-Logo" /> --}}
+                        {{-- <img class="img-fluid" src="{{url('assets/images/logo.png')}}" alt="Theme-Logo" /> --}}
                         <a class="img-fluid">{{$organization[0]->name}}</a>
                     </a>
                     <a class="mobile-options waves-effect waves-light">
@@ -339,7 +339,7 @@ if ($organization[0]->logo) {
 
                         <li class="user-profile header-notification">
                             <a href="#!" class="waves-effect waves-light">
-                                <img src="http://ajisaqsolutions.com/storage/pic/'.$pic)}}" class="img-radius" alt="User-Profile-Image">
+                                <img src="{{url('storage/pic/'.$pic)}}" class="img-radius" alt="User-Profile-Image">
                                 <span>{{Auth::user()->name}}</span>
                                 <i class="ti-angle-down"></i>
                             </a>
@@ -381,7 +381,7 @@ if ($organization[0]->logo) {
                     <div class="pcoded-inner-navbar main-menu">
                         <div class="">
                             {{-- <div class="main-menu-header">
-                                <img class="img-80 img-radius" src="http://ajisaqsolutions.com/storage/pic/'.$pic)}}" alt="User-Profile-Image">
+                                <img class="img-80 img-radius" src="{{url('storage/pic/'.$pic)}}" alt="User-Profile-Image">
                                 <div class="user-details">
                                     <span id="more-details">{{Auth::user()->name}}<i class="fa fa-caret-down"></i></span>
                                 </div>
@@ -523,31 +523,30 @@ if ($organization[0]->logo) {
 </div>
 
 <!-- Required Jquery -->
-    <script type="text/javascript" src="http://ajisaqsolutions.com/assets/js/jquery/jquery.min.js"></script>     
-    <script type="text/javascript" src="http://ajisaqsolutions.com/assets/js/jquery-ui/jquery-ui.min.js "></script>     
-    <script type="text/javascript" src="http://ajisaqsolutions.com/assets/js/popper.js/popper.min.js"></script>     
-    <script type="text/javascript" src="http://ajisaqsolutions.com/assets/js/bootstrap/js/bootstrap.min.js "></script>
+    <script type="text/javascript" src="{{url('assets/js/jquery/jquery.min.js')}}"></script>     
+    <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>     <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>     
+    <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>
 <!-- waves js -->
-<script src="http://ajisaqsolutions.com/assets/pages/waves/js/waves.min.js"></script>
+<script src="{{url('assets/pages/waves/js/waves.min.js')}}"></script>
 <!-- jquery slimscroll js -->
-<script type="text/javascript" src="http://ajisaqsolutions.com/assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="{{url('assets/js/jquery-slimscroll/jquery.slimscroll.js')}}"></script>
 <!-- modernizr js -->
-    <script type="text/javascript" src="http://ajisaqsolutions.com/assets/js/SmoothScroll.js"></script>     
-    <script src="http://ajisaqsolutions.com/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="http://ajisaqsolutions.com/assets/js/pcoded.min.js"></script>
-<script src="http://ajisaqsolutions.com/assets/js/vertical-layout.min.js"></script>
-<script src="http://ajisaqsolutions.com/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="{{url('assets/js/SmoothScroll.js')}}"></script>     
+    <script src="{{url('assets/js/jquery.mCustomScrollbar.concat.min.js')}}"></script>
+<script src="{{url('assets/js/pcoded.min.js')}}"></script>
+<script src="{{url('assets/js/vertical-layout.min.js')}}"></script>
+<script src="{{url('assets/js/jquery.mCustomScrollbar.concat.min.js')}}"></script>
 
 <!-- Morris Chart js -->
-<script src="http://ajisaqsolutions.com/assets/js/raphael/raphael.min.js"></script>
-<script src="http://ajisaqsolutions.com/assets/js/morris.js/morris.js"></script>
+<script src="{{url('assets/js/raphael/raphael.min.js')}}"></script>
+<script src="{{url('assets/js/morris.js/morris.js')}}"></script>
 
 <!-- Custom js -->
-{{-- <script src="http://ajisaqsolutions.com/assets/js/morris-custom-chart.js"></script> --}}
-<script type="text/javascript" src="http://ajisaqsolutions.com/assets/js/script.js"></script>
+{{-- <script src="{{url('assets/js/morris-custom-chart.js')}}"></script> --}}
+<script type="text/javascript" src="{{url('assets/js/script.js')}}"></script>
 
 {{-- D# data presentation --}}
-<script src="http://ajisaqsolutions.com/assets/d3.min.js"></script>
+<script src="{{url('assets/d3.min.js')}}"></script>
 
 {{-- dtat --}}
 {{-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
