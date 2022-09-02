@@ -2,6 +2,7 @@
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,5 +59,6 @@ Route::post('/sale/create_sales', [App\Http\Controllers\ApiSaleController::class
 Route::post('/sale/delete', [App\Http\Controllers\ApiSaleController::class, 'delete_sales']);
 
 Route::get('/test/t', function () {
-    Transaction::query()->update(['type' => "collection"]);
+    // Transaction::query()->update(['type' => "collection"]);
+    Artisan::call('storage:link');
 });
