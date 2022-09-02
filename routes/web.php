@@ -38,6 +38,10 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
+Route::get('/storage/{extra}', function ($extra) {
+    return redirect("/public/storage/".$extra);
+})->where('extra', '.*');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
