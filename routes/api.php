@@ -55,7 +55,7 @@ Route::post('/store/remove/item', [App\Http\Controllers\ApiStoreController::clas
 
 Route::get('/sale/get_sales', [App\Http\Controllers\ApiSaleController::class, 'get_sales']);
 Route::post('/sale/create_sales', [App\Http\Controllers\ApiSaleController::class, 'create_sales']);
-
+Route::post('/sale/delete', [App\Http\Controllers\ApiSaleController::class, 'delete_sales']);
 
 Route::get('/test/t', function () {
     Transaction::query()->update(['type' => "collection"]);

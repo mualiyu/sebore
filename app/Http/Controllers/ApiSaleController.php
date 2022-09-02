@@ -93,7 +93,7 @@ class ApiSaleController extends Controller
             return response()->json($res);
         }
     }
-
+ 
     public function create_sales(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -320,6 +320,54 @@ class ApiSaleController extends Controller
                     ];
                     return response()->json($res);
                 }
+            } else {
+                $res = [
+                    'status' => false,
+                    'data' => 'API_KEY Not correct'
+                ];
+                return response()->json($res);
+            }
+        } else {
+            $res = [
+                'status' => false,
+                'data' => 'API_USER Not Found'
+            ];
+            return response()->json($res);
+        }
+    }
+
+    public function delete_sales(Request $request)
+    {
+       $validator = Validator::make($request->all(), [
+            'api_user' => 'required',
+            'api_key' => 'required',
+            'store_keeper_id' => ['required'],
+            'ref_num' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $res = [
+                'status' => false,
+                'data' => $validator->errors(),
+            ];
+            return response()->json($res);
+        }
+
+        $api = Api::where('api_user', '=', $request->api_user)->get();
+
+        if (count($api) > 0) {
+            if ($api[0]->api_key == $request->api_key) {
+
+                $sales = Sale::where('ref_num', '=', $request->ref_num)->get();
+
+                foreach ($sales as $sale) {
+                    $store = Store::find($sale->store_id);
+                    $items_in_store = $store->items_in_store;
+                    
+                    $current_quantity_of_items_in_store = $items_in_store->quantity;
+
+                } 
+                return $sales;
             } else {
                 $res = [
                     'status' => false,
