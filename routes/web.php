@@ -38,7 +38,7 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
-Route::get('/storage', function ($extra) {
+Route::get('/storage', function() {
     // return redirect("/public/storage/".$extra);
     $ff = File::link(
         storage_path('app/public'), public_path('storage')
