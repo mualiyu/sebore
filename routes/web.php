@@ -2,7 +2,7 @@
 
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\File;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,9 +38,13 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
-Route::get('/storage/{extra}', function ($extra) {
-    return redirect("/public/storage/".$extra);
-})->where('extra', '.*');
+Route::get('/storage', function ($extra) {
+    // return redirect("/public/storage/".$extra);
+    $ff = File::link(
+        storage_path('app/public'), public_path('storage')
+    );
+    return $ff;
+});//->where('extra', '.*');
 
 Auth::routes();
 
