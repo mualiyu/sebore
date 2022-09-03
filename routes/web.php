@@ -40,10 +40,14 @@ Route::post('/control', function () {
 
 Route::get('/s', function() {
     // return redirect("/public/storage/".$extra);
-    $ff = File::link(
-        storage_path('app/public'), public_path('storage')
-    );
-    return $ff;
+    // $ff = File::link(
+    //     storage_path('app/public'), public_path('storage')
+    // );
+    // return $ff;
+    $targetFolder = $_SERVER['DOCUMENT_ROOT'].'/storage/app/public';
+    $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/public/storage';
+    symlink($targetFolder,$linkFolder);
+    echo 'Symlink process successfully completed';
 });//->where('extra', '.*');
 
 Auth::routes();
