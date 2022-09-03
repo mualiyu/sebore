@@ -62,7 +62,7 @@
 					                        <th>Address</th>
 					                        <th>LGA</th>
 					                        <th>Sate</th>
-                                            <th>Qr Code</th>
+                                            {{-- <th>Qr Code</th> --}}
 					                        <th>Action</th>
                                         </tr>
                                     </thead>
@@ -77,13 +77,13 @@
 					                    	<td>{{$c->address}}</td>
 					                    	<td>{{$c->lga}}</td>
 					                    	<td>{{$c->state}}</td>
-                                            <td>
+                                            {{-- <td>
                                                 <img style="width: 100px; height:100px;" src="data:image/png;base64, {!! base64_encode(QrCode::format('png')
                                                                 // ->merge('assets/images/logo.png', 0.3, true)
                                                                 ->errorCorrection('H')
                                                                 ->size(100)
                                                                 ->generate($c->phone)) !!}" />
-                                            </td>
+                                            </td> --}}
 					                    	<td>
                                                 <form method="POST" id="delete-form[{{$i}}]" action="{{route('remove_customer_from_agent',['c_id'=>$c->id, 'a_id'=>$agent->id])}}">
                                                     <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
