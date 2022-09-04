@@ -142,7 +142,7 @@
                                             <p class="text-inverse text-left"><a href="{{route('register')}}"><b>Register</b></a></p>
                                         </div>
                                         <div class="col-md-2">
-                                            <img src="assets/images/auth/Logo-small-bottom.png" style="width: 50px; height:50px;" alt="small-logo.png">
+                                            <img src="{{asset('assets/images/auth/Logo-small-bottom.png')}}" style="width: 50px; height:50px;" alt="small-logo.png">
                                         </div>
                                     </div>
                                 </div>
