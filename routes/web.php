@@ -45,6 +45,7 @@ Route::get('storage/pic/{filename}', function ($filename)
     $path = storage_path('public/pic' . $filename);
 
     if (!File::exists($path)) {
+        return "no ". $filename;
         abort(404);
     }
 
