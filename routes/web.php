@@ -40,12 +40,12 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
-Route::get('storage/pic/{filename}', function ($filename)
+Route::get('storag/pic/{filename}', function ($filename)
 {
-    $path = storage_path('public/pic' . $filename);
+    $path = storage_path('app/public/pic/' . $filename);
 
     if (!File::exists($path)) {
-        return "no ". $filename;
+        return "no ". $path;
         abort(404);
     }
 
@@ -57,6 +57,11 @@ Route::get('storage/pic/{filename}', function ($filename)
 
     return $response;
 });
+
+// Route::get('storag/pic/{filename}', function ($filename)
+// {
+//     return Image::make(storage_path('public/pic/' . $filename))->response();
+// });
 
 Auth::routes();
 
