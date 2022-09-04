@@ -40,12 +40,12 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
-Route::get('storag/pic/{filename}', function ($filename)
+Route::get('storage/pic/{filename}', function ($filename)
 {
     $path = storage_path('app/public/pic/' . $filename);
 
     if (!File::exists($path)) {
-        return "no ". $path;
+        // return "The following path not found ". $path;
         abort(404);
     }
 
