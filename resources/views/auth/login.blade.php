@@ -11,7 +11,7 @@
                     
                         <div class="md-float-material form-material" >
                             <div class="text-center">
-                                <a href="{{url('/')}}" style="color: white; font-size:25px; text-decoration:bold;"><img src="assets/images/auth/Logo-small-bottom.png" style="width: 40px; height:40px;" alt="small-logo.png">  <b>ATS</b></a>
+                                <a href="{{url('/')}}" style="color: white; font-size:25px; text-decoration:bold;"><img src="{{asset('assets/images/auth/Logo-small-bottom.png')}}" style="width: 40px; height:40px;" alt="small-logo.png">  <b>ATS</b></a>
                                 
                             </div>
                             <div class="auth-box card">

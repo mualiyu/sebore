@@ -11,7 +11,7 @@
                 @csrf
                 <div class="text-center" style="margin-bottom: 7px;">
                     {{-- <img src="assets/images/logo.png" alt="logo.png"> --}}
-                        <a href="{{url('/')}}" style="color: white; font-size:25px; text-decoration:bold;"><img src="assets/images/auth/Logo-small-bottom.png" style="width: 40px; height:40px;" alt="small-logo.png">  <b>ATS</b></a>
+                        <a href="{{url('/')}}" style="color: white; font-size:25px; text-decoration:bold;"><img src="{{asset('assets/images/auth/Logo-small-bottom.png')}}" style="width: 40px; height:40px;" alt="small-logo.png">  <b>ATS</b></a>
                 <br>
                     </div>
                 <div class="card" style="margin:0 auto; max-width:850px;">
