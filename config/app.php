@@ -58,7 +58,7 @@ return [
 
     'url' => env('APP_URL', 'http://ajisaqsolutions.com'),
 
-    'asset_url' => env('ASSET_URL'),
+    'asset_url' => '',
 
     /*
     |--------------------------------------------------------------------------
