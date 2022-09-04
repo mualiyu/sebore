@@ -76,7 +76,7 @@
     <meta name="keywords" content="Ticket, ticketing, system">
     <meta name="author" content="Ajisaq" />
       <!-- Favicon icon -->
-
+ 
       <link rel="icon" href="{{asset('assets/images/logo.png" type="image/x-icon')}}">
       <!-- Google font-->     
       <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
