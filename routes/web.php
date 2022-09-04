@@ -40,9 +40,9 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
-Route::get('storage/pic/{filename}', function ($filename)
+Route::get('storage/{p}/{filename}', function ($p, $filename)
 {
-    $path = storage_path('app/public/pic/' . $filename);
+    $path = storage_path('app/public/'.$p.'/' . $filename);
 
     if (!File::exists($path)) {
         // return "The following path not found ". $path;
@@ -57,11 +57,24 @@ Route::get('storage/pic/{filename}', function ($filename)
 
     return $response;
 });
-
-// Route::get('storag/pic/{filename}', function ($filename)
+// Route::get('storage/item/{filename}', function ($filename)
 // {
-//     return Image::make(storage_path('public/pic/' . $filename))->response();
+//     $path = storage_path('app/public/item/' . $filename);
+
+//     if (!File::exists($path)) {
+//         // return "The following path not found ". $path;
+//         abort(404);
+//     }
+
+//     $file = File::get($path);
+//     $type = File::mimeType($path);
+
+//     $response = Response::make($file, 200);
+//     $response->header("Content-Type", $type);
+
+//     return $response;
 // });
+
 
 Auth::routes();
 
