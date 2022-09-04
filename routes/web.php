@@ -40,9 +40,9 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
-Route::get('storage/{p}/{filename}', function ($p, $filename)
+Route::get('storage/pic/{filename}', function ($filename)
 {
-    $path = storage_path('app/public/'.$p.'/' . $filename);
+    $path = storage_path('app/public/pic/' . $filename);
 
     if (!File::exists($path)) {
         // return "The following path not found ". $path;
@@ -57,23 +57,23 @@ Route::get('storage/{p}/{filename}', function ($p, $filename)
 
     return $response;
 });
-// Route::get('storage/item/{filename}', function ($filename)
-// {
-//     $path = storage_path('app/public/item/' . $filename);
+Route::get('storage/item/pic/{filename}', function ($filename)
+{
+    $path = storage_path('app/public/item/pic/' . $filename);
 
-//     if (!File::exists($path)) {
-//         // return "The following path not found ". $path;
-//         abort(404);
-//     }
+    if (!File::exists($path)) {
+        // return "The following path not found ". $path;
+        abort(404);
+    }
 
-//     $file = File::get($path);
-//     $type = File::mimeType($path);
+    $file = File::get($path);
+    $type = File::mimeType($path);
 
-//     $response = Response::make($file, 200);
-//     $response->header("Content-Type", $type);
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
 
-//     return $response;
-// });
+    return $response;
+});
 
 
 Auth::routes();
