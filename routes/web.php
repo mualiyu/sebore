@@ -3,6 +3,8 @@
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,17 +40,22 @@ Route::post('/control', function () {
 // **** MAIN ADMIN ROUTES (START) ****
 // 
 
-Route::get('/s', function() {
-    // return redirect("/public/storage/".$extra);
-    // $ff = File::link(
-    //     storage_path('app/public'), public_path('storage')
-    // );
-    // return $ff;
-    $targetFolder = $_SERVER['DOCUMENT_ROOT'].'/storage/app/public';
-    $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/public/storage';
-    symlink($targetFolder,$linkFolder);
-    echo 'Symlink process successfully completed';
-});//->where('extra', '.*');
+Route::get('storage/pic/{filename}', function ($filename)
+{
+    $path = storage_path('public/pic' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
 
 Auth::routes();
 
