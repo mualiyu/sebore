@@ -565,7 +565,7 @@ $(document).ready(function() {
     var html_code = '';
     var html_code_lga = '';
 
-    $.getJSON('/assets/json/NigeriaState.json', function(data){
+    $.getJSON("{{asset('/assets/json/NigeriaState.json')}}", function(data){
 
    html_code += '<option value="">Select</option>';
 
