@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Facades\Date;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -25,7 +26,7 @@ class TransactionExport implements FromCollection //WithMapping
      */
     public function collection()
     {
-        $transactions = Transaction::all();
+        $transactions = User::all();
         // $tt = [];
         // foreach ($transactions as $t) {
         //     $t->customer;
