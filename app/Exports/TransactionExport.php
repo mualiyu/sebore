@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 // use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
-class TransactionExport implements FromCollection, //WithMapping
+class TransactionExport implements FromCollection //WithMapping
 {
     // public function headings(): array
     // {
