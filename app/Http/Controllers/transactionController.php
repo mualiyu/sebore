@@ -310,7 +310,7 @@ class transactionController extends Controller
                 return $output;
             }
             // return '';
-        }
+        } 
     }
 
     public function export_transaction()

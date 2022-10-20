@@ -174,6 +174,7 @@ Route::post('/otp_e', [App\Http\Controllers\PaymentGatewayController::class, 've
 Route::get('/transactions', [App\Http\Controllers\transactionController::class, 'index'])->name('show_transactions');
 Route::post('/transactions', [App\Http\Controllers\transactionController::class, 'get_transaction_list'])->name('get_transaction_list');
 Route::get('/data_search_t', [App\Http\Controllers\transactionController::class, 'search_data_t'])->name('search_data_t');
+Route::get('/test/transaction', [App\Http\Controllers\transactionController::class, 'export_transaction'])->name('export_transaction');
 
 
 //plans
@@ -195,7 +196,6 @@ Route::post('/payroll/create', [App\Http\Controllers\PayrollController::class, '
 Route::post('/payroll/store', [App\Http\Controllers\PayrollController::class, 'store_payroll'])->name('payroll_store');
 Route::post('/payroll/{ref_id}/delete', [App\Http\Controllers\PayrollController::class, 'delete'])->name('payroll_delete');
 Route::post('/payroll/{ref_id}/make_payment', [App\Http\Controllers\PayrollController::class, 'payroll_make_payment'])->name('payroll_make_payment');
-// Route::get('/payroll/test/transaction', [App\Http\Controllers\transactionController::class, 'export_transaction'])->name('payroll_export_transaction');
 // Route::get('/payroll/test', [App\Http\Controllers\transactionController::class, 'test'])->name('eee');
 
 // Sales Route

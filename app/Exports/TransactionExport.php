@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 // use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
-class TransactionExport implements WithMapping
+class TransactionExport implements FromCollection, //WithMapping
 {
     // public function headings(): array
     // {
@@ -20,32 +20,32 @@ class TransactionExport implements WithMapping
     //     ];
     // }
 
-    // /**
-    //  * @return \Illuminate\Support\Collection
-    //  */
-    // public function collection()
-    // {
-    //     $transactions = Transaction::all();
-    //     // $tt = [];
-    //     // foreach ($transactions as $t) {
-    //     //     $t->customer;
-    //     //     array_push($tt, $t->customer);
-    //     // }
-
-    //     return $transactions;
-    // }
-
     /**
-     * @param Transaction $transaction
-     *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function map($transaction): array
+    public function collection()
     {
-        return [
-            $transaction->customer->name,
-            $transaction->customer->email,
-            Date::dateTimeToExcel($transaction->created_at),
-        ];
+        $transactions = Transaction::all();
+        // $tt = [];
+        // foreach ($transactions as $t) {
+        //     $t->customer;
+        //     array_push($tt, $t->customer);
+        // }
+
+        return $transactions;
     }
+
+    // /**
+    //  * @param Transaction $transaction
+    //  *
+    //  * @return array
+    //  */
+    // public function map($transaction): array
+    // {
+    //     return [
+    //         $transaction->customer->name,
+    //         $transaction->customer->email,
+    //         Date::dateTimeToExcel($transaction->created_at),
+    //     ];
+    // }
 }
