@@ -82,7 +82,8 @@ class TransactionExport implements WithHeadings, FromCollection //, WithMapping
             array_push($tt, $per_transaction);
         }
 
-        dd(collect($tt));
+        // dd(collect($tt));
+        return $transactions;
     }
     
 
