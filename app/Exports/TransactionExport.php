@@ -55,7 +55,7 @@ class TransactionExport implements WithHeadings, FromCollection //, WithMapping
         if ($this->type == "all") {
             $transactions = Transaction::where('org_id', '=', Auth::user()->organization_id)->whereBetween('date', [$this->from . '-00-00-00', $this->to . '-23-59-59'])->get();
         }
-        
+
         $tt = [];
         $i = 1;
         foreach ($transactions as $t) {
@@ -82,7 +82,7 @@ class TransactionExport implements WithHeadings, FromCollection //, WithMapping
             array_push($tt, $per_transaction);
         }
 
-        return $tt;
+        dd(collect($tt));
     }
     
 
