@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -12,17 +13,18 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class TransactionExport implements WithHeadings, FromCollection //, WithMapping
 {
-    public $transactions;
-    // public $from;
-    // public $to;
-    // public $org;
+    // public $transactions;
+    public $from;
+    public $to;
+    public $data_d;
+    public $type;
 
-    public function __construct($transactions)
+    public function __construct($type, $from, $to, $data_d)
     {
-        $this->transactions = $transactions;
-    //     $this->from = $from;
-    //     $this->to = $to;
-    //     $this->org = $org;
+        $this->type = $type;
+        $this->from = $from;
+        $this->to = $to;
+        $this->data_d = $data_d;
     }
 
     public function headings(): array
@@ -49,7 +51,11 @@ class TransactionExport implements WithHeadings, FromCollection //, WithMapping
      */
     public function collection()
     {
-        $transactions = $this->transactions;
+        // $transactions = $this->transactions;
+        if ($this->type == "all") {
+            $transactions = Transaction::where('org_id', '=', Auth::user()->organization_id)->whereBetween('date', [$this->from . '-00-00-00', $this->to . '-23-59-59'])->get();
+        }
+        
         $tt = [];
         $i = 1;
         foreach ($transactions as $t) {
