@@ -174,7 +174,7 @@ Route::post('/otp_e', [App\Http\Controllers\PaymentGatewayController::class, 've
 Route::get('/transactions', [App\Http\Controllers\transactionController::class, 'index'])->name('show_transactions');
 Route::post('/transactions', [App\Http\Controllers\transactionController::class, 'get_transaction_list'])->name('get_transaction_list');
 Route::get('/data_search_t', [App\Http\Controllers\transactionController::class, 'search_data_t'])->name('search_data_t');
-Route::get('/test/transaction', [App\Http\Controllers\transactionController::class, 'export_transaction'])->name('export_transaction');
+Route::post('/test/transaction', [App\Http\Controllers\transactionController::class, 'export_transaction'])->name('export_transaction');
 
 
 //plans

@@ -313,9 +313,35 @@ class transactionController extends Controller
         } 
     }
 
-    public function export_transaction()
+    public function export_transaction(Request $request)
     {
-        return Excel::download(new TransactionExport, 'Transaction_' . now() . '.xlsx');
+        $validator = Validator::make($request->all(), [
+            // 'daterange' => ['required', 'string', 'max:255'],
+            'from' => ['required'],
+            'to' => ['required'],
+            'request_type' => ['required'],
+            'data_d' => ['string'],
+        ]);
+
+        // if load type is set to all
+        if ($request->request_type == "all") {
+
+            $transactions = Transaction::where('org_id', '=', Auth::user()->organization_id)->whereBetween('date', [$request->from . '-00-00-00', $request->to . '-23-59-59'])->get();
+            // return $transactions;
+            if ($transactions) {
+
+                if (count($transactions) > 0) {
+                    // dd(Auth::user()->organization->name);
+                    // return view('transactions.all', compact('transactions', 'from', 'to', 'months'));
+                    $export = Excel::download(new TransactionExport($transactions), 'Transaction_' . now() . '.xlsx');
+                    return back()->with('success', 'Export successfuly, Thank you for using our services.');
+                } else {
+                    return back()->with('error', 'No Transaction Within this range. Try Again!');
+                }
+            }
+        }
+
+        // return Excel::download(new TransactionExport(), 'Transaction_' . now() . '.xlsx');
     }
 
     public function test()

@@ -38,6 +38,14 @@
                         <h5 class="mb-0" style="float: right;">Transaction Summary</h5>
                       </div>
                       <div class="col-sm-9 text-secondary">
+                        <form action="{{route('export_transaction')}}" method="post">
+                          @csrf
+                          <input type="hidden" value="{{$from}}" name="from">
+                          <input type="hidden" value="{{$to}}" name="to">
+                          <input type="hidden" value="all" name="request_type">
+                          {{-- <input type="hidden" value="{{$customer->id}}" name="data_d"> --}}
+                          <button type="submit" class="btn btn-primary">Export</button>
+                        </form>
                       </div>
                     </div>
                     <hr>
