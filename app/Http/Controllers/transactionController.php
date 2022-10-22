@@ -328,7 +328,8 @@ class transactionController extends Controller
             $transactions = Transaction::where('org_id', '=', Auth::user()->organization_id)->whereBetween('date', [$request->from . '-00-00-00', $request->to . '-23-59-59'])->get();
             if (count($transactions) > 0) {
                 $export = Excel::download(new TransactionExport($request->request_type, $request->from, $request->to, $request->data_d), 'Transaction_' . now() . '.xlsx');
-                return back()->with('success', 'Export successfuly, Thank you for using our services.');
+                return $export;
+                // return back()->with('success', 'Export successfuly, Thank you for using our services.');
             } else {
                 return back()->with('error', 'No Transaction Within this range. Try Again!');
             }

@@ -115,8 +115,8 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-					    <th>Item Name</th>
-					    <th>Measure - Unit</th>
+					                                  <th>Item Name</th>
+					                                  <th>Measure - Unit</th>
                                             <th>Quantity</th>
                                             <th>Total Amount</th>
                                             <th>Transaction Type</th>
