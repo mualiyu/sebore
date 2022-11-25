@@ -4,6 +4,7 @@ namespace Laravel\Scout\Engines;
 
 use Illuminate\Support\LazyCollection;
 use Laravel\Scout\Builder;
+use Laravel\Scout\Jobs\RemoveableScoutCollection;
 use MeiliSearch\Client as MeiliSearchClient;
 use MeiliSearch\MeiliSearch;
 use MeiliSearch\Search\SearchResult;
@@ -63,9 +64,9 @@ class MeiliSearchEngine extends Engine
             }
 
             return array_merge(
-                [$model->getKeyName() => $model->getScoutKey()],
                 $searchableData,
-                $model->scoutMetadata()
+                $model->scoutMetadata(),
+                [$model->getKeyName() => $model->getScoutKey()],
             );
         })->filter()->values()->all();
 
@@ -82,13 +83,17 @@ class MeiliSearchEngine extends Engine
      */
     public function delete($models)
     {
+        if ($models->isEmpty()) {
+            return;
+        }
+
         $index = $this->meilisearch->index($models->first()->searchableAs());
 
-        $index->deleteDocuments(
-            $models->map->getScoutKey()
-                ->values()
-                ->all()
-        );
+        $keys = $models instanceof RemoveableScoutCollection
+            ? $models->pluck($models->first()->getUnqualifiedScoutKeyName())
+            : $models->map->getScoutKey();
+
+        $index->deleteDocuments($keys->all());
     }
 
     /**
@@ -236,6 +241,19 @@ class MeiliSearchEngine extends Engine
     }
 
     /**
+     * Get the results of the query as a Collection of primary keys.
+     *
+     * @param  \Laravel\Scout\Builder  $builder
+     * @return \Illuminate\Support\Collection
+     */
+    public function keys(Builder $builder)
+    {
+        $scoutKey = $builder->model->getUnqualifiedScoutKeyName();
+
+        return $this->mapIdsFrom($this->search($builder), $scoutKey);
+    }
+
+    /**
      * Map the given results to instances of the given model.
      *
      * @param  \Laravel\Scout\Builder  $builder
@@ -263,7 +281,7 @@ class MeiliSearchEngine extends Engine
     }
 
     /**
-     * Map the given results to instances of the given modell via a lazy collection.
+     * Map the given results to instances of the given model via a lazy collection.
      *
      * @param  \Laravel\Scout\Builder  $builder
      * @param  mixed  $results
