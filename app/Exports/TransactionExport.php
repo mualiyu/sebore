@@ -72,7 +72,7 @@ class TransactionExport implements WithHeadings, FromCollection //, WithMapping
             array_push($per_transaction, $t->date);
             array_push($per_transaction, $t->agent->name);
             array_push($per_transaction, $t->customer->name ?? "Null");
-            array_push($per_transaction, $t->customer->phone);
+            array_push($per_transaction, $t->customer->phone ?? "Null");
             array_push($per_transaction, $t->device->community);
             array_push($per_transaction, $t->p_status==0 ? "Not Paid":"Paid");
             array_push($per_transaction, $t->ref_id );
