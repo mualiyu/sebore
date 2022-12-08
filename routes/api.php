@@ -42,7 +42,7 @@ Route::post('/customer/to/agent', [App\Http\Controllers\ApiCustomerController::c
 Route::post('/customer/create', [App\Http\Controllers\ApiCustomerController::class, 'create']);
 
 Route::get('/get_api_by_name', [App\Http\Controllers\ApiApiController::class, 'get_by_name']);
-Route::post('/new_api_user', [App\Http\Controllers\ApiApiController::class, 'create']);
+// Route::post('/new_api_user', [App\Http\Controllers\ApiApiController::class, 'create']);
 
 
 Route::post('/stock/create', [App\Http\Controllers\ApiStockController::class, 'create']);
