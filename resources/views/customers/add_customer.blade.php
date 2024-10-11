@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10">Create Farmers<!--Customer--> {{ $agent != null ? ' - '.$agent->name : ' '}} </h5>
+                    <h5 class="m-b-10">Create Customers<!--Customer--> {{ $agent != null ? ' - '.$agent->name : ' '}} </h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#!">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#!">Create Farmers</a>
+                    <li class="breadcrumb-item"><a href="#!">Create Customers</a>
                     </li>
                 </ul>
             </div>
@@ -65,7 +65,7 @@
                               <div class="card-block">
                                   <form class="form-material" method="POST" action="{{route('create_customer')}}">
 					                    @csrf
-					
+
                                       <div class="form-group form-default">
                                           <input type="text" name="name" value="{{old('name')}}" class="form-control" required="">
                                           <span class="form-bar"></span>
@@ -110,7 +110,7 @@
                                                       @if ($agent != null)
                                                       <option value="{{$agent->id}}">{{$agent->name}}</option>
                                                       @endif
-						                        	 @foreach ($agents as $a)    
+						                        	 @foreach ($agents as $a)
 						                        	 <option value="{{$a->id}}">{{$a->name}}</option>
 						                        	 @endforeach
 						                          </select>
@@ -159,7 +159,7 @@
                             </div>
 				      </div>
 
-				      
+
 
                                       <div class="form-group form-default">
                                           <input type="submit" class="btn btn-primary" value="Register" id="">
@@ -187,7 +187,7 @@
                                 <h6 class="mb-0" style="float: right;">Name: </h6>
                               </div>
                               <div class="col-sm-9 text-secondary" id="n">
-                                
+
                               </div>
                             </div>
                             {{-- <hr> --}}
@@ -233,7 +233,7 @@
                                             @if ($agent != null)
                                             <option value="{{$agent->id}}">{{$agent->name}}</option>
                                             @endif
-						              	    @foreach ($agents as $a)    
+						              	    @foreach ($agents as $a)
 						              	    <option value="{{$a->id}}">{{$a->name}}</option>
 						              	    @endforeach
 						                </select>
@@ -263,17 +263,17 @@
 @section('script')
 <script>
     $(document).ready(function () {
-             
+
         $('#c_phone').on('keyup',function() {
-            let query = $('#c_phone').val(); 
+            let query = $('#c_phone').val();
 	    if (query.length <= 11) {
             	$.ajax({
             	    url:"{{ route('check_customer_by_phone') }}",
             	    type:"GET",
             	    data:{'cus':query},
-		
+
             	    success:function (data) {
-                        if (!data) {   
+                        if (!data) {
                             $('#c_info').css('display', 'none');
                             $('#c_form').css("display", 'block');
                             $('#phone').val($('#c_phone').val());
@@ -301,7 +301,7 @@
 	    }
             // end of ajax call
         });
-        
+
     });
-</script>   
+</script>
 @endsection

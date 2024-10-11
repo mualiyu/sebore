@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h6 class="m-b-10">{{$agent->name}} Farmers</h6>
+                    <h6 class="m-b-10">{{$agent->name}} Customers</h6>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Farmers</a>
+                    <li class="breadcrumb-item"><a href="#">Customers</a>
                     </li>
                 </ul>
             </div>
@@ -33,13 +33,13 @@
                 <!-- Basic table card start -->
                 <a href="{{route('show_agents')}}" style="right:0;" class="btn btn-primary">Back</a>&nbsp;&nbsp;&nbsp;
                 <button class="btn btn-success"  data-toggle="modal" onclick="$('#modal').css('display', 'block')" data-target="#staticBackdrop"><i class=""></i> Upload</button>&nbsp;&nbsp;&nbsp;
-		        <a href="{{route('show_add_customer', ['id'=> $agent->id])}}" style="right:0;" class="btn btn-primary">Add New Farmers</a>&nbsp;&nbsp;&nbsp;
+		        <a href="{{route('show_add_customer', ['id'=> $agent->id])}}" style="right:0;" class="btn btn-primary">Add New Customers</a>&nbsp;&nbsp;&nbsp;
                 <a class=" btn btn-success" href="{{route('export_customers_pdf', ['username'=>$agent->username])}}" >Export Customers QrCode</a>
-                
+
                 <br>
                     <div class="card">
                         <div class="card-header">
-                            <h5>Farmers</h5>
+                            <h5>Customers</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
                                     <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -87,13 +87,13 @@
 					                    	<td>
                                                 <form method="POST" id="delete-form[{{$i}}]" action="{{route('remove_customer_from_agent',['c_id'=>$c->id, 'a_id'=>$agent->id])}}">
                                                     <a href="{{route('show_edit_customer', ['a_id'=>$agent->id, 'c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
-                                                    @csrf 
+                                                    @csrf
                                                     <a  onclick="
                                                         if(confirm('Are you sure You want to Delete this Customer -( {{$c->name}} )? ')){
                                                             document.getElementById('delete-form[{{$i}}]').submit();
                                                         }
                                                             event.preventDefault();"
-                                                        class="btn btn-warning" 
+                                                        class="btn btn-warning"
                                                         style="color: black; background:red;">
                                                         Delete
                                                     </a>
@@ -131,7 +131,7 @@
 						                <select class="form-control"  disabled>
                                            <option value="">{{$agent->name}}</option>
                                            <hr>
-						              	 @foreach ($agents as $a)    
+						              	 @foreach ($agents as $a)
 						              	 <option value="{{$a->id}}">{{$a->name}}</option>
 						              	 @endforeach
 						                </select>

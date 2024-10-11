@@ -7,7 +7,7 @@
         $org = Auth::user()->organization;
         if ($org->theme) {
             $cookie_name = 'Ats_Theme';
-            
+
             if ($org->theme == 1) {
                 $tn = 'rgb(90,30,30)';
                 $th = 'rgba(109, 41, 41, 0.7)';
@@ -115,7 +115,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/jquery.mCustomScrollbar.css')}}">
      <!-- morris chart -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/morris.js/css/morris.css')}}">
-    
+
     {{-- cdn --}}
     {{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
@@ -243,7 +243,7 @@
                     <div class="circle"></div>
                 </div>
             </div>
-            
+
             <div class="spinner-layer spinner-yellow">
                 <div class="circle-clipper left">
                     <div class="circle"></div>
@@ -255,7 +255,7 @@
                     <div class="circle"></div>
                 </div>
             </div>
-            
+
             <div class="spinner-layer spinner-green">
                 <div class="circle-clipper left">
                     <div class="circle"></div>
@@ -272,10 +272,10 @@
 </div>
 <!-- Pre-loader end -->
 
-<?php 
+<?php
 
 // $organization = App\Models\Organization::find(Auth::user()->organization_id);
-$organization = Auth::user()->organization()->get(); 
+$organization = Auth::user()->organization()->get();
 // dd($organization[0]);
 
 if ($organization[0]->logo) {
@@ -314,7 +314,7 @@ if ($organization[0]->logo) {
                         <i class="ti-more"></i>
                     </a>
                 </div>
-            
+
                 <div class="navbar-container container-fluid">
                     <ul class="nav-left">
                         <li>
@@ -373,7 +373,7 @@ if ($organization[0]->logo) {
         </nav>
 
 
-    
+
         <div class="pcoded-main-container">
             <div class="pcoded-wrapper">
                 <nav class="pcoded-navbar">
@@ -386,7 +386,7 @@ if ($organization[0]->logo) {
                                     <span id="more-details">{{Auth::user()->name}}<i class="fa fa-caret-down"></i></span>
                                 </div>
                             </div>
-                        
+
                             <div class="main-menu-content">
                                 <ul>
                                     <li class="more-details">
@@ -442,12 +442,12 @@ if ($organization[0]->logo) {
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li> --}}
-			    
+
                         </ul>
-                    
+
                         {{-- <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Chart &amp; Maps</div> --}}
                         <ul class="pcoded-item pcoded-left-item">
-                            
+
                             <li class="">
                                 <a href="{{route('show_all_customers')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="fa fa-users" aria-hidden="true"></i><b>D</b></span>
@@ -463,7 +463,7 @@ if ($organization[0]->logo) {
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                    
+
                         </ul>
                         <ul class="pcoded-item pcoded-left-item">
                              <li class="">
@@ -505,17 +505,17 @@ if ($organization[0]->logo) {
                             </li> --}}
 
                         </ul>
-                    
-                        
+
+
                     </div>
                 </nav>
                 <div class="pcoded-content">
 
 		            @yield('content')
-		    
+
                 </div>
                 <div id="styleSelector">
-                
+
                 </div>
             </div>
         </div>
@@ -523,15 +523,15 @@ if ($organization[0]->logo) {
 </div>
 
 <!-- Required Jquery -->
-    <script type="text/javascript" src="{{asset('assets/js/jquery/jquery.min.js')}}"></script>     
-    <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>     <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>     
+    <script type="text/javascript" src="{{asset('assets/js/jquery/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>     <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>
 <!-- waves js -->
 <script src="{{asset('assets/pages/waves/js/waves.min.js')}}"></script>
 <!-- jquery slimscroll js -->
 <script type="text/javascript" src="{{asset('assets/js/jquery-slimscroll/jquery.slimscroll.js')}}"></script>
 <!-- modernizr js -->
-    <script type="text/javascript" src="{{asset('assets/js/SmoothScroll.js')}}"></script>     
+    <script type="text/javascript" src="{{asset('assets/js/SmoothScroll.js')}}"></script>
     <script src="{{asset('assets/js/jquery.mCustomScrollbar.concat.min.js')}}"></script>
 <script src="{{asset('assets/js/pcoded.min.js')}}"></script>
 <script src="{{asset('assets/js/vertical-layout.min.js')}}"></script>
@@ -559,7 +559,7 @@ if ($organization[0]->logo) {
 
 <script>
 $(document).ready(function() {
-    
+
     $('#data_table').DataTable();
 
     var html_code = '';
@@ -569,16 +569,16 @@ $(document).ready(function() {
 
    html_code += '<option value="">Select</option>';
 
-   html_code_lga += '<option value="">Select</option>'; 
+   html_code_lga += '<option value="">Select</option>';
 
    $.each(data, function(key, value){
-       
-    html_code += '<option value="'+key+'" id= "'+value.id+'">'+value.name+'</option>';  
-    
+
+    html_code += '<option value="'+key+'" id= "'+value.id+'">'+value.name+'</option>';
+
     $('#state-select').on('change', function() {
         var id = this.value;
-          if (key == id) {   
-              $.each(value.locals, function(k, v) { 
+          if (key == id) {
+              $.each(value.locals, function(k, v) {
                   html_code_lga += '<option value="'+v.name+'" id= "'+v.id+'">'+v.name+'</option>';
                 });
                 $('#lga-select').html(html_code_lga);
@@ -588,11 +588,11 @@ $(document).ready(function() {
     });
 
     });
-    
+
 
     $('#state-select').html(html_code);
 
-    
+
 //    console.log(data);
 
   });

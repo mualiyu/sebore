@@ -6,7 +6,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="page-header-title">
-                    <h5 class="m-b-10"> Farmers</h5>
+                    <h5 class="m-b-10"> Customers</h5>
                 </div>
             </div>
             <div class="col-md-4">
@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item"><a href="#">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Farmers</a>
+                    <li class="breadcrumb-item"><a href="#">Customers</a>
                     </li>
                 </ul>
             </div>
@@ -33,7 +33,7 @@
 		     @include(' layouts.flash ')
                 {{-- <!-- Basic table card start -->
                 <a href="{{route(' show_agents ')}}" style="right:0;" class="btn btn-secondary">Back</a>&nbsp;&nbsp;&nbsp; --}}
-		<a href="{{route('show_add_direct_customer')}}" style="right:0;" class="btn btn-primary">Add New Farmers</a>
+		<a href="{{route('show_add_direct_customer')}}" style="right:0;" class="btn btn-primary">Add New Customers</a>
         <button class="btn btn-success"  data-toggle="modal" onclick="$('#modal').css('display', 'block')" data-target="#staticBackdrop"><i class=""></i> Upload</button>&nbsp;&nbsp;&nbsp;
         <br>
                     <div class="card">
@@ -49,7 +49,7 @@
                                 </ul>
                             </div>
                         </div>
-                        
+
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
                                 <table id="data_table" class="table-sm table-striped table-bordered dt-responsive nowrap " style="width:100%">
@@ -94,13 +94,13 @@
 						<td>
                            	<form method="POST" id="delete-form[{{$i}}]" action="{{route('delete_customer',['id'=>$c->id])}}">
                            	    <a href="{{route('show_edit_customer', ['c_id'=>$c->id])}}" class="btn btn-primary">Edit</a>
-                           	    @csrf 
+                           	    @csrf
                            	    <a  onclick="
                            	        if(confirm('Are you sure You want to Delete this Customer - ({{ $c->name }}) ? ')){
                            	            document.getElementById('delete-form[{{$i}}]').submit();
                            	        }
                            	            event.preventDefault();"
-                           	        class="btn btn-warning" 
+                           	        class="btn btn-warning"
                            	        style="color: black; background:red;">
                            	        Delete
                            	    </a>
@@ -128,7 +128,7 @@
                                 @csrf
                                 <div class="input-group">
                                     <input name="file" class="form-control" required onchange="Upload()" accept=".csv" id="fileUpload" type="file" placeholder="choose file" />
-                                    
+
                                 </div>
                                 <div class="input-group">
                                    {{-- <label for="">Agents</label> --}}
@@ -136,7 +136,7 @@
 						                <select name="agent" class="form-control"  required>
                                            <option value="">Select Agent</option>
                                            <hr>
-						              	 @foreach ($agents as $a)    
+						              	 @foreach ($agents as $a)
 						              	 <option value="{{$a->id}}">{{$a->name}}</option>
 						              	 @endforeach
 						                </select>
